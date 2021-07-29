@@ -10,9 +10,6 @@ class PasswordConfirmationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @covers \App\Http\Controllers\Auth\ConfirmablePasswordController::show
-     */
     public function testConfirmPasswordScreenCanBeRendered(): void
     {
         $user = User::factory()->create();
@@ -22,9 +19,6 @@ class PasswordConfirmationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-     */
     public function testPasswordCanBeConfirmed(): void
     {
         $user = User::factory()->create();
@@ -37,9 +31,6 @@ class PasswordConfirmationTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-     */
     public function testPasswordIsNotConfirmedWithInvalidPassword(): void
     {
         $user = User::factory()->create();

@@ -11,9 +11,6 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @covers \App\Http\Controllers\Auth\AuthenticatedSessionController::create
-     */
     public function testLoginScreenCanBeRendered(): void
     {
         $response = $this->get('/login');

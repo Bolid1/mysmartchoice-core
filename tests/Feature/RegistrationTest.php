@@ -10,9 +10,6 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @covers \App\Http\Controllers\Auth\RegisteredUserController::create
-     */
     public function testRegistrationScreenCanBeRendered(): void
     {
         $response = $this->get('/register');
@@ -20,9 +17,6 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\RegisteredUserController::store
-     */
     public function testNewUsersCanRegister(): void
     {
         $response = $this->post(
@@ -31,11 +25,21 @@ class RegistrationTest extends TestCase
                 'name'                  => 'Test User',
                 'email'                 => 'test@example.com',
                 'password'              => 'password',
-                'password_confirmation' => 'password',
             ]
         );
 
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
+    public function testNewUsersCanBeCreatedByCommand(): void
+    {
+        $this
+            ->artisan('users:create')
+            ->expectsQuestion('Name?', 'Test User')
+            ->expectsQuestion('Email?', 'test@example.com')
+            ->expectsQuestion('Password?', 'password')
+            ->assertExitCode(0)
+        ;
     }
 }

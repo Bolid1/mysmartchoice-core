@@ -12,9 +12,6 @@ class PasswordResetTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @covers \App\Http\Controllers\Auth\PasswordResetLinkController::create
-     */
     public function testResetPasswordLinkScreenCanBeRendered(): void
     {
         $response = $this->get('/forgot-password');
@@ -22,9 +19,6 @@ class PasswordResetTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\PasswordResetLinkController::store
-     */
     public function testResetPasswordLinkCanBeRequested(): void
     {
         Notification::fake();
@@ -36,10 +30,6 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\PasswordResetLinkController::store
-     * @covers \App\Http\Controllers\Auth\NewPasswordController::create
-     */
     public function testResetPasswordScreenCanBeRendered(): void
     {
         Notification::fake();
@@ -57,10 +47,6 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    /**
-     * @covers \App\Http\Controllers\Auth\PasswordResetLinkController::store
-     * @covers \App\Http\Controllers\Auth\NewPasswordController::store
-     */
     public function testPasswordCanBeResetWithValidToken(): void
     {
         Notification::fake();
@@ -74,7 +60,6 @@ class PasswordResetTest extends TestCase
                 'token' => $notification->token,
                 'email' => $user->email,
                 'password' => 'password',
-                'password_confirmation' => 'password',
             ]);
 
             $response->assertSessionHasNoErrors();

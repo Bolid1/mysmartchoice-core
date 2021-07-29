@@ -3,9 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Services\UserPasswordEncoder;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use function now;
+use function resolve;
 
 class UserFactory extends Factory
 {
@@ -27,9 +29,9 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'email_verified_at' => $this->faker->randomElement([null, now()]),
+            'password' => resolve(UserPasswordEncoder::class)->encode('password'),
+            'remember_token' => $this->faker->randomElement([null, Str::random(10)]),
         ];
     }
 

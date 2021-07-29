@@ -13,8 +13,6 @@ class UsersControllerTest extends TestCase
     use WithFaker;
 
     /**
-     * @covers \App\Http\Controllers\UsersController::index
-     *
      * Display a listing of the users.
      *
      * @return void
@@ -45,8 +43,6 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * @covers \App\Http\Controllers\UsersController::show
-     *
      * Display the single user.
      *
      * @return void
@@ -82,8 +78,6 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * @covers \App\Http\Controllers\UsersController::update
-     *
      * Update the single user
      *
      * @return void
@@ -134,8 +128,6 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * @covers \App\Http\Controllers\UsersController::update
-     *
      * Update the single user with errors
      *
      * @return void

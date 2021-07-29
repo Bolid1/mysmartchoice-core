@@ -18,8 +18,8 @@
         </div>
 
         <div class="mt-4">
-            <breeze-label for="password_confirmation" value="Confirm Password" />
-            <breeze-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+            <breeze-label for="terms" value="Do you accept service terms?" class="inline" />
+            <breeze-input id="terms" type="checkbox" class="ml-1" v-model="form.terms" required />
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -57,8 +57,7 @@
                     name: '',
                     email: '',
                     password: '',
-                    password_confirmation: '',
-                    terms: false,
+                    terms: true,
                 })
             }
         },
@@ -66,7 +65,7 @@
         methods: {
             submit() {
                 this.form.post(this.route('register'), {
-                    onFinish: () => this.form.reset('password', 'password_confirmation'),
+                    onFinish: () => this.form.reset('password'),
                 })
             }
         }
