@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UsersControllerTest extends TestCase
@@ -19,7 +20,12 @@ class UsersControllerTest extends TestCase
      */
     public function testGetList(): void
     {
-        User::factory()->count(40)->create();
+        $users = User::factory()->count(40)->create();
+
+        /** @var User $user */
+        $user = $this->faker->randomElement($users->all());
+        Passport::actingAs($user);
+
 
         $response = $this->get('/api/users');
 
@@ -50,7 +56,8 @@ class UsersControllerTest extends TestCase
     public function testShowUser(): void
     {
         /** @var User $user */
-        $user = User::factory()->count(5)->create()->first();
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
 
         $response = $this->get("/api/users/{$user->id}");
 
@@ -85,7 +92,8 @@ class UsersControllerTest extends TestCase
     public function testUpdateUser(): void
     {
         /** @var User $user */
-        $user = User::factory()->count(1)->create()->first();
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
 
         do {
             $newName = $this->faker->name;
@@ -135,7 +143,8 @@ class UsersControllerTest extends TestCase
     public function testUpdateUserFailed(): void
     {
         /** @var User $user */
-        $user = User::factory()->count(1)->create()->first();
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
 
         $response = $this->patchJson(
             "/api/users/{$user->id}",

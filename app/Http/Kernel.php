@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 
 class Kernel extends HttpKernel
 {
@@ -38,6 +39,13 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
+
+            /**
+             * @link https://laravel.com/docs/8.x/passport#consuming-your-api-with-javascript
+             * @waring You should ensure that the CreateFreshApiToken middleware is
+             *         the last middleware listed in your middleware stack
+             */
+            CreateFreshApiToken::class,
         ],
 
         'api' => [

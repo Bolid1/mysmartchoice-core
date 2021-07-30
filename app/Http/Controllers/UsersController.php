@@ -16,9 +16,11 @@ class UsersController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    #[Pure] public function index(): AnonymousResourceCollection
+    #[Pure] public function index(Request $request): AnonymousResourceCollection
     {
-        return UserResource::collection(User::all());
+        return UserResource::collection(
+            User::where('id', $request->user()->id)->get()
+        );
     }
 
     /**

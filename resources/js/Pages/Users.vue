@@ -20,6 +20,7 @@
 
 <script>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated'
+import axios from 'axios'
 
 export default {
   components: {
@@ -43,9 +44,12 @@ export default {
       this.users = [];
       this.loading = true
       // replace `getPost` with your data fetching util / API wrapper
+
       try {
-        const response = await fetch('/api/users');
-        this.users = (await response.json()).data;
+        const response = await axios.get('/api/users', {
+          responseType: 'json',
+        });
+        this.users = response.data.data;
       } catch (error) {
         this.error = error.toString();
       } finally {

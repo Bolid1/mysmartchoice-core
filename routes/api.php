@@ -23,10 +23,12 @@ Route::middleware('auth:api')->get(
 )
 ;
 
-Route::apiResource('users', Controllers\UsersController::class)->except(
-    [
-        'store',
-        'destroy',
-    ]
-)
+Route::apiResource('users', Controllers\UsersController::class)
+    ->except(
+        [
+            'store',
+            'destroy',
+        ]
+    )
+    ->middleware('auth:api')
 ;
