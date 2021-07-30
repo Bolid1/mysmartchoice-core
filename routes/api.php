@@ -32,3 +32,14 @@ Route::apiResource('users', Controllers\UsersController::class)
     )
     ->middleware('auth:api')
 ;
+
+Route::apiResource('firms', Controllers\FirmsController::class)
+    ->except(
+        [
+            'update',
+            'store',
+            'destroy',
+        ]
+    )
+    ->middleware('auth:api')
+;

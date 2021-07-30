@@ -24,6 +24,11 @@
                                     Users
                                 </breeze-nav-link>
                             </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <breeze-nav-link :href="route('firms_list')" :active="route().current('firms_list')">
+                                    Firms
+                                </breeze-nav-link>
+                            </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -73,6 +78,11 @@
                     <div class="pt-2 pb-3 space-y-1">
                         <breeze-responsive-nav-link :href="route('users_list')" :active="route().current('users_list')">
                             Users
+                        </breeze-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <breeze-responsive-nav-link :href="route('firms_list')" :active="route().current('firms_list')">
+                            Firms
                         </breeze-responsive-nav-link>
                     </div>
 

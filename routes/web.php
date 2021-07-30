@@ -28,4 +28,7 @@ Route::get('/dashboard', static fn() => Inertia::render('Dashboard'))
 Route::get('/users', static fn() => Inertia::render('Users'))
     ->middleware(['auth', 'verified'])->name('users_list');
 
+Route::get('/firms', static fn() => Inertia::render('Firms'))
+    ->middleware(['auth', 'verified'])->name('firms_list');
+
 require __DIR__.'/auth.php';
