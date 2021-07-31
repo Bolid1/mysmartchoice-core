@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,12 +21,12 @@ class UsersControllerTest extends TestCase
      */
     public function testGetList(): void
     {
-        $users = User::factory()->count(40)->create();
+        /** @var Firm $firm */
+        $firm = Firm::factory()->hasUsers(4)->createOne();
 
         /** @var User $user */
-        $user = $this->faker->randomElement($users->all());
+        $user = $this->faker->randomElement($firm->users);
         Passport::actingAs($user);
-
 
         $response = $this->get('/api/users');
 
@@ -55,9 +56,15 @@ class UsersControllerTest extends TestCase
      */
     public function testShowUser(): void
     {
+        /** @var Firm $firm */
+        $firm = Firm::factory()->hasUsers(4)->createOne();
+
         /** @var User $user */
-        $user = User::factory()->createOne();
-        Passport::actingAs($user);
+        $actingUser = $firm->users->first();
+        Passport::actingAs($actingUser);
+
+        /** @var User $user */
+        $user = $firm->users->last();
 
         $response = $this->get("/api/users/{$user->id}");
 
@@ -168,7 +175,7 @@ class UsersControllerTest extends TestCase
         $response->assertExactJson(
             [
                 'message' => 'The given data was invalid.',
-                'errors' => [
+                'errors'  => [
                     'name' => [
                         'The name must be a string.',
                     ],

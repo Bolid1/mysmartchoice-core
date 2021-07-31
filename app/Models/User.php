@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
-use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Token;
 
 /**
  * App\Models\User
@@ -25,8 +28,14 @@ use Laravel\Passport\HasApiTokens;
  * @property string|null $remember_token Хэш, по которому приложение сможет "вспомнить" пользователя, когда он зайдёт через много времени
  * @property Carbon|null $created_at Дата создания записи
  * @property Carbon|null $updated_at Дата последнего обновления записи
+ * @property-read Collection|Firm[] $firms
+ * @property-read int|null $firms_count
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read Collection|Client[] $clients
+ * @property-read int|null $clients_count
+ * @property-read Collection|Token[] $tokens
+ * @property-read int|null $tokens_count
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -76,4 +85,72 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsToMany One user can be in many firms at one moment of time.
+     */
+    public function firms(): BelongsToMany
+    {
+        return $this->belongsToMany(Firm::class, UserFirm::class);
+    }
+
+    /**
+     * @return BelongsToMany The users, that works in the same firms, as current user.
+     */
+    public function comrades(): BelongsToMany
+    {
+        $relation = $this->belongsToMany(__CLASS__, UserFirm::class);
+
+        // Remove links for current entity
+        $relation->getBaseQuery()->wheres            = [];
+        $relation->getBaseQuery()->bindings['where'] = [];
+
+        // Determine FQN for firm identifier in firms table
+        $firmModelIdentifier = (new Firm())->users()->getQualifiedForeignPivotKeyName();
+
+        return $relation
+            // Setup link for user comrades in firm_user table
+            ->wherePivotIn('firm_id', $this->firms()->getQuery()->select($firmModelIdentifier))
+            // Without this replace `user_firm`.`user_id` as `pivot_user_id` will be selected
+            ->select($relation->qualifyColumn('*'))
+            ;
+    }
+
+    /**
+     * @param int $anotherUserId
+     *
+     * @return bool Does user has comrade with given identifier
+     */
+    public function hasComrade(int $anotherUserId): bool
+    {
+        $query = $this->comrades();
+
+        return $query
+            ->where(
+                $query->qualifyColumn('id'),
+                '=',
+                $anotherUserId
+            )
+            ->exists()
+            ;
+    }
+
+    /**
+     * @param int $firmId
+     *
+     * @return bool Does current user works in firm with given identifier?
+     */
+    public function isInFirm(int $firmId): bool
+    {
+        $query = $this->firms();
+
+        return $query
+            ->where(
+                $query->qualifyColumn('id'),
+                '=',
+                $firmId
+            )
+            ->exists()
+            ;
+    }
 }

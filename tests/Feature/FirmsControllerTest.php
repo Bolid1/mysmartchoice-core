@@ -21,10 +21,8 @@ class FirmsControllerTest extends TestCase
      */
     public function testGetList(): void
     {
-        Firm::factory()->count(40)->create();
-
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = User::factory()->hasFirms(3)->createOne();
         Passport::actingAs($user);
 
 
@@ -56,9 +54,9 @@ class FirmsControllerTest extends TestCase
     public function testShowFirm(): void
     {
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = User::factory()->hasFirms(1)->createOne();
         /** @var Firm $firm */
-        $firm = Firm::factory()->createOne();
+        $firm = $user->firms->first();
 
         Passport::actingAs($user);
 

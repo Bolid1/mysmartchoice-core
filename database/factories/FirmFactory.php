@@ -3,11 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Firm;
-use App\Services\UserPasswordEncoder;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use function now;
-use function resolve;
 
 class FirmFactory extends Factory
 {

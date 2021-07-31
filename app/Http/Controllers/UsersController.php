@@ -11,15 +11,25 @@ use JetBrains\PhpStorm\Pure;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    }
+
     /**
      * Display a listing of the users.
+     *
+     * @param Request $request
      *
      * @return AnonymousResourceCollection
      */
     #[Pure] public function index(Request $request): AnonymousResourceCollection
     {
+        /** @var User $user */
+        $user = $request->user();
+
         return UserResource::collection(
-            User::where('id', $request->user()->id)->get()
+            $user->comrades()->paginate(null, [])
         );
     }
 
