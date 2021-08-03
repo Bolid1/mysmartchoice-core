@@ -1,4 +1,4 @@
-const mix = require("laravel-mix");
+const mix = require("laravel-mix")
 
 /*
  |--------------------------------------------------------------------------
@@ -19,8 +19,8 @@ mix
     require("tailwindcss"),
     require("autoprefixer"),
   ])
-  .webpackConfig(require("./webpack.config"));
+  .webpackConfig(require("./webpack.config"))
 
 if (mix.inProduction()) {
-  mix.version();
+  mix.version()
 }
