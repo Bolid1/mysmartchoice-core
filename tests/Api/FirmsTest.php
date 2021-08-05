@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Api;
 
 use App\Models\Firm;
 use App\Models\User;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class FirmsControllerTest extends TestCase
+class FirmsTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

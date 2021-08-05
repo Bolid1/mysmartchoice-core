@@ -25,7 +25,7 @@ Route::middleware('auth:api')->get(
 )
 ;
 
-Route::apiResource('users', Controllers\UsersController::class)
+Route::apiResource('users', Controllers\Api\UsersController::class)
     ->except(
         [
             'store',
@@ -35,7 +35,7 @@ Route::apiResource('users', Controllers\UsersController::class)
     ->middleware('auth:api')
 ;
 
-Route::apiResource('firms', Controllers\FirmsController::class)
+Route::apiResource('firms', Controllers\Api\FirmsController::class)
     ->except(
         [
             'update',
