@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -12,6 +14,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testConfirmPasswordScreenCanBeRendered(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/confirm-password');
@@ -21,6 +24,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testPasswordCanBeConfirmed(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/confirm-password', [
@@ -33,6 +37,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testPasswordIsNotConfirmedWithInvalidPassword(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/confirm-password', [

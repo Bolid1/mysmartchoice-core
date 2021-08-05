@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,20 +17,20 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', static fn() => Inertia::render('Welcome', [
+Route::get('/', static fn () => Inertia::render('Welcome', [
     'canLogin' => Route::has('login'),
     'canRegister' => Route::has('register'),
     'laravelVersion' => Application::VERSION,
-    'phpVersion' => PHP_VERSION,
+    'phpVersion' => \PHP_VERSION,
 ]));
 
-Route::get('/dashboard', static fn() => Inertia::render('Dashboard'))
+Route::get('/dashboard', static fn () => Inertia::render('Dashboard'))
      ->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/users', static fn() => Inertia::render('Users'))
+Route::get('/users', static fn () => Inertia::render('Users'))
     ->middleware(['auth', 'verified'])->name('users_list');
 
-Route::get('/firms', static fn() => Inertia::render('Firms'))
+Route::get('/firms', static fn () => Inertia::render('Firms'))
     ->middleware(['auth', 'verified'])->name('firms_list');
 
 require __DIR__.'/auth.php';

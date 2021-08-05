@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
@@ -58,6 +60,6 @@ class CreateOauthAuthCodesTable extends Migration
      */
     public function getConnection(): string
     {
-        return config('passport.storage.database.connection');
+        return \config('passport.storage.database.connection');
     }
 }

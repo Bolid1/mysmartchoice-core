@@ -30,7 +30,7 @@ class CreateUserCommand extends Command
      *
      * @var string
      */
-    protected             $description = 'Create user command';
+    protected $description = 'Create user command';
     private UserValidator $validator;
     private UsersManager  $manager;
 
@@ -39,7 +39,7 @@ class CreateUserCommand extends Command
      *
      * @return void
      */
-    public function __construct(UserValidator $validator, UsersManager  $manager)
+    public function __construct(UserValidator $validator, UsersManager $manager)
     {
         parent::__construct();
         $this->validator = $validator;
@@ -47,26 +47,25 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * Ask about missed options
+     * Ask about missed options.
      *
      * @param InputInterface $input
      * @param OutputInterface $output
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        while (! trim((string) $this->option('name'))) {
+        while (!trim((string)$this->option('name'))) {
             $input->setOption('name', $this->ask('Name?'));
         }
 
-        while (! trim((string) $this->option('email'))) {
+        while (!trim((string)$this->option('email'))) {
             $input->setOption('email', $this->ask('Email?'));
         }
 
-        while (! trim((string) $this->option('password'))) {
+        while (!trim((string)$this->option('password'))) {
             $input->setOption('password', $this->secret('Password?'));
         }
     }
-
 
     /**
      * Creates user from options.
@@ -84,7 +83,7 @@ class CreateUserCommand extends Command
             ['id', 'email'],
             [
                 [
-                    'id'    => $user->id,
+                    'id' => $user->id,
                     'email' => $user->email,
                 ],
             ]

@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $firm_id Идентификатор фирмы
  * @property Carbon|null $created_at Дата создания записи
  * @property Carbon|null $updated_at Дата последнего обновления записи
+ *
  * @method static Builder|UserFirm newModelQuery()
  * @method static Builder|UserFirm newQuery()
  * @method static Builder|UserFirm query()

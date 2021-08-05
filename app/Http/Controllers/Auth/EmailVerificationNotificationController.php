@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use function back;
+use function redirect;
 
 class EmailVerificationNotificationController extends Controller
 {
@@ -13,6 +17,7 @@ class EmailVerificationNotificationController extends Controller
      * Send a new email verification notification.
      *
      * @param  Request  $request
+     *
      * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse

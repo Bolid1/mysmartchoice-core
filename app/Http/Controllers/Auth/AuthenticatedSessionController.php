@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -12,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use function redirect;
+use function session;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -50,6 +54,7 @@ class AuthenticatedSessionController extends Controller
      * Destroy an authenticated session.
      *
      * @param  Request  $request
+     *
      * @return RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse

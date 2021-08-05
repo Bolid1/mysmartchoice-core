@@ -10,6 +10,7 @@ use Throwable;
 
 /**
  * Failed to register user exception.
+ *
  * @TODO: Check error handling, how to save attributes in logs and how to customize http status code?
  */
 class RegisterUserFailedException extends RuntimeException

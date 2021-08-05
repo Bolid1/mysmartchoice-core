@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\UserFactory;
@@ -18,7 +20,7 @@ use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 
 /**
- * App\Models\User
+ * App\Models\User.
  *
  * @property int $id Идентификатор пользователя
  * @property string $name Имя пользователя
@@ -28,14 +30,15 @@ use Laravel\Passport\Token;
  * @property string|null $remember_token Хэш, по которому приложение сможет "вспомнить" пользователя, когда он зайдёт через много времени
  * @property Carbon|null $created_at Дата создания записи
  * @property Carbon|null $updated_at Дата последнего обновления записи
- * @property-read Collection|Firm[] $firms
- * @property-read int|null $firms_count
- * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read Collection|Client[] $clients
- * @property-read int|null $clients_count
- * @property-read Collection|Token[] $tokens
- * @property-read int|null $tokens_count
+ * @property Collection|Firm[] $firms
+ * @property int|null $firms_count
+ * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property int|null $notifications_count
+ * @property Collection|Client[] $clients
+ * @property int|null $clients_count
+ * @property Collection|Token[] $tokens
+ * @property int|null $tokens_count
+ *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -52,9 +55,9 @@ use Laravel\Passport\Token;
  */
 class User extends Authenticatable
 {
+    use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -87,7 +90,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return BelongsToMany One user can be in many firms at one moment of time.
+     * @return BelongsToMany one user can be in many firms at one moment of time
      */
     public function firms(): BelongsToMany
     {
@@ -95,14 +98,14 @@ class User extends Authenticatable
     }
 
     /**
-     * @return BelongsToMany The users, that works in the same firms, as current user.
+     * @return BelongsToMany the users, that works in the same firms, as current user
      */
     public function comrades(): BelongsToMany
     {
         $relation = $this->belongsToMany(__CLASS__, UserFirm::class);
 
         // Remove links for current entity
-        $relation->getBaseQuery()->wheres            = [];
+        $relation->getBaseQuery()->wheres = [];
         $relation->getBaseQuery()->bindings['where'] = [];
 
         // Determine FQN for firm identifier in firms table

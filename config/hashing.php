@@ -1,7 +1,8 @@
 <?php
 
-return [
+declare(strict_types=1);
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Default Hash Driver
@@ -29,7 +30,7 @@ return [
     */
 
     'bcrypt' => [
-        'rounds' => env('BCRYPT_ROUNDS', 10),
+        'rounds' => \env('BCRYPT_ROUNDS', 10),
     ],
 
     /*
@@ -48,5 +49,4 @@ return [
         'threads' => 2,
         'time' => 2,
     ],
-
 ];

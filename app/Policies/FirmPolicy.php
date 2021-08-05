@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Firm;
@@ -40,7 +42,7 @@ class FirmPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @return Bool
+     * @return bool
      */
     public function create(/*User $user*/): bool
     {
@@ -50,7 +52,7 @@ class FirmPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @return Bool
+     * @return bool
      */
     public function update(/*User $user, Firm $firm*/): bool
     {
@@ -60,7 +62,7 @@ class FirmPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @return Bool
+     * @return bool
      */
     public function delete(/*User $user, Firm $firm*/): bool
     {
@@ -70,7 +72,7 @@ class FirmPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @return Bool
+     * @return bool
      */
     public function restore(/*User $user, Firm $firm*/): bool
     {
@@ -80,7 +82,7 @@ class FirmPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @return Bool
+     * @return bool
      */
     public function forceDelete(/*User $user, Firm $firm*/): bool
     {

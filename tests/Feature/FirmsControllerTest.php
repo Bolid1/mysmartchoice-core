@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Firm;
@@ -24,7 +26,6 @@ class FirmsControllerTest extends TestCase
         /** @var User $user */
         $user = User::factory()->hasFirms(3)->createOne();
         Passport::actingAs($user);
-
 
         $response = $this->get('/api/firms');
 

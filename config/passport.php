@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -12,9 +14,9 @@ return [
     |
     */
 
-    'private_key' => env('PASSPORT_PRIVATE_KEY'),
+    'private_key' => \env('PASSPORT_PRIVATE_KEY'),
 
-    'public_key' => env('PASSPORT_PUBLIC_KEY'),
+    'public_key' => \env('PASSPORT_PUBLIC_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,8 +43,8 @@ return [
     */
 
     'personal_access_client' => [
-        'id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
-        'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
+        'id' => \env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
+        'secret' => \env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
     ],
 
     /*
@@ -58,7 +60,7 @@ return [
 
     'storage' => [
         'database' => [
-            'connection' => env('DB_CONNECTION', 'mysql'),
+            'connection' => \env('DB_CONNECTION', 'mysql'),
         ],
     ],
 ];

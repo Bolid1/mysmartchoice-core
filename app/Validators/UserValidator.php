@@ -14,19 +14,20 @@ class UserValidator
     #[
         ArrayShape(
             [
-                'name' => "string",
-                'email' => "string",
-                'password' => "array"
+                'name' => 'string',
+                'email' => 'string',
+                'password' => 'array',
             ]
         )
-    ] public function getRulesForCreate(): array
-    {
-        return [
+    ]
+ public function getRulesForCreate(): array
+ {
+     return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', Password::defaults()],
         ];
-    }
+ }
 
     public function makeForCreate(array $data): \Illuminate\Validation\Validator
     {
@@ -43,13 +44,14 @@ class UserValidator
     #[
         ArrayShape(
             [
-                'name' => "string",
-                'email' => "string",
-                'password' => "string"
+                'name' => 'string',
+                'email' => 'string',
+                'password' => 'string',
             ]
         )
-    ] public function validateForCreate(array $data): array
-    {
-        return $this->makeForCreate($data)->validate();
-    }
+    ]
+ public function validateForCreate(array $data): array
+ {
+     return $this->makeForCreate($data)->validate();
+ }
 }

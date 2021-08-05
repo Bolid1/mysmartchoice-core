@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -40,7 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
 
-            /**
+            /*
              * @link https://laravel.com/docs/8.x/passport#consuming-your-api-with-javascript
              * @waring You should ensure that the CreateFreshApiToken middleware is
              *         the last middleware listed in your middleware stack

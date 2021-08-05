@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Providers\RouteServiceProvider;
@@ -22,9 +24,9 @@ class RegistrationTest extends TestCase
         $response = $this->post(
             '/register',
             [
-                'name'                  => 'Test User',
-                'email'                 => 'test@example.com',
-                'password'              => 'password',
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'password' => 'password',
             ]
         );
 

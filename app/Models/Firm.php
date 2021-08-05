@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\FirmFactory;
@@ -21,8 +23,9 @@ use Illuminate\Support\Carbon;
  * @property string $title Название пользователя
  * @property Carbon|null $created_at Дата создания записи
  * @property Carbon|null $updated_at Дата последнего обновления записи
- * @property-read Collection|User[] $users
- * @property-read int|null $users_count
+ * @property Collection|User[] $users
+ * @property int|null $users_count
+ *
  * @method static FirmFactory factory(...$parameters)
  * @method static Builder|Firm newModelQuery()
  * @method static Builder|Firm newQuery()
@@ -38,7 +41,7 @@ class Firm extends Model
     use HasFactory;
 
     /**
-     * @return BelongsToMany In firm can be many users.
+     * @return BelongsToMany in firm can be many users
      */
     public function users(): BelongsToMany
     {

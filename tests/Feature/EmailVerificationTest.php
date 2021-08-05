@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\User;
@@ -9,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
+use function now;
+use function sha1;
 
 class EmailVerificationTest extends TestCase
 {
@@ -16,6 +20,7 @@ class EmailVerificationTest extends TestCase
 
     public function testEmailVerificationScreenCanBeRendered(): void
     {
+        /** @var User $user */
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
@@ -29,6 +34,7 @@ class EmailVerificationTest extends TestCase
     {
         Event::fake();
 
+        /** @var User $user */
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
@@ -48,6 +54,7 @@ class EmailVerificationTest extends TestCase
 
     public function testEmailIsNotVerifiedWithInvalidHash(): void
     {
+        /** @var User $user */
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);

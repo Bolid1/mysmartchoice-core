@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Firm;
@@ -92,7 +94,7 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * Update the single user
+     * Update the single user.
      *
      * @return void
      */
@@ -143,7 +145,7 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * Update the single user with errors
+     * Update the single user with errors.
      *
      * @return void
      */
@@ -175,7 +177,7 @@ class UsersControllerTest extends TestCase
         $response->assertExactJson(
             [
                 'message' => 'The given data was invalid.',
-                'errors'  => [
+                'errors' => [
                     'name' => [
                         'The name must be a string.',
                     ],

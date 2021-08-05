@@ -21,7 +21,7 @@ class UserPasswordEncoder
         return Hash::make($plainPassword);
     }
 
-    /**
+    /*
      * @param string $plainPassword
      * @param string $hashedPassword
      *
