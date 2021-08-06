@@ -28,15 +28,15 @@ class FirmsController extends Controller
      * @return AnonymousResourceCollection
      */
     #[Pure]
- public function index(Request $request): AnonymousResourceCollection
- {
-     /** @var User $user */
-     $user = $request->user();
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        /** @var User $user */
+        $user = $request->user();
 
-     return FirmResource::collection(
+        return FirmResource::collection(
             $user->firms()->paginate()
         );
- }
+    }
 
     /**
      * Display the specified resource.
@@ -46,8 +46,8 @@ class FirmsController extends Controller
      * @return JsonResource
      */
     #[Pure]
- public function show(Firm $firm): JsonResource
- {
-     return new FirmResource($firm);
- }
+    public function show(Firm $firm): JsonResource
+    {
+        return new FirmResource($firm);
+    }
 }
