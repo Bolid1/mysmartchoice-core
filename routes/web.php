@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Web\FirmsController;
 use App\Http\Controllers\Web\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +26,14 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
     'phpVersion' => \PHP_VERSION,
 ]));
 
-Route::get('/dashboard', static fn () => Inertia::render('Dashboard'))
+Route::get('/dashboard', [FirmsController::class, 'index'])
      ->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('firms', FirmsController::class)
+    ->only([
+        'show',
+    ])
+     ->middleware(['auth', 'verified']);
 
 Route::resource('users', UsersController::class)
     ->only([
