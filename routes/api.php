@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('api')
-     ->apiResource('users', Controllers\Api\UsersController::class)
+Route::apiResource('users', Controllers\Api\UsersController::class)
      ->only([
          'index',
          'show',
@@ -30,8 +29,7 @@ Route::namespace('api')
      ->middleware('auth:api')
 ;
 
-Route::namespace('api')
-     ->apiResource('firms', Controllers\Api\FirmsController::class)
+Route::apiResource('firms', Controllers\Api\FirmsController::class)
      ->only([
          'index',
          'show',
