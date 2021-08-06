@@ -27,7 +27,7 @@ class UsersTest extends TestCase
         Passport::actingAs($user);
 
         $this->get('/users')->assertInertia(
-            fn(Assert $page) => $page
+            fn (Assert $page) => $page
                 ->component('Users')
                 ->has('users', fn (Assert $page) => $page
                     ->has('data')

@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use JetBrains\PhpStorm\Pure;
-
 use function inertia;
 
 class UsersController extends Controller
