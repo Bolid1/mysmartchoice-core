@@ -40,6 +40,21 @@ class FirmPolicy
     }
 
     /**
+     * Determine whether the user can view the firm users.
+     *
+     * @param User $user
+     * @param Firm $firm
+     *
+     * @return Response
+     */
+    public function viewUsers(User $user, Firm $firm): Response
+    {
+        return $user->isInFirm($firm->id)
+            ? $this->allow()
+            : $this->deny('You are not authorized to view users of the firm.');
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @return bool

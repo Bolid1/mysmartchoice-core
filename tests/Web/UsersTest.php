@@ -27,7 +27,7 @@ class UsersTest extends TestCase
         $user = $this->faker->randomElement($firm->users);
         Passport::actingAs($user);
 
-        $this->get('/users')->assertInertia(
+        $this->get("/firms/{$firm->id}/users")->assertInertia(
             fn (Assert $page) => $page
                 ->component('Users')
                 ->has('users', fn (Assert $page) => $page
@@ -46,6 +46,12 @@ class UsersTest extends TestCase
                     ->has('prev_page_url')
                     ->has('to')
                 )
+            ->has('firm', fn (Assert $pageFirm) => $pageFirm
+                ->where('id', $firm->id)
+                ->where('title', $firm->title)
+                ->has('created_at')
+                ->has('updated_at')
+            )
         );
     }
 

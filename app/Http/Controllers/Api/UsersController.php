@@ -6,11 +6,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JetBrains\PhpStorm\Pure;
+use Illuminate\Support\Facades\Gate;
 
 class UsersController extends Controller
 {
@@ -22,18 +23,14 @@ class UsersController extends Controller
     /**
      * Display a listing of the users.
      *
-     * @param Request $request
-     *
      * @return AnonymousResourceCollection
      */
-    #[Pure]
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Firm $firm): AnonymousResourceCollection
     {
-        /** @var User $user */
-        $user = $request->user();
+        Gate::authorize('view-users', $firm);
 
         return UserResource::collection(
-            $user->comrades()->paginate(null, [])
+            $firm->users()->select(['*'])->paginate(null, [])
         );
     }
 
@@ -44,7 +41,6 @@ class UsersController extends Controller
      *
      * @return JsonResource
      */
-    #[Pure]
     public function show(User $user): JsonResource
     {
         return new UserResource($user);

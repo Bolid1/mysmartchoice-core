@@ -37,9 +37,14 @@ Route::resource('firms', FirmsController::class)
 
 Route::resource('users', UsersController::class)
     ->only([
-        'index',
         'edit',
         'update',
+    ])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('firms.users', UsersController::class)
+    ->only([
+        'index',
     ])
     ->middleware(['auth', 'verified']);
 

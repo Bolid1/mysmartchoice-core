@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers;
+use App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('users', Controllers\Api\UsersController::class)
+Route::apiResource('users', Api\UsersController::class)
      ->only([
-         'index',
          'show',
          'update',
      ])
@@ -29,7 +28,7 @@ Route::apiResource('users', Controllers\Api\UsersController::class)
      ->middleware('auth:api')
 ;
 
-Route::apiResource('firms', Controllers\Api\FirmsController::class)
+Route::apiResource('firms', Api\FirmsController::class)
      ->only([
          'index',
          'show',
@@ -37,6 +36,16 @@ Route::apiResource('firms', Controllers\Api\FirmsController::class)
      ->names([
          'index' => 'api.firms.index',
          'show' => 'api.firms.show',
+     ])
+     ->middleware('auth:api')
+;
+
+Route::apiResource('firms.users', Api\UsersController::class)
+     ->only([
+         'index',
+     ])
+     ->names([
+         'index' => 'api.firms.users.index',
      ])
      ->middleware('auth:api')
 ;

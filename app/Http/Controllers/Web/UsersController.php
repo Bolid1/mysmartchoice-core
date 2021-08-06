@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Response;
 use function inertia;
@@ -21,17 +23,15 @@ class UsersController extends Controller
     /**
      * Display a listing of the users.
      *
-     * @param Request $request
-     *
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Firm $firm): Response
     {
-        /** @var User $user */
-        $user = $request->user();
+        Gate::authorize('view-users', $firm);
 
         return inertia('Users', [
-            'users' => $user->comrades()->paginate(null, []),
+            'firm' => $firm,
+            'users' => $firm->users()->select(['*'])->paginate(null, []),
         ]);
     }
 

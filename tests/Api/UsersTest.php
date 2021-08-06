@@ -30,7 +30,7 @@ class UsersTest extends TestCase
         $user = $this->faker->randomElement($firm->users);
         Passport::actingAs($user);
 
-        $response = $this->get('/api/users');
+        $response = $this->get("/api/firms/{$firm->id}/users");
 
         $response->assertStatus(200);
 
