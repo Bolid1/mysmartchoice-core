@@ -15,7 +15,7 @@
             <directory>./tests/Api</directory>
         </testsuite>
         <testsuite name="Web">
-            <directory>./tests/Api</directory>
+            <directory>./tests/Web</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
