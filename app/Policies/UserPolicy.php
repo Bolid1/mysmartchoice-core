@@ -7,6 +7,7 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use function var_dump;
 
 class UserPolicy
 {
@@ -36,6 +37,21 @@ class UserPolicy
         return $user->id === $model->id || $user->hasComrade($model->id)
             ? $this->allow()
             : $this->deny('You are not in the same firm with this user.');
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param User $user
+     * @param User $model
+     *
+     * @return Response
+     */
+    public function viewEmail(User $user, User $model): Response
+    {
+        return $user->id === $model->id
+            ? $this->allow()
+            : $this->deny('You can view only yours email.');
     }
 
     /**

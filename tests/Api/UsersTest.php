@@ -40,7 +40,6 @@ class UsersTest extends TestCase
                     '*' => [
                         'id',
                         'name',
-                        'email',
                     ],
                 ],
             ]
@@ -77,7 +76,6 @@ class UsersTest extends TestCase
                 'data' => [
                     'id',
                     'name',
-                    'email',
                 ],
             ]
         );
@@ -89,8 +87,6 @@ class UsersTest extends TestCase
         self::assertEquals($user->id, $data['id'], 'User in response should has same value for "id" as in DB');
         self::assertArrayHasKey('name', $data, 'User in response should contains key "name"');
         self::assertEquals($user->name, $data['name'], 'User in response should has same value for "name" as in DB');
-        self::assertArrayHasKey('email', $data, 'User in response should contains key "email"');
-        self::assertEquals($user->email, $data['email'], 'User in response should has same value for "email" as in DB');
     }
 
     /**

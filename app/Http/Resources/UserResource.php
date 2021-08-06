@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
+/**
+ * @property User $resource
+ * @mixin User
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -18,6 +24,15 @@ class UserResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->when(
+                Gate::check('view-email', $this->resource),
+                $this->email
+            ),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

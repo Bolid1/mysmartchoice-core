@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FirmResource;
+use App\Http\Resources\UserResource;
 use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,9 +31,13 @@ class UsersController extends Controller
     {
         Gate::authorize('view-users', $firm);
 
+        FirmResource::withoutWrapping();
+
         return inertia('Users', [
-            'firm' => $firm,
-            'users' => $firm->users()->select(['*'])->paginate(null, []),
+            'firm' => FirmResource::make($firm),
+            'users' => UserResource::collection(
+                $firm->users()->select([$firm->users()->qualifyColumn('*')])->paginate(null, [])
+            ),
         ]);
     }
 
@@ -42,8 +48,10 @@ class UsersController extends Controller
      */
     public function edit(User $user): Response
     {
+        UserResource::withoutWrapping();
+
         return inertia('UserEdit', [
-            'user' => $user,
+            'user' => UserResource::make($user),
         ]);
     }
 

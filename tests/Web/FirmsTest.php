@@ -8,6 +8,7 @@ use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\URL;
 use Inertia\Testing\Assert;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -17,32 +18,58 @@ class FirmsTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
+    /**
+     * @covers \App\Http\Controllers\Web\FirmsController::index()
+     */
     public function testGetList(): void
     {
         /** @var User $user */
-        $user = User::factory()->hasFirms(4)->createOne();
+        $user = User::factory()->hasFirms($firmsCount = 4)->createOne();
         Passport::actingAs($user);
 
         $this->get('/dashboard')->assertInertia(
-            fn (Assert $page) => $page
+            fn(Assert $page) => $page
                 ->component('Dashboard')
-                ->has('firms', fn (Assert $page) => $page
-                    ->has('data')
-                    ->has('links')
-                    ->has('total')
-                    // @TODO: How to skip this props?
-                    ->has('current_page')
-                    ->has('first_page_url')
-                    ->has('from')
-                    ->has('last_page')
-                    ->has('last_page_url')
-                    ->has('next_page_url')
-                    ->has('path')
-                    ->has('per_page')
-                    ->has('prev_page_url')
-                    ->has('to')
+                ->has('firms', fn(Assert $page) => $page
+                    ->has('data', $firmsCount, fn(Assert $page) => $page
+                        ->where('id', $user->firms->first()->id)
+                        ->where('title', $user->firms->first()->title)
+                        ->has('created_at')
+                        ->has('updated_at')
+                    )
+                    ->where('links.first', URL::to('/dashboard?page=1'))
+                    ->where('links.last', URL::to('/dashboard?page=1'))
+                    ->has('links.next')
+                    ->has('links.prev')
+                    ->where('meta', [
+                        'current_page' => 1,
+                        'from'         => 1,
+                        'last_page'    => 1,
+                        'links'        => [
+                            [
+                                'active' => false,
+                                'label'  => '&laquo; Previous',
+                                'url'    => null,
+                            ],
+                            [
+                                'active' => true,
+                                'label'  => '1',
+                                'url'    => URL::to('dashboard?page=1'),
+                            ],
+                            [
+                                'active' => false,
+                                'label'  => 'Next &raquo;',
+                                'url'    => null,
+                            ],
+                        ],
+                        'path'         => URL::to('dashboard'),
+                        'per_page'     => 15,
+                        'to'           => $firmsCount,
+                        'total'        => $firmsCount,
+                    ])
                 )
-        );
+        )
+        ;
     }
 
     public function testShow(): void
@@ -55,9 +82,24 @@ class FirmsTest extends TestCase
         Passport::actingAs($user);
 
         $this->get("/firms/{$firm->id}")->assertInertia(
-            fn (Assert $page) => $page
+            fn(Assert $page) => $page
                 ->component('Firm')
-                ->where('firm', $firm->toArray())
-        );
+                ->has('firm', fn(Assert $page) => $page
+                    ->where('id', $user->firms->first()->id)
+                    ->where('title', $user->firms->first()->title)
+                    ->has('created_at')
+                    ->has('updated_at')
+                    ->has('users', 1, fn(Assert $page) => $page
+                        ->whereAll([
+                            'id'    => $user->id,
+                            'name'  => $user->name,
+                            'email' => $user->email,
+                        ])
+                        ->has('created_at')
+                        ->has('updated_at')
+                    )
+                )
+        )
+        ;
     }
 }

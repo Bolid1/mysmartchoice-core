@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FirmResource;
 use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class FirmsController extends Controller
         $user = $request->user();
 
         return inertia('Dashboard', [
-            'firms' => $user->firms()->paginate(),
+            'firms' => FirmResource::collection($user->firms()->paginate()),
         ]);
     }
 
@@ -37,8 +38,10 @@ class FirmsController extends Controller
     {
         $firm->load('users');
 
+        FirmResource::withoutWrapping();
+
         return inertia('Firm', [
-            'firm' => $firm,
+            'firm' => FirmResource::make($firm),
         ]);
     }
 }
