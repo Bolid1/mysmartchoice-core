@@ -27,15 +27,15 @@ class UsersController extends Controller
      * @return AnonymousResourceCollection
      */
     #[Pure]
- public function index(Request $request): AnonymousResourceCollection
- {
-     /** @var User $user */
-     $user = $request->user();
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        /** @var User $user */
+        $user = $request->user();
 
-     return UserResource::collection(
+        return UserResource::collection(
             $user->comrades()->paginate(null, [])
         );
- }
+    }
 
     /**
      * Display the specified resource.
@@ -45,16 +45,16 @@ class UsersController extends Controller
      * @return JsonResource
      */
     #[Pure]
- public function show(User $user): JsonResource
- {
-     return new UserResource($user);
- }
+    public function show(User $user): JsonResource
+    {
+        return new UserResource($user);
+    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  User  $user
+     * @param Request $request
+     * @param User $user
      *
      * @return JsonResource
      */
@@ -64,7 +64,8 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $user->fill($validated)->save();
+        $user->fill($validated)->save()
+        ;
 
         return new UserResource($user);
     }
