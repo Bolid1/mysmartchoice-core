@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Web\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,9 +28,11 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
 Route::get('/dashboard', static fn () => Inertia::render('Dashboard'))
      ->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('users', \App\Http\Controllers\Web\UsersController::class)
+Route::resource('users', UsersController::class)
     ->only([
         'index',
+        'edit',
+        'update',
     ])
     ->middleware(['auth', 'verified']);
 

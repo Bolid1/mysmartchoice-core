@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,32 +15,30 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get(
-    '/user',
-    function (Request $request) {
-        return $request->user();
-    }
-)
+Route::namespace('api')
+     ->apiResource('users', Controllers\Api\UsersController::class)
+     ->only([
+         'index',
+         'show',
+         'update',
+     ])
+     ->names([
+         'index' => 'api.users.index',
+         'show' => 'api.users.show',
+         'update' => 'api.users.update',
+     ])
+     ->middleware('auth:api')
 ;
 
-Route::apiResource('users', Controllers\Api\UsersController::class)
-    ->except(
-        [
-            'store',
-            'destroy',
-        ]
-    )
-    ->middleware('auth:api')
-;
-
-Route::apiResource('firms', Controllers\Api\FirmsController::class)
-    ->except(
-        [
-            'update',
-            'store',
-            'destroy',
-        ]
-    )
-    ->middleware('auth:api')
+Route::namespace('api')
+     ->apiResource('firms', Controllers\Api\FirmsController::class)
+     ->only([
+         'index',
+         'show',
+     ])
+     ->names([
+         'index' => 'api.firms.index',
+         'show' => 'api.firms.show',
+     ])
+     ->middleware('auth:api')
 ;

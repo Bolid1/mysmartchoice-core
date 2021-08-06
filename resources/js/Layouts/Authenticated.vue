@@ -79,6 +79,12 @@
 
                   <template #content>
                     <breeze-dropdown-link
+                      :href="route('users.edit', $page.props.auth.user)"
+                    >
+                      Profile
+                    </breeze-dropdown-link>
+
+                    <breeze-dropdown-link
                       :href="route('logout')"
                       method="post"
                       as="button"
@@ -174,6 +180,14 @@
               <div class="font-medium text-sm text-gray-500">
                 {{ $page.props.auth.user.email }}
               </div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+              <breeze-responsive-nav-link
+                :href="route('users.edit', $page.props.auth.user)"
+              >
+                Profile
+              </breeze-responsive-nav-link>
             </div>
 
             <div class="mt-3 space-y-1">
