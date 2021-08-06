@@ -27,10 +27,10 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
 Route::get('/dashboard', static fn () => Inertia::render('Dashboard'))
      ->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/users', static fn () => Inertia::render('Users'))
-    ->middleware(['auth', 'verified'])->name('users_list');
-
-Route::get('/firms', static fn () => Inertia::render('Firms'))
-    ->middleware(['auth', 'verified'])->name('firms_list');
+Route::resource('users', \App\Http\Controllers\Web\UsersController::class)
+    ->only([
+        'index',
+    ])
+    ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
