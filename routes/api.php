@@ -49,3 +49,14 @@ Route::apiResource('firms.users', Api\UsersController::class)
      ])
      ->middleware('auth:api')
 ;
+
+Route::apiResource('firms.accounts', Api\AccountsController::class)
+     ->names([
+         'index' => 'api.firms.users.index',
+         'show' => 'api.firms.accounts.show',
+         'store' => 'api.firms.accounts.store',
+         'update' => 'api.firms.accounts.update',
+         'destroy' => 'api.firms.accounts.destroy',
+     ])
+     ->middleware('auth:api')
+;

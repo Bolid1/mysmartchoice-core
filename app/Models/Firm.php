@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -25,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at Дата последнего обновления записи
  * @property Collection|User[] $users
  * @property int|null $users_count
+ * @property Collection|Account[] $accounts
+ * @property int|null $accounts_count
  *
  * @method static FirmFactory factory(...$parameters)
  * @method static Builder|Firm newModelQuery()
@@ -46,5 +49,13 @@ class Firm extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, UserFirm::class);
+    }
+
+    /**
+     * @return HasMany There are many accounts in firm
+     */
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(Account::class);
     }
 }

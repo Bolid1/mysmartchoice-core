@@ -52,6 +52,9 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin Eloquent
+ *
+ * @property Collection|User[] $comrades
+ * @property int|null $comrades_count
  */
 class User extends Authenticatable
 {

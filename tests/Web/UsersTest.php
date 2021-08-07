@@ -18,9 +18,6 @@ class UsersTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /**
-     * @covers \App\Http\Controllers\Web\UsersController::index()
-     */
     public function testGetList(): void
     {
         /** @var Firm $firm */
@@ -31,64 +28,61 @@ class UsersTest extends TestCase
         Passport::actingAs($user);
 
         $this->get("/firms/{$firm->id}/users")->assertInertia(
-            fn(Assert $page) => $page
+            fn (Assert $page) => $page
                 ->component('Users')
-                ->has('firm', fn(Assert $pageFirm) => $pageFirm
+                ->has('firm', fn (Assert $pageFirm) => $pageFirm
                     ->where('id', $firm->id)
                     ->where('title', $firm->title)
                     ->has('created_at')
                     ->has('updated_at')
                 )
-                ->has('users', fn(Assert $page) => $page
-                    ->has('data', $usersCount, fn(Assert $page) => $page
+                ->has('users', fn (Assert $page) => $page
+                    ->has('data', $usersCount, fn (Assert $page) => $page
                         ->where('id', $user->id)
                         ->where('name', $user->name)
                         ->where('email', $user->email)
                         ->has('created_at')
                         ->has('updated_at')
                     )
-                    ->has('links', fn(Assert $page) => $page
+                    ->has('links', fn (Assert $page) => $page
                         ->whereAll([
                             'first' => URL::to("/firms/{$firm->id}/users?page=1"),
-                            'last'  => URL::to("/firms/{$firm->id}/users?page=1"),
-                            'next'  => null,
-                            'prev'  => null,
+                            'last' => URL::to("/firms/{$firm->id}/users?page=1"),
+                            'next' => null,
+                            'prev' => null,
                         ])
                     )
                     ->where('meta', [
                         'current_page' => 1,
-                        'from'         => 1,
-                        'last_page'    => 1,
-                        'links'        => [
+                        'from' => 1,
+                        'last_page' => 1,
+                        'links' => [
                             [
                                 'active' => false,
-                                'label'  => '&laquo; Previous',
-                                'url'    => null,
+                                'label' => '&laquo; Previous',
+                                'url' => null,
                             ],
                             [
                                 'active' => true,
-                                'label'  => '1',
-                                'url'    => URL::to("/firms/{$firm->id}/users?page=1"),
+                                'label' => '1',
+                                'url' => URL::to("/firms/{$firm->id}/users?page=1"),
                             ],
                             [
                                 'active' => false,
-                                'label'  => 'Next &raquo;',
-                                'url'    => null,
+                                'label' => 'Next &raquo;',
+                                'url' => null,
                             ],
                         ],
-                        'path'         => URL::to("/firms/{$firm->id}/users"),
-                        'per_page'     => 15,
-                        'to'           => $usersCount,
-                        'total'        => $usersCount,
+                        'path' => URL::to("/firms/{$firm->id}/users"),
+                        'per_page' => 15,
+                        'to' => $usersCount,
+                        'total' => $usersCount,
                     ])
                 )
         )
         ;
     }
 
-    /**
-     * @covers \App\Http\Controllers\Web\UsersController::edit()
-     */
     public function testEdit(): void
     {
         /** @var Firm $firm */
@@ -99,9 +93,9 @@ class UsersTest extends TestCase
         Passport::actingAs($user);
 
         $this->get("/users/{$user->id}/edit")->assertInertia(
-            fn(Assert $page) => $page
+            fn (Assert $page) => $page
                 ->component('UserEdit')
-                ->has('user', fn(Assert $page) => $page
+                ->has('user', fn (Assert $page) => $page
                     ->where('id', $user->id)
                     ->where('name', $user->name)
                     ->where('email', $user->email)
@@ -159,7 +153,7 @@ class UsersTest extends TestCase
             [
                 // Special checks for inertia
                 'X-Inertia' => true,
-                'Referer'   => $referer = URL::to("/users/{$user->id}/edit"),
+                'Referer' => $referer = URL::to("/users/{$user->id}/edit"),
             ]
         );
 

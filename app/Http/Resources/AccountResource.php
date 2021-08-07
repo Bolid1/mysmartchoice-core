@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Models\Firm;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\MissingValue;
 
 /**
- * @property Firm $resource
- * @mixin Firm
+ * @property Account $resource
+ * @mixin Account
  */
-class FirmResource extends JsonResource
+class AccountResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -27,16 +26,17 @@ class FirmResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'balance' => $this->balance,
+            'firm_id' => $this->firm_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'users' => $this->whenLoaded(
-                'users',
-                function ($default = null) {
-                    $users = UserResource::collection($this->users);
+            'deleted_at' => $this->deleted_at,
+            'firm' => $this->whenLoaded(
+                'firm',
+                function () {
+                    FirmResource::withoutWrapping();
 
-                    $users::withoutWrapping();
-
-                    return $users->count() ? $users : ($default ?? new MissingValue());
+                    return FirmResource::make($this->firm);
                 }
             ),
         ];
