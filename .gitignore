@@ -18,3 +18,8 @@ yarn-error.log
 /storage/debugbar/
 /.php_cs.cache
 /.php-cs-fixer.cache
+/public/js/
+/public/css/
+/public/fonts/
+/public/mix-manifest.json
+
