@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\Currencies;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Resources\AccountResource;
@@ -48,7 +49,7 @@ class AccountsController extends Controller
      *
      * @return Response
      */
-    public function create(Firm $firm): Response
+    public function create(Firm $firm, Currencies $currencies): Response
     {
         FirmResource::withoutWrapping();
         AccountResource::withoutWrapping();
@@ -58,6 +59,7 @@ class AccountsController extends Controller
             'account' => AccountResource::make(Account::make([
                 'firm_id' => $firm->id,
             ])),
+            'currencies' => $currencies->all()
         ]);
     }
 
@@ -105,7 +107,7 @@ class AccountsController extends Controller
      *
      * @return Response
      */
-    public function edit(Firm $firm, Account $account): Response
+    public function edit(Firm $firm, Account $account, Currencies $currencies): Response
     {
         FirmResource::withoutWrapping();
         AccountResource::withoutWrapping();
@@ -113,6 +115,7 @@ class AccountsController extends Controller
         return inertia('AccountEdit', [
             'firm' => FirmResource::make($firm),
             'account' => AccountResource::make($account),
+            'currencies' => $currencies->all()
         ]);
     }
 

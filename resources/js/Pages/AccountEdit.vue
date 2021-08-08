@@ -58,6 +58,28 @@
             <div v-if="form.errors.balance">{{ form.errors.balance }}</div>
           </div>
 
+          <!-- currency -->
+          <div class="pt-2">
+            <breeze-label for="Currency">Currency</breeze-label>
+
+            <el-select
+              v-model="form.currency"
+              placeholder="Currency"
+              class="mt-1 block w-full"
+              filterable
+              :disabled="Boolean(account.id)"
+            >
+              <el-option
+                v-for="currency in currencies"
+                :key="currency.country + '_' + currency.code"
+                :label="currency.code + ' [' + currency.country + ']'"
+                :value="currency.code"
+              >
+              </el-option>
+            </el-select>
+            <div v-if="form.errors.currency">{{ form.errors.currency }}</div>
+          </div>
+
           <!-- submit -->
           <div class="pt-2" v-if="account.id">
             <breeze-button
@@ -90,20 +112,24 @@
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import { ElSelect, ElOption } from "element-plus"
 
   export default {
     layout: AuthenticatedLayout,
-    props: ["firm", "account"],
+    props: ["firm", "account", "currencies"],
     components: {
       BreezeButton,
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
+      ElSelect,
+      ElOption,
     },
     setup(props) {
       const form = useForm({
         title: props.account.title,
         balance: props.account.balance,
+        currency: props.account.currency,
       })
 
       return { form }
