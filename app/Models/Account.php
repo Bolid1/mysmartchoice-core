@@ -40,6 +40,10 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Query\Builder|Account withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Account withoutTrashed()
  * @mixin Eloquent
+ *
+ * @property string $currency
+ *
+ * @method static Builder|Account whereCurrency($value)
  */
 class Account extends Model
 {
@@ -47,14 +51,15 @@ class Account extends Model
     use SoftDeletes;
 
     protected $casts = [
-        'title',
-        'balance',
+        'title' => 'string',
+        'balance' => 'float',
     ];
 
     protected $fillable = [
         'firm_id',
         'title',
         'balance',
+        'currency',
     ];
 
     /**

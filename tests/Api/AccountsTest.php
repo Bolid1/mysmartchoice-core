@@ -85,10 +85,10 @@ class AccountsTest extends TestCase
         $actingUser = $firm->users->first();
         Passport::actingAs($actingUser);
 
-        $response = $this->postJson("/api/firms/{$firm->id}/accounts", [
-            'title' => $title = $this->faker->word(),
-            'balance' => $balance = $this->faker->randomFloat(2, -1000000000, 1000000000),
-        ]);
+        $response = $this->postJson(
+            "/api/firms/{$firm->id}/accounts",
+            $expected = Account::factory()->makeOne()->toArray()
+        );
 
         $response->assertStatus(201);
 
@@ -107,9 +107,7 @@ class AccountsTest extends TestCase
         );
 
         $response->assertJson([
-            'data' => [
-                'title' => $title,
-                'balance' => $balance,
+            'data' => $expected + [
                 'firm_id' => $firm->id,
             ],
         ]);

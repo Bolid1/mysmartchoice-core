@@ -46,6 +46,10 @@ class AccountsController extends Controller
                 ['firm_id' => $firm->id] + $request->validate([
                     'title' => 'required|string|max:255',
                     'balance' => 'required|numeric|min:-1000000000|max:1000000000',
+                    'currency' => [
+                        'required',
+                        new \Spatie\ValidationRules\Rules\Currency(),
+                    ],
                 ])
             )
         );

@@ -18,10 +18,11 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('firm_id');
-            $table->string('title', 255);
+            $table->foreignId('firm_id')->nullable(false);
+            $table->string('title', 255)->nullable(false);
             // 1'000'000'000,00
-            $table->float('balance', 12);
+            $table->float('balance', 12)->nullable(false);
+            $table->char('currency', 3)->nullable(false);
             $table->softDeletes();
         });
     }

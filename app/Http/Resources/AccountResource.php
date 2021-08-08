@@ -25,9 +25,10 @@ class AccountResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'firm_id' => $this->firm_id,
             'title' => $this->title,
             'balance' => $this->balance,
-            'firm_id' => $this->firm_id,
+            'currency' => $this->currency,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,

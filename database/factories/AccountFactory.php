@@ -26,6 +26,7 @@ class AccountFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'balance' => $this->faker->randomFloat(2, -1000000000, 1000000000),
+            'currency' => $this->faker->currencyCode(),
         ];
     }
 }
