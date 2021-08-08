@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAccountRequest;
 use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Models\Firm;
@@ -34,23 +35,16 @@ class AccountsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreAccountRequest $request
      * @param Firm $firm
      *
      * @return JsonResource
      */
-    public function store(Request $request, Firm $firm): JsonResource
+    public function store(StoreAccountRequest $request, Firm $firm): JsonResource
     {
         return AccountResource::make(
             Account::create(
-                ['firm_id' => $firm->id] + $request->validate([
-                    'title' => 'required|string|max:255',
-                    'balance' => 'required|numeric|min:-1000000000|max:1000000000',
-                    'currency' => [
-                        'required',
-                        new \Spatie\ValidationRules\Rules\Currency(),
-                    ],
-                ])
+                ['firm_id' => $firm->id] + $request->validated()
             )
         );
     }

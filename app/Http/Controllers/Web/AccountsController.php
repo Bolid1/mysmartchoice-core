@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAccountRequest;
 use App\Http\Resources\AccountResource;
 use App\Http\Resources\FirmResource;
 use App\Models\Account;
@@ -68,17 +69,10 @@ class AccountsController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(Request $request, Firm $firm): RedirectResponse
+    public function store(StoreAccountRequest $request, Firm $firm): RedirectResponse
     {
         $account = Account::create(
-            ['firm_id' => $firm->id] + $request->validate([
-                'title' => 'required|string|max:255',
-                'balance' => 'required|numeric|min:-1000000000|max:1000000000',
-                'currency' => [
-                    'required',
-                    new \Spatie\ValidationRules\Rules\Currency(),
-                ],
-            ])
+            ['firm_id' => $firm->id] + $request->validated()
         );
 
         return Redirect::route('firms.accounts.edit', compact('firm', 'account'), 303);
