@@ -39,6 +39,16 @@ class FirmResource extends JsonResource
                     return $users->count() ? $users : ($default ?? new MissingValue());
                 }
             ),
+            'accounts' => $this->whenLoaded(
+                'accounts',
+                function ($default = null) {
+                    $accounts = AccountResource::collection($this->accounts);
+
+                    $accounts::withoutWrapping();
+
+                    return $accounts->count() ? $accounts : ($default ?? new MissingValue());
+                }
+            ),
         ];
     }
 }

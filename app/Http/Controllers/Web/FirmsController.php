@@ -36,7 +36,10 @@ class FirmsController extends Controller
 
     public function show(Firm $firm): Response
     {
-        $firm->load('users');
+        $firm->load(
+            'users',
+            'accounts',
+        );
 
         FirmResource::withoutWrapping();
 
