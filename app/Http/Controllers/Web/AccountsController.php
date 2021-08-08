@@ -59,7 +59,7 @@ class AccountsController extends Controller
             'account' => AccountResource::make(Account::make([
                 'firm_id' => $firm->id,
             ])),
-            'currencies' => $currencies->all()
+            'currencies' => $currencies->all(),
         ]);
     }
 
@@ -115,7 +115,7 @@ class AccountsController extends Controller
         return inertia('AccountEdit', [
             'firm' => FirmResource::make($firm),
             'account' => AccountResource::make($account),
-            'currencies' => $currencies->all()
+            'currencies' => $currencies->all(),
         ]);
     }
 
