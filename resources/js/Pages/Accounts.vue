@@ -25,7 +25,8 @@
               class="underline"
               :href="route('firms.accounts.show', { firm, account })"
             >
-              Account "{{ account.title }}" balance = {{ account.balance }}
+              Account "{{ account.title }}" balance =
+              {{ formatMoney(account.currency, account.balance) }}
             </inertia-link>
           </div>
         </div>
@@ -37,12 +38,16 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
+  import { formatMoney } from "@/Helpers/Money"
 
   export default {
     layout: AuthenticatedLayout,
     props: ["firm", "accounts"],
     components: {
       BreezeButton,
+    },
+    methods: {
+      formatMoney,
     },
   }
 </script>

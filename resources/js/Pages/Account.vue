@@ -26,7 +26,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          balance: {{ account.balance }}
+          balance: {{ formatMoney(account.currency, account.balance) }}
         </div>
       </div>
     </div>
@@ -36,12 +36,16 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
+  import { formatMoney } from "@/Helpers/Money"
 
   export default {
     layout: AuthenticatedLayout,
     props: ["firm", "account"],
     components: {
       BreezeButton,
+    },
+    methods: {
+      formatMoney,
     },
   }
 </script>
