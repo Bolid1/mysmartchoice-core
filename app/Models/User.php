@@ -38,7 +38,8 @@ use Laravel\Passport\Token;
  * @property int|null $clients_count
  * @property Collection|Token[] $tokens
  * @property int|null $tokens_count
- *
+ * @property Collection|User[] $comrades
+ * @property int|null $comrades_count
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -52,9 +53,6 @@ use Laravel\Passport\Token;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin Eloquent
- *
- * @property Collection|User[] $comrades
- * @property int|null $comrades_count
  */
 class User extends Authenticatable
 {

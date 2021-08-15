@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property int $firm_id
  * @property Carbon|null $deleted_at
  * @property Firm $firm
- *
+ * @property string $currency
  * @method static AccountFactory factory(...$parameters)
  * @method static Builder|Account newModelQuery()
  * @method static Builder|Account newQuery()
@@ -36,14 +36,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Account whereUpdatedAt($value)
  * @method static Builder|Account whereFirmId($value)
  * @method static Builder|Account whereDeletedAt($value)
+ * @method static Builder|Account whereCurrency($value)
  * @method static \Illuminate\Database\Query\Builder|Account onlyTrashed()
  * @method static \Illuminate\Database\Query\Builder|Account withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Account withoutTrashed()
  * @mixin Eloquent
- *
- * @property string $currency
- *
- * @method static Builder|Account whereCurrency($value)
  */
 class Account extends Model
 {

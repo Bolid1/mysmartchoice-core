@@ -28,7 +28,6 @@ use Illuminate\Support\Carbon;
  * @property int|null $users_count
  * @property Collection|Account[] $accounts
  * @property int|null $accounts_count
- *
  * @method static FirmFactory factory(...$parameters)
  * @method static Builder|Firm newModelQuery()
  * @method static Builder|Firm newQuery()
