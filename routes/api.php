@@ -52,11 +52,22 @@ Route::apiResource('firms.users', Api\UsersController::class)
 
 Route::apiResource('firms.accounts', Api\AccountsController::class)
      ->names([
-         'index' => 'api.firms.users.index',
+         'index' => 'api.firms.accounts.index',
          'show' => 'api.firms.accounts.show',
          'store' => 'api.firms.accounts.store',
          'update' => 'api.firms.accounts.update',
          'destroy' => 'api.firms.accounts.destroy',
+     ])
+     ->middleware('auth:api')
+;
+
+Route::apiResource('integrations', Api\IntegrationsController::class)
+     ->names([
+         'index' => 'api.integrations.index',
+         'show' => 'api.integrations.show',
+         'store' => 'api.integrations.store',
+         'update' => 'api.integrations.update',
+         'destroy' => 'api.integrations.destroy',
      ])
      ->middleware('auth:api')
 ;

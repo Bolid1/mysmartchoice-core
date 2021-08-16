@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Database\Factories\IntegrationFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
+
+/**
+ * External application, that can interact with current app.
+ *
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property int $owner_id
+ * @property User $owner
+ * @property string $title
+ * @property string $description
+ * @property string $status
+ *
+ * @method static IntegrationFactory factory(...$parameters)
+ * @method static Builder|Integration newModelQuery()
+ * @method static Builder|Integration newQuery()
+ * @method static Builder|Integration query()
+ * @method static Builder|Integration whereCreatedAt($value)
+ * @method static Builder|Integration whereDescription($value)
+ * @method static Builder|Integration whereId($value)
+ * @method static Builder|Integration whereOwnerId($value)
+ * @method static Builder|Integration whereStatus($value)
+ * @method static Builder|Integration whereTitle($value)
+ * @method static Builder|Integration whereUpdatedAt($value)
+ * @method static Builder|Integration whereDeletedAt($value)
+ * @mixin Eloquent
+ */
+class Integration extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_AVAILABLE = 'available';
+
+    protected $casts = [
+        'owner_id' => 'int',
+        'title' => 'string',
+        'description' => 'string',
+        'status' => 'string',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_DRAFT,
+    ];
+
+    protected $fillable = [
+        'owner_id',
+        'title',
+        'description',
+    ];
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+}

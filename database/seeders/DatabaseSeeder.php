@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FirmSeeder::class,
             AccountSeeder::class,
+            IntegrationSeeder::class,
         ]);
     }
 }

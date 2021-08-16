@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -40,6 +41,9 @@ use Laravel\Passport\Token;
  * @property int|null $tokens_count
  * @property Collection|User[] $comrades
  * @property int|null $comrades_count
+ * @property Collection|Integration[] $integrations
+ * @property int|null $integrations_count
+ *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -118,6 +122,11 @@ class User extends Authenticatable
             // Without this replace `user_firm`.`user_id` as `pivot_user_id` will be selected
             ->select($relation->qualifyColumn('*'))
             ;
+    }
+
+    public function integrations(): HasMany
+    {
+        return $this->hasMany(Integration::class, 'owner_id');
     }
 
     /**

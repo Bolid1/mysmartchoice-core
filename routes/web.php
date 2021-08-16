@@ -50,4 +50,7 @@ Route::resource('firms.users', Web\UsersController::class)
 Route::resource('firms.accounts', Web\AccountsController::class)
     ->middleware(['auth', 'verified']);
 
+Route::resource('integrations', Web\IntegrationsController::class)
+    ->middleware(['auth', 'verified']);
+
 require __DIR__.'/auth.php';
