@@ -54,11 +54,23 @@
       </header>
 
       <div class="bg-white overflow-hidden shadow-sm">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div v-for="user in firm.users">
-            User with name "{{ user.name }}" registered with email "{{
-              user.email
-            }}"
+        <div
+          class="
+            max-w-7xl
+            mx-auto
+            py-6
+            px-4
+            sm:px-6
+            lg:px-8
+            flex flex-wrap
+            justify-center
+          "
+        >
+          <div
+            v-for="user in firm.users"
+            class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20 mx-2"
+          >
+            <user-card :user="user" />
           </div>
         </div>
       </div>
@@ -68,8 +80,10 @@
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
+  import UserCard from "@/Components/UserCard"
 
   export default {
+    components: { UserCard },
     layout: AuthenticatedLayout,
     props: ["firm"],
   }
