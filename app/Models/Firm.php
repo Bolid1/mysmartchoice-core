@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
 /**
  * A business concern, especially one involving a
  * partnership of two or more people.
- *
+ * 
  * But in our case can be only user in firm.
  *
  * @property int $id Идентификатор фирмы
@@ -28,6 +28,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $users_count
  * @property Collection|Account[] $accounts
  * @property int|null $accounts_count
+ * @property-read Collection|\App\Models\FirmIntegration[] $integrationsInstalls
+ * @property-read int|null $integrations_installs_count
  * @method static FirmFactory factory(...$parameters)
  * @method static Builder|Firm newModelQuery()
  * @method static Builder|Firm newQuery()
@@ -56,5 +58,13 @@ class Firm extends Model
     public function accounts(): HasMany
     {
         return $this->hasMany(Account::class);
+    }
+
+    /**
+     * @return HasMany There are many installs of different integrations can be in firm
+     */
+    public function integrationsInstalls(): HasMany
+    {
+        return $this->hasMany(FirmIntegration::class);
     }
 }

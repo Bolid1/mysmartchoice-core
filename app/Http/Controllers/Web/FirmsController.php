@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FirmIntegrationResource;
 use App\Http\Resources\FirmResource;
+use App\Http\Resources\IntegrationResource;
 use App\Models\Firm;
+use App\Models\FirmIntegration;
+use App\Models\Integration;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -39,12 +43,26 @@ class FirmsController extends Controller
         $firm->load(
             'users',
             'accounts',
+            'integrationsInstalls',
         );
 
         FirmResource::withoutWrapping();
 
         return inertia('Firm', [
-            'firm' => FirmResource::make($firm),
+            'firm'                     => FirmResource::make($firm),
+            'installable_integrations' => FirmIntegrationResource::collection(
+                collect(
+                    Integration::where('status', Integration::STATUS_AVAILABLE)
+                               ->paginate()
+                               ->items()
+                )
+                    ->map(
+                        static fn(Integration $integration) => FirmIntegration::make([
+                            'firm'        => $firm,
+                            'integration' => $integration,
+                        ])
+                    )
+            ),
         ]);
     }
 }

@@ -7,9 +7,11 @@ namespace App\Models;
 use Database\Factories\IntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -25,7 +27,8 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property string $description
  * @property string $status
- *
+ * @property-read Collection|FirmIntegration[] $integrationsInstalls
+ * @property-read int|null $integrations_installs_count
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
  * @method static Builder|Integration newQuery()
@@ -38,6 +41,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Integration whereTitle($value)
  * @method static Builder|Integration whereUpdatedAt($value)
  * @method static Builder|Integration whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Integration onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Integration withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Integration withoutTrashed()
  * @mixin Eloquent
  */
 class Integration extends Model
@@ -68,5 +74,13 @@ class Integration extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    /**
+     * @return HasMany There are many installs in different firms can be in integration
+     */
+    public function integrationsInstalls(): HasMany
+    {
+        return $this->hasMany(FirmIntegration::class);
     }
 }

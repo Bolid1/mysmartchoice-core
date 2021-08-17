@@ -76,16 +76,49 @@
       </div>
     </div>
   </div>
+
+  <div class="pt-6">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
+          <h3 class="font-semibold text-xl text-gray-800 leading-tight">
+            <!--            <inertia-link-->
+            <!--              class="underline"-->
+            <!--              :href="route('firms.integrations', firm)"-->
+            <!--            >-->
+            Integrations
+            <!--            </inertia-link>-->
+          </h3>
+        </div>
+      </header>
+
+      <div class="bg-white overflow-hidden shadow-sm">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-wrap">
+          <firm-integration-card
+            v-for="install in firm.integrations_installs"
+            :install="install"
+            class="w-72 p-6 py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
+          />
+          <firm-integration-card
+            v-for="install in installable_integrations"
+            :install="install"
+            class="w-72 p-6 py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import UserCard from "@/Components/UserCard"
+  import FirmIntegrationCard from "@/Components/FirmIntegrationCard"
 
   export default {
-    components: { UserCard },
+    components: { FirmIntegrationCard, UserCard },
     layout: AuthenticatedLayout,
-    props: ["firm"],
+    props: ["firm", "installable_integrations"],
   }
 </script>
 

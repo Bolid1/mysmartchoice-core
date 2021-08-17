@@ -49,6 +49,16 @@ class FirmResource extends JsonResource
                     return $accounts->count() ? $accounts : ($default ?? new MissingValue());
                 }
             ),
+            'integrations_installs' => $this->whenLoaded(
+                'integrationsInstalls',
+                function ($default = null) {
+                    $installs = FirmIntegrationResource::collection($this->integrationsInstalls);
+
+                    $installs::withoutWrapping();
+
+                    return $installs->count() ? $installs : ($default ?? new MissingValue());
+                }
+            ),
         ];
     }
 }
