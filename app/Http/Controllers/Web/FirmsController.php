@@ -38,8 +38,11 @@ class FirmsController extends Controller
         ]);
     }
 
-    public function show(Firm $firm): Response
+    public function show(Request $request, Firm $firm): Response
     {
+        /** @var User $user */
+        $user = $request->user();
+
         $firm->load(
             'users',
             'accounts',
@@ -53,6 +56,7 @@ class FirmsController extends Controller
             'installable_integrations' => FirmIntegrationResource::collection(
                 collect(
                     Integration::where('status', Integration::STATUS_AVAILABLE)
+                        ->orWhere('owner_id', $user->id)
                                ->paginate()
                                ->items()
                 )
