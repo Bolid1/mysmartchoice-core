@@ -9,6 +9,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Laravel\Passport\Client;
+use function auth;
 use function implode;
 
 class UpdateIntegrationRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateIntegrationRequest extends FormRequest
         return [
             'title' => 'string|min:5|max:100',
             'description' => 'string|min:5|max:100',
-            'settings.auth' => 'required|string|in:' . implode(',', [
+            'settings.auth' => 'required|string|in:'.implode(',', [
                     Integration::AUTH_OAUTH2,
             ]),
             'settings.oauth2_client_id' => [

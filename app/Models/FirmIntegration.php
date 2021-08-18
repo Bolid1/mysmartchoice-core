@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Eloquent;
@@ -17,11 +19,12 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $firm_id
- * @property-read Firm $firm
+ * @property Firm $firm
  * @property int $integration_id
- * @property-read Integration $integration
+ * @property Integration $integration
  * @property string $status
  * @property array|null $settings
+ *
  * @method static Builder|FirmIntegration newModelQuery()
  * @method static Builder|FirmIntegration newQuery()
  * @method static Builder|FirmIntegration query()

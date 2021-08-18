@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
@@ -7,7 +9,6 @@ use App\Http\Resources\FirmIntegrationResource;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
-use Illuminate\Http\Request;
 use Inertia\Response;
 use function inertia;
 
@@ -33,7 +34,7 @@ class FirmIntegrationsController extends Controller
             'install' => FirmIntegrationResource::make(FirmIntegration::make([
                 'firm' => $firm,
                 'integration' => $integration,
-            ]))
+            ])),
         ]);
     }
 }

@@ -28,8 +28,9 @@ use Illuminate\Support\Carbon;
  * @property string $description
  * @property string $status
  * @property array|null $settings
- * @property-read Collection|FirmIntegration[] $integrationsInstalls
- * @property-read int|null $integrations_installs_count
+ * @property Collection|FirmIntegration[] $integrationsInstalls
+ * @property int|null $integrations_installs_count
+ *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
  * @method static Builder|Integration newQuery()

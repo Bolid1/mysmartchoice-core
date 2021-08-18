@@ -24,7 +24,7 @@ class StoreIntegrationRequest extends FormRequest
         return [
             'title' => 'required|string|min:5|max:100',
             'description' => 'required|string|min:5|max:100',
-            'settings.auth' => 'required|string|in:' . implode(',', [
+            'settings.auth' => 'required|string|in:'.implode(',', [
                 Integration::AUTH_OAUTH2,
             ]),
             'settings.oauth2_client_id' => [

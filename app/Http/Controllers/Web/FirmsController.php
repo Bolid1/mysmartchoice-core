@@ -7,13 +7,13 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FirmIntegrationResource;
 use App\Http\Resources\FirmResource;
-use App\Http\Resources\IntegrationResource;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Response;
+use function collect;
 use function inertia;
 
 class FirmsController extends Controller
@@ -52,7 +52,7 @@ class FirmsController extends Controller
         FirmResource::withoutWrapping();
 
         return inertia('Firm', [
-            'firm'                     => FirmResource::make($firm),
+            'firm' => FirmResource::make($firm),
             'installable_integrations' => FirmIntegrationResource::collection(
                 collect(
                     Integration::where('status', Integration::STATUS_AVAILABLE)
@@ -61,8 +61,8 @@ class FirmsController extends Controller
                                ->items()
                 )
                     ->map(
-                        static fn(Integration $integration) => FirmIntegration::make([
-                            'firm'        => $firm,
+                        static fn (Integration $integration) => FirmIntegration::make([
+                            'firm' => $firm,
                             'integration' => $integration,
                         ])
                     )

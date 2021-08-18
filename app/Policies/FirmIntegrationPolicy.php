@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\FirmIntegration;
@@ -14,6 +16,7 @@ class FirmIntegrationPolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -26,6 +29,7 @@ class FirmIntegrationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\FirmIntegration  $firmIntegration
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, FirmIntegration $firmIntegration)
@@ -37,6 +41,7 @@ class FirmIntegrationPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -49,6 +54,7 @@ class FirmIntegrationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\FirmIntegration  $firmIntegration
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, FirmIntegration $firmIntegration)
@@ -61,6 +67,7 @@ class FirmIntegrationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\FirmIntegration  $firmIntegration
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, FirmIntegration $firmIntegration)
@@ -73,6 +80,7 @@ class FirmIntegrationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\FirmIntegration  $firmIntegration
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, FirmIntegration $firmIntegration)
@@ -85,6 +93,7 @@ class FirmIntegrationPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\FirmIntegration  $firmIntegration
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, FirmIntegration $firmIntegration)

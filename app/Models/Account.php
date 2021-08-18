@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  * @property Firm $firm
  * @property string $currency
+ *
  * @method static AccountFactory factory(...$parameters)
  * @method static Builder|Account newModelQuery()
  * @method static Builder|Account newQuery()
