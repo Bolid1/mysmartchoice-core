@@ -165,4 +165,9 @@ class User extends Authenticatable
             ->exists()
             ;
     }
+
+    public function oauthClients(): HasMany
+    {
+        return $this->hasMany(Client::class);
+    }
 }

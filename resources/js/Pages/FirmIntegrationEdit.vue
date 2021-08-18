@@ -1,9 +1,14 @@
 <template>
-  <h1>Integration settings</h1>
+  <h1>{{ integration.title }} settings</h1>
 
-  <div>
-    {{ install }}
-  </div>
+  <p>{{ integration.description }}</p>
+
+  <button>Install</button>
+
+  <form class="flex flex-col">
+    <label> <input type="checkbox" /> Accounts </label>
+    <label> <input type="checkbox" /> Transactions </label>
+  </form>
 </template>
 
 <script>

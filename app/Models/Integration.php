@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property string $description
  * @property string $status
+ * @property array|null $settings
  * @property-read Collection|FirmIntegration[] $integrationsInstalls
  * @property-read int|null $integrations_installs_count
  * @method static IntegrationFactory factory(...$parameters)
@@ -53,12 +54,14 @@ class Integration extends Model
 
     public const STATUS_DRAFT = 'draft';
     public const STATUS_AVAILABLE = 'available';
+    public const AUTH_OAUTH2 = 'oauth2';
 
     protected $casts = [
         'owner_id' => 'int',
         'title' => 'string',
         'description' => 'string',
         'status' => 'string',
+        'settings' => 'json',
     ];
 
     protected $attributes = [
@@ -69,6 +72,7 @@ class Integration extends Model
         'owner_id',
         'title',
         'description',
+        'settings',
     ];
 
     public function owner(): BelongsTo

@@ -73,12 +73,16 @@ class IntegrationsController extends Controller
         ]);
     }
 
-    public function edit(Integration $integration): Response
+    public function edit(Request $request, Integration $integration): Response
     {
+        /** @var User $user */
+        $user = $request->user();
+
         IntegrationResource::withoutWrapping();
 
         return inertia('IntegrationEdit', [
             'integration' => IntegrationResource::make($integration),
+            'oauth_clients' => $user->oauthClients()->paginate(),
         ]);
     }
 
