@@ -13,7 +13,7 @@ use Inertia\Testing\Assert;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class FirmsTest extends TestCase
+class FirmsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

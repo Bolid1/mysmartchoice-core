@@ -13,7 +13,7 @@ use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
 
-class IntegrationsTest extends TestCase
+class IntegrationsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

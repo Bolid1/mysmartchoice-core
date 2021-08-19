@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class AccountsTest extends TestCase
+class AccountsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

@@ -15,7 +15,7 @@ use Tests\TestCase;
 use function compact;
 use function route;
 
-class AccountsTest extends TestCase
+class AccountsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
