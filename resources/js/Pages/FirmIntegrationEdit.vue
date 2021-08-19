@@ -6,6 +6,7 @@
     }}</inertia-link>
     ->
 
+    <!-- fixme: :href="route('firms.installs.index', { firm })" -->
     <inertia-link
       class="underline"
       :href="route('firms.integrations.installs.index', { firm, integration })"
