@@ -9,7 +9,10 @@ use App\Http\Resources\FirmIntegrationResource;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Response;
+use function compact;
 use function inertia;
 
 class FirmIntegrationsController extends Controller
@@ -19,13 +22,6 @@ class FirmIntegrationsController extends Controller
         $this->authorizeResource(FirmIntegration::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Firm $firm
-     *
-     * @return Response
-     */
     public function create(Firm $firm, Integration $integration): Response
     {
         FirmIntegrationResource::withoutWrapping();
@@ -36,5 +32,42 @@ class FirmIntegrationsController extends Controller
                 'integration' => $integration,
             ])),
         ]);
+    }
+
+    public function store(Firm $firm, Integration $integration): RedirectResponse
+    {
+        $install = FirmIntegration::create(
+            [
+                'firm' => $firm,
+                'integration' => $integration,
+                'status' => FirmIntegration::STATUS_INSTALLED,
+            ],
+        );
+
+        return Redirect::route(
+            'firms.integrations.installs.edit',
+            compact('firm', 'integration', 'install'),
+            303
+        );
+    }
+
+    public function edit(FirmIntegration $install): Response
+    {
+        FirmIntegrationResource::withoutWrapping();
+
+        return inertia('FirmIntegrationEdit', [
+            'install' => $install,
+        ]);
+    }
+
+    public function update(Firm $firm, Integration $integration, FirmIntegration $install): RedirectResponse
+    {
+        FirmIntegrationResource::withoutWrapping();
+
+        return Redirect::route(
+            'firms.integrations.installs.edit',
+            compact('firm', 'integration', 'install'),
+            303
+        );
     }
 }

@@ -55,7 +55,10 @@ Route::resource('integrations', Web\IntegrationsController::class)
 
 Route::resource('firms.integrations.installs', Web\FirmIntegrationsController::class)
     ->only([
+        'index',
         'create',
+        'store',
+        'edit',
     ])
     ->middleware(['auth', 'verified']);
 

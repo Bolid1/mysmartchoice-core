@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
+use function is_numeric;
 
 /**
  * Integration install in firm.
@@ -39,6 +40,8 @@ use Illuminate\Support\Carbon;
  */
 class FirmIntegration extends Pivot
 {
+    public $incrementing = true;
+
     public const STATUS_INSTALLABLE = 'installable';
     public const STATUS_INSTALLED = 'installed';
 
@@ -70,5 +73,23 @@ class FirmIntegration extends Pivot
     public function integration(): BelongsTo
     {
         return $this->belongsTo(Integration::class);
+    }
+
+    public function setFirmAttribute($firm): void
+    {
+        if ($firm instanceof Firm) {
+            $this->firm()->associate($firm);
+        } elseif (is_numeric($firm)) {
+            $this->attributes['firm_id'] = (int)$firm;
+        }
+    }
+
+    public function setIntegrationAttribute($integration): void
+    {
+        if ($integration instanceof Integration) {
+            $this->integration()->associate($integration);
+        } elseif (is_numeric($integration)) {
+            $this->attributes['integration_id'] = (int)$integration;
+        }
     }
 }

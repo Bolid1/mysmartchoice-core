@@ -57,9 +57,11 @@ class FirmIntegrationPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, FirmIntegration $firmIntegration)
+    public function update(User $user, FirmIntegration $firmIntegration): bool
     {
-        return false;
+        $firmId = $firmIntegration->firm_id;
+
+        return $firmId && $user->firms->where('id', $firmId)->first();
     }
 
     /**
