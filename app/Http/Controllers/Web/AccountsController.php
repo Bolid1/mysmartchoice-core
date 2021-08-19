@@ -132,8 +132,8 @@ class AccountsController extends Controller
     {
         $account->update(
             $request->validate([
-                'title' => 'required|string|max:255',
-                'balance' => 'required|numeric|min:-1000000000|max:1000000000',
+                'title' => 'sometimes|required|string|max:255',
+                'balance' => 'sometimes|required|numeric|min:-1000000000|max:1000000000',
             ])
         );
 
@@ -152,6 +152,6 @@ class AccountsController extends Controller
     {
         $account->delete();
 
-        return Redirect::route('firms.accounts.edit', compact('firm', 'account'), 303);
+        return Redirect::route('firms.accounts.index', compact('firm'), 303);
     }
 }
