@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
+use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
@@ -55,13 +56,19 @@ class IntegrationsTest extends TestCase
     public function testStore(): void
     {
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = User::factory()->hasClients(1)->createOne();
         Passport::actingAs($user);
+        /** @var Client $client */
+        $client = $user->clients->first();
 
         $this
             ->post(route('integrations.store'), [
-                'title' => $title = $this->faker->jobTitle,
+                'title' => $title = $this->faker->jobTitle.' title', // some title less 5 characters length
                 'description' => $description = $this->faker->sentence,
+                'settings' => $settings = [
+                    'auth' => 'oauth2',
+                    'oauth2_client_id' => $client->getKey(),
+                ],
             ])
             ->assertStatus(303)
         ;
@@ -71,6 +78,7 @@ class IntegrationsTest extends TestCase
         self::assertNotNull($integration);
         self::assertEquals($title, $integration->title);
         self::assertEquals($description, $integration->description);
+        self::assertEquals($settings, $integration->settings);
     }
 
     public function testShow(): void
@@ -119,7 +127,7 @@ class IntegrationsTest extends TestCase
 
         $this
             ->patch(route('integrations.update', $integration), [
-                'title' => $newTitle = $this->faker->sentence,
+                'title' => $newTitle = $this->faker->jobTitle.' title', // some title less 5 characters length
             ])
             ->assertStatus(303)
             ->assertRedirect(route('integrations.edit', $integration))

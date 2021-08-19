@@ -24,7 +24,7 @@ class UpdateIntegrationRequest extends FormRequest
         return [
             'title' => 'string|min:5|max:100',
             'description' => 'string|min:5|max:100',
-            'settings.auth' => 'required|string|in:'.implode(',', [
+            'settings.auth' => 'string|in:'.implode(',', [
                     Integration::AUTH_OAUTH2,
             ]),
             'settings.oauth2_client_id' => [

@@ -8,6 +8,7 @@ use App\Models\Integration;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
@@ -45,13 +46,19 @@ class IntegrationsTest extends TestCase
     public function testStore(): void
     {
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = User::factory()->hasClients(1)->createOne();
         Passport::actingAs($user);
+        /** @var Client $client */
+        $client = $user->clients->first();
 
         $this
             ->postJson(route('api.integrations.store'), [
-                'title' => $title = $this->faker->jobTitle,
+                'title' => $title = $this->faker->jobTitle.' title', // some title less 5 characters length
                 'description' => $description = $this->faker->sentence,
+                'settings' => $settings = [
+                    'auth' => 'oauth2',
+                    'oauth2_client_id' => $client->getKey(),
+                ],
             ])
             ->assertStatus(201)
             ->assertJson([
@@ -60,6 +67,7 @@ class IntegrationsTest extends TestCase
                     'title' => $title,
                     'description' => $description,
                     'status' => Integration::STATUS_DRAFT,
+                    'settings' => $settings,
                 ],
             ])
         ;
@@ -91,14 +99,20 @@ class IntegrationsTest extends TestCase
     public function testUpdate(): void
     {
         /** @var User $user */
-        $user = User::factory()->hasIntegrations(1)->createOne();
+        $user = User::factory()->hasIntegrations(1)->hasClients(1)->createOne();
         Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
+        /** @var Client $client */
+        $client = $user->clients->first();
 
         $this
             ->patchJson(route('api.integrations.update', $integration), [
-                'title' => $newTitle = $this->faker->sentence,
+                'title' => $newTitle = $this->faker->jobTitle.' title', // some title less 5 characters length
+                'settings' => $settings = [
+                    'auth' => 'oauth2',
+                    'oauth2_client_id' => $client->getKey(),
+                ],
             ])
             ->assertStatus(200)
             ->assertJson([
@@ -108,6 +122,7 @@ class IntegrationsTest extends TestCase
                     'title' => $newTitle,
                     'description' => $integration->description,
                     'status' => $integration->status,
+                    'settings' => $settings,
                 ],
             ])
         ;
