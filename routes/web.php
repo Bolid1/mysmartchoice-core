@@ -59,6 +59,7 @@ Route::resource('firms.integrations.installs', Web\FirmIntegrationsController::c
         'create',
         'store',
         'edit',
+        'update',
     ])
     ->middleware(['auth', 'verified']);
 

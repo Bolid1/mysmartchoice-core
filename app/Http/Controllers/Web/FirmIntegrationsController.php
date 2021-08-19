@@ -19,7 +19,7 @@ class FirmIntegrationsController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(FirmIntegration::class);
+        $this->authorizeResource(FirmIntegration::class, 'install');
     }
 
     public function create(Firm $firm, Integration $integration): Response
@@ -51,7 +51,7 @@ class FirmIntegrationsController extends Controller
         );
     }
 
-    public function edit(FirmIntegration $install): Response
+    public function edit(Firm $firm, Integration $integration, FirmIntegration $install): Response
     {
         FirmIntegrationResource::withoutWrapping();
 
