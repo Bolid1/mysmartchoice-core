@@ -1,10 +1,10 @@
 Route::apiResource('{{ modelsSnake }}', {{ FQN }}::class)
      ->names([
-         'index' => 'api.{{ modelSnake }}.index',
-         'show' => 'api.{{ modelSnake }}.show',
-         'store' => 'api.{{ modelSnake }}.store',
-         'update' => 'api.{{ modelSnake }}.update',
-         'destroy' => 'api.{{ modelSnake }}.destroy',
+         'index' => 'api.{{ modelsSnake }}.index',
+         'show' => 'api.{{ modelsSnake }}.show',
+         'store' => 'api.{{ modelsSnake }}.store',
+         'update' => 'api.{{ modelsSnake }}.update',
+         'destroy' => 'api.{{ modelsSnake }}.destroy',
      ])
      ->middleware('auth:api')
 ;
