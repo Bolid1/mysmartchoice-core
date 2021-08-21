@@ -109,7 +109,7 @@ class {{ models }}ControllerTest extends TestCase
     public function testUpdate(): void
     {
         /** @var User $user */
-        $user = User::factory()->has{{ models }}(1)->hasClients(1)->createOne();
+        $user = User::factory()->createOne();
         Passport::actingAs($user);
 
         /** @var {{ model }} ${{ modelVariable }} */
@@ -129,7 +129,7 @@ class {{ models }}ControllerTest extends TestCase
     public function testDestroy(): void
     {
         /** @var User $user */
-        $user = User::factory()->has{{ models }}(1)->createOne();
+        $user = User::factory()->createOne();
         Passport::actingAs($user);
 
         /** @var {{ model }} ${{ modelVariable }} */
