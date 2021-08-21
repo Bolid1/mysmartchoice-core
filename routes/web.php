@@ -28,6 +28,8 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
 Route::get('/dashboard', [Web\FirmsController::class, 'index'])
      ->middleware(['auth', 'verified'])->name('dashboard');
 
+require __DIR__.'/auth.php';
+
 Route::resource('firms', Web\FirmsController::class)
     ->only([
         'show',
@@ -62,5 +64,3 @@ Route::resource('firms.integrations.installs', Web\FirmIntegrationsController::c
         'update',
     ])
     ->middleware(['auth', 'verified']);
-
-require __DIR__.'/auth.php';
