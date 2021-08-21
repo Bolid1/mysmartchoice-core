@@ -1,3 +1,3 @@
-Route::apiResource('{{ modelsSnake }}', {{ FQN }}::class)
+Route::resource('{{ modelsSnake }}', {{ FQN }}::class)
      ->middleware(['auth', 'verified'])
 ;
