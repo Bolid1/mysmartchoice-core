@@ -1,0 +1,121 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ rootNamespace }}Http\Requests\Store{{ model }}Request;
+use {{ rootNamespace }}Http\Requests\Update{{ model }}Request;
+use {{ rootNamespace }}Http\Resources\{{ model }}Resource;
+use {{ namespacedModel }};
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Response;
+use function inertia;
+
+class {{ models }}Controller extends Controller
+{
+    public function __construct()
+    {
+        $this->authorizeResource({{ model }}::class);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index(): Response
+    {
+        return inertia('{{ models }}', [
+            '{{ modelsSnake }}' => {{ model }}Resource::collection({{ model }}::query()->paginate()),
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create(): Response
+    {
+        {{ model }}Resource::withoutWrapping();
+
+        return inertia('{{ model }}Edit', [
+            '{{ modelSnake }}' => {{ model }}Resource::make({{ model }}::make([
+                // todo: place default values here
+            ])),
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Store{{ model }}Request $request
+     * @return RedirectResponse
+     */
+    public function store(Store{{ model }}Request $request): RedirectResponse
+    {
+        ${{ modelVariable }} = {{ model }}::create($request->validated());
+
+        return Redirect::route('{{ modelsSnake }}.edit', ['{{ modelSnake }}' => ${{ modelVariable }}], 303);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  {{ model }}  ${{ modelVariable }}
+     * @return Response
+     */
+    public function show({{ model }} ${{ modelVariable }}): Response
+    {
+        {{ model }}Resource::withoutWrapping();
+
+        return inertia('{{ model }}', [
+            '{{ modelSnake }}' => {{ model }}Resource::make(${{ modelVariable }}),
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  {{ model }}  ${{ modelVariable }}
+     * @return Response
+     */
+    public function edit({{ model }} ${{ modelVariable }}): Response
+    {
+        {{ model }}Resource::withoutWrapping();
+
+        return inertia('{{ model }}Edit', [
+            '{{ modelSnake }}' => {{ model }}Resource::make(${{ modelVariable }}),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  Update{{ model }}Request $request
+     * @param  {{ model }}  ${{ modelVariable }}
+     * @return RedirectResponse
+     */
+    public function update(Update{{ model }}Request $request, {{ model }} ${{ modelVariable }}): RedirectResponse
+    {
+        ${{ modelVariable }}->update($request->validated());
+
+        return Redirect::route('{{ modelsSnake }}.edit', ['{{ modelSnake }}' => ${{ modelVariable }}], 303);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  {{ model }}  ${{ modelVariable }}
+     * @return RedirectResponse
+     */
+    public function destroy({{ model }} ${{ modelVariable }}): RedirectResponse
+    {
+        ${{ modelVariable }}->delete();
+
+        return Redirect::route('{{ modelsSnake }}.index', [], 303);
+    }
+}

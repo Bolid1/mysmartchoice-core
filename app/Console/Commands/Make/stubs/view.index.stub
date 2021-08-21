@@ -1,0 +1,24 @@
+<template>
+  <div v-for="{{ modelSnake }} in {{ modelsSnake }}.data">
+    <inertia-link
+      class="underline"
+      :href="route('{{ modelsSnake }}.show', {{ modelSnake }})"
+    >
+      {{ model }}#{{ {{ modelSnake }}.id }}
+    </inertia-link>
+  </div>
+
+  <div>
+    <pre>
+        {{ {{ modelsSnake }} }}
+    </pre>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: ["{{ modelsSnake }}"],
+  }
+</script>
+
+<style scoped></style>

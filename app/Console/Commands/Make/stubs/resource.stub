@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * @property {{ model }} $resource
+ * @mixin {{ model }}
+ */
+class {{ class }} extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request): array
+    {
+        return parent::toArray($request);
+    }
+}

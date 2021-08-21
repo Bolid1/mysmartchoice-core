@@ -1,0 +1,19 @@
+<template>
+  <h1>{{ model }} Edit</h1>
+
+  <div>id: {{ modelSnake }}.id</div>
+
+  <div>
+    <pre>
+        {{ {{ modelSnake }} }}
+    </pre>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: ["{{ modelSnake }}"],
+  }
+</script>
+
+<style scoped></style>

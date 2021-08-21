@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
+
+/**
+ * Fixme: need description
+ *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|{{ class }} newModelQuery()
+ * @method static Builder|{{ class }} newQuery()
+ * @method static Builder|{{ class }} query()
+ * @method static Builder|{{ class }} whereCreatedAt($value)
+ * @method static Builder|{{ class }} whereUpdatedAt($value)
+ * @mixin Eloquent
+ */
+class {{ class }} extends Pivot
+{
+    protected $casts = [
+        // fixme: replace with casts, please
+    ];
+}

@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Database\Factories\{{ class }}Factory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+
+/**
+ * Fixme: need description
+ *
+ * @property int $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static {{ class }}Factory factory(...$parameters)
+ * @method static Builder|{{ class }} newModelQuery()
+ * @method static Builder|{{ class }} newQuery()
+ * @method static Builder|{{ class }} query()
+ * @method static Builder|{{ class }} whereId($value)
+ * @method static Builder|{{ class }} whereCreatedAt($value)
+ * @method static Builder|{{ class }} whereUpdatedAt($value)
+ * @mixin Eloquent
+ */
+class {{ class }} extends Model
+{
+    use HasFactory;
+
+    protected $casts = [
+        // fixme: replace with casts, please
+    ];
+}
