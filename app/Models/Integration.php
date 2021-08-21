@@ -43,6 +43,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Integration whereTitle($value)
  * @method static Builder|Integration whereUpdatedAt($value)
  * @method static Builder|Integration whereDeletedAt($value)
+ * @method static Builder|Integration whereSettings($value)
  * @method static \Illuminate\Database\Query\Builder|Integration onlyTrashed()
  * @method static \Illuminate\Database\Query\Builder|Integration withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Integration withoutTrashed()

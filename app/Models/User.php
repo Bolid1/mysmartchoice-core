@@ -43,6 +43,8 @@ use Laravel\Passport\Token;
  * @property int|null $comrades_count
  * @property Collection|Integration[] $integrations
  * @property int|null $integrations_count
+ * @property Collection|Client[] $oauthClients
+ * @property int|null $oauth_clients_count
  *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
