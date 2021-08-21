@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $users_count
  * @property Collection|Account[] $accounts
  * @property int|null $accounts_count
- * @property Collection|\App\Models\FirmIntegration[] $integrationsInstalls
+ * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
  *
  * @method static FirmFactory factory(...$parameters)

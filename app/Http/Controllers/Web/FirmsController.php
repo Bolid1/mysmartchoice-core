@@ -43,13 +43,15 @@ class FirmsController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $firm->load(
+        $firm->loadMissing(
             'users',
             'accounts',
             'integrationsInstalls',
         );
 
         FirmResource::withoutWrapping();
+
+        $firm->integrationsInstalls->loadMissing('integration');
 
         return inertia('Firm', [
             'firm' => FirmResource::make($firm),

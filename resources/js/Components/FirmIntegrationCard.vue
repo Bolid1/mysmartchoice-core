@@ -74,7 +74,13 @@
             transition
             duration-300
           "
-          :href="route('dashboard', integration)"
+          :href="
+            route('firms.integrations.installs.edit', {
+              firm,
+              integration,
+              install,
+            })
+          "
           as="button"
           >Settings</inertia-link
         >
