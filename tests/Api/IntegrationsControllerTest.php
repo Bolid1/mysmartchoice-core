@@ -136,6 +136,10 @@ class IntegrationsControllerTest extends TestCase
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
+        // Ensure that integration can be deleted
+        $integration->status = Integration::STATUS_DRAFT;
+        $integration->save();
+
         $this
             ->deleteJson(route('api.integrations.destroy', $integration))
             ->assertStatus(200)
