@@ -9,6 +9,12 @@
         -> {{ integration.title }}
       </h2>
       <div class="flex-shrink-1">
+        <inertia-link
+          :href="route('integrations.destroy', { integration })"
+          method="delete"
+          class="mr-2"
+          ><breeze-button color="red">Delete</breeze-button></inertia-link
+        >
         <inertia-link :href="route('integrations.edit', { integration })"
           ><breeze-button>Edit</breeze-button></inertia-link
         >

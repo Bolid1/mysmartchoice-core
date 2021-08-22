@@ -75,7 +75,8 @@ class IntegrationPolicy
      */
     public function delete(User $user, Integration $integration)
     {
-        return $integration->owner_id === $user->id;
+        return $integration->status === Integration::STATUS_DRAFT
+               && $integration->owner_id === $user->id;
     }
 
     /**
@@ -101,7 +102,7 @@ class IntegrationPolicy
      */
     public function forceDelete(User $user, Integration $integration)
     {
-        return $integration->owner_id === $user->id;
+        return $this->delete($user, $integration);
     }
 
     /**
