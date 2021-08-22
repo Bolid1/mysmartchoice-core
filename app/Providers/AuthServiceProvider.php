@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Account;
+use App\Models\Firm;
+use App\Models\FirmIntegration;
+use App\Models\Integration;
+use App\Models\User;
+use App\Policies\AccountPolicy;
+use App\Policies\FirmIntegrationPolicy;
+use App\Policies\FirmPolicy;
+use App\Policies\IntegrationPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -15,7 +25,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Account::class => AccountPolicy::class,
+        FirmIntegration::class => FirmIntegrationPolicy::class,
+        Firm::class => FirmPolicy::class,
+        Integration::class => IntegrationPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**
