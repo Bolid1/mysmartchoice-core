@@ -11,6 +11,7 @@ use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
 use App\Models\User;
+use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use function collect;
@@ -38,11 +39,8 @@ class FirmsController extends Controller
         ]);
     }
 
-    public function show(Request $request, Firm $firm): Response
+    public function show(Firm $firm): Response
     {
-        /** @var User $user */
-        $user = $request->user();
-
         $firm->loadMissing(
             'users',
             'accounts',
@@ -51,24 +49,10 @@ class FirmsController extends Controller
 
         FirmResource::withoutWrapping();
 
-        $firm->integrationsInstalls->loadMissing('integration');
+        $firm->integrationsInstalls->loadMissing('integration', 'firm');
 
         return inertia('Firm', [
             'firm' => FirmResource::make($firm),
-            'installable_integrations' => FirmIntegrationResource::collection(
-                collect(
-                    Integration::where('status', Integration::STATUS_AVAILABLE)
-                        ->orWhere('owner_id', $user->id)
-                               ->paginate()
-                               ->items()
-                )
-                    ->map(
-                        static fn (Integration $integration) => FirmIntegration::make([
-                            'firm' => $firm,
-                            'integration' => $integration,
-                        ])
-                    )
-            ),
         ]);
     }
 }

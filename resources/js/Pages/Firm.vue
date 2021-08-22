@@ -99,11 +99,6 @@
             :install="install"
             class="w-72 p-6 py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
           />
-          <firm-integration-card
-            v-for="install in installable_integrations"
-            :install="install"
-            class="w-72 p-6 py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
-          />
         </div>
       </div>
     </div>
@@ -118,7 +113,7 @@
   export default {
     components: { FirmIntegrationCard, UserCard },
     layout: AuthenticatedLayout,
-    props: ["firm", "installable_integrations"],
+    props: ["firm"],
   }
 </script>
 

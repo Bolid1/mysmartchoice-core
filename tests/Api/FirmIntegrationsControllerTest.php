@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Web;
+namespace Tests\Api;
 
 use App\Models\Firm;
 use App\Models\FirmIntegration;
@@ -10,7 +10,6 @@ use App\Models\Integration;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Inertia\Testing\Assert;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function compact;
@@ -37,30 +36,18 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->get(route('firms.firm_integrations.index', compact('firm')))
+            ->getJson(route('api.firms.firm_integrations.index', compact('firm')))
             ->assertStatus(200)
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->component('FirmIntegrations')
-            )
-        ;
-    }
-
-    public function testCreate(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
-        /** @var Firm $firm */
-        $firm = $user->firms->first();
-
-        $this
-            ->get(route('firms.firm_integrations.create', compact('firm')))
-            ->assertStatus(200)
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->component('FirmIntegrationEdit')
-            )
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'created_at',
+                        'updated_at',
+                        // fixme: need more data checks
+                    ],
+                ],
+            ])
         ;
     }
 
@@ -75,19 +62,19 @@ class FirmIntegrationsControllerTest extends TestCase
         $integration = $user->integrations->first();
 
         $this
-            ->postJson(route('firms.firm_integrations.store', compact('firm')), [
+            ->postJson(route('api.firms.firm_integrations.store', compact('firm')), [
                 'integration_id' => $integration->id,
             ])
-            ->assertStatus(303)
+            ->assertStatus(201)
+            ->assertJson([
+                'data' => [
+                    // fixme: need more data checks
+                ],
+            ])
         ;
-
-        /** @var FirmIntegration $firmIntegration */
-        $firmIntegration = $firm->integrationsInstalls->first();
-
-        self::assertEquals(FirmIntegration::STATUS_INSTALLED, $firmIntegration->status);
     }
 
-    public function testEdit(): void
+    public function testShow(): void
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
@@ -104,12 +91,17 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->get(route('firms.firm_integrations.edit', ['firm' => $firm, 'firm_integration' => $firmIntegration]))
+            ->getJson(route('api.firms.firm_integrations.show', [
+                'firm' => $firm,
+                'firm_integration' => $firmIntegration,
+            ]))
             ->assertStatus(200)
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->component('FirmIntegrationEdit')
-            )
+            ->assertJson([
+                'data' => [
+                    'id' => $firmIntegration->id,
+                    // fixme: need more data checks
+                ],
+            ])
         ;
     }
 
@@ -130,14 +122,20 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->patch(route('firms.firm_integrations.update', ['firm' => $firm, 'firm_integration' => $firmIntegration]), [
+            ->patchJson(route('api.firms.firm_integrations.update', [
+                'firm' => $firm,
+                'firm_integration' => $firmIntegration,
+            ]), [
                 // fixme: need more data for patch
             ])
-            ->assertStatus(303)
-            ->assertRedirect(route('firms.firm_integrations.edit', ['firm' => $firm, 'firm_integration' => $firmIntegration]))
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $firmIntegration->id,
+                    // fixme: need more data for checks
+                ],
+            ])
         ;
-
-        // self::assertEquals($newFieldValue, $firmIntegration->fresh()->field);
     }
 
     public function testDestroy(): void
@@ -157,9 +155,19 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->delete(route('firms.firm_integrations.destroy', ['firm' => $firm, 'firm_integration' => $firmIntegration]))
-            ->assertStatus(303)
-            ->assertRedirect(route('firms.firm_integrations.index', compact('firm')))
+            ->deleteJson(route('api.firms.firm_integrations.destroy', [
+                'firm' => $firm,
+                'firm_integration' => $firmIntegration,
+            ]))
+            ->assertStatus(200)
+            ->assertJson(
+                [
+                    'data' => [
+                        'id' => $firmIntegration->id,
+                        // fixme: need more data for checks
+                    ],
+                ]
+            )
         ;
 
         self::assertNull($firmIntegration->fresh());

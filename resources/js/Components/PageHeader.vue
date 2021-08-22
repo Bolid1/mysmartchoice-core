@@ -4,14 +4,15 @@
       <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-grow">
         <slot />
       </h2>
+      <div class="flex-shrink-1">
+        <slot name="right" />
+      </div>
     </div>
   </header>
 </template>
 
 <script>
-  export default {
-    props: ["breadcrumbs"],
-  }
+  export default {}
 </script>
 
 <style scoped></style>

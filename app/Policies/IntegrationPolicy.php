@@ -103,4 +103,16 @@ class IntegrationPolicy
     {
         return $integration->owner_id === $user->id;
     }
+
+    /**
+     * @param User $user
+     * @param Integration $integration
+     *
+     * @return bool Can user install this integration into any firm?
+     */
+    public function install(User $user, Integration $integration): bool
+    {
+        return Integration::STATUS_AVAILABLE === $integration->status
+               || $user->integrations()->find($integration->id);
+    }
 }

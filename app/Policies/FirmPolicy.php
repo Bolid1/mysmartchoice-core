@@ -103,4 +103,9 @@ class FirmPolicy
     {
         return false;
     }
+
+    public function manageIntegrations(User $user, Firm $firm): bool
+    {
+        return $user->isInFirm($firm->id);
+    }
 }

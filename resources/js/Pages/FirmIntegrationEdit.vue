@@ -1,123 +1,105 @@
 <template>
-  <!-- Page Heading -->
   <page-header>
     <inertia-link class="underline" :href="route('firms.show', firm)">{{
       firm.title
     }}</inertia-link>
     ->
-
-    <!-- fixme: :href="route('firms.installs.index', { firm })" -->
     <inertia-link
       class="underline"
-      :href="route('firms.integrations.installs.index', { firm, integration })"
-      >Firm integrations</inertia-link
+      :href="route('firms.firm_integrations.index', firm)"
+      >Integrations</inertia-link
     >
-    ->
-
-    <inertia-link
-      class="underline"
-      :href="route('firms.integrations.installs.index', { firm, integration })"
-      >{{ integration.title }}</inertia-link
-    >
-    ->
-
-    {{ install.id || "Install" }}
+    -> {{ firm_integration.id || "Connect new" }}
   </page-header>
 
   <page-block>
-    <p class="p-4">{{ integration.description }}</p>
+    <form
+      @submit.prevent="
+        firm_integration.id
+          ? form.patch(
+              route('firms.firm_integrations.update', {
+                firm,
+                firm_integration,
+              })
+            )
+          : form.post(route('firms.firm_integrations.store', firm))
+      "
+      class="p-4"
+    >
+      <!-- Integration select -->
+      <div class="pt-2">
+        <breeze-label for="integration">Integration</breeze-label>
 
-    <div class="pt-2" v-if="!install.id">
-      <breeze-button type="button" v-on:click="toggleInstallConfirmation()">
-        Install
-      </breeze-button>
-    </div>
-  </page-block>
+        <el-select
+          v-model="form.integration_id"
+          placeholder="Integration"
+          class="mt-1 block w-full"
+          filterable
+          :disabled="Boolean(firm_integration.id)"
+        >
+          <el-option
+            v-for="integration in integrations.data"
+            :key="integration.id"
+            :label="`${integration.title} [${integration.description}]`"
+            :value="integration.id"
+          >
+          </el-option>
+        </el-select>
 
-  <page-block v-if="install.id">
-    <form class="flex flex-col">
-      <label> <input type="checkbox" /> Accounts </label>
-      <label> <input type="checkbox" /> Transactions </label>
-    </form>
-  </page-block>
+        <div v-if="form.errors.integration_id">
+          {{ form.errors.integration_id }}
+        </div>
+      </div>
 
-  <modal v-if="need_install_confirmation">
-    <template v-slot:default>
-      <div class="text-center p-5 flex-auto justify-center">
-        <h2 class="text-xl font-bold py-4">Are you sure?</h2>
-        <p class="text-sm text-gray-500 px-8">
-          Do you really want to install this integration? After installation,
-          integration will receive access for all data of "{{ firm.title }}"
-          firm
+      <!-- submit -->
+      <div class="pt-2">
+        <breeze-button
+          type="submit"
+          color="green"
+          :class="{ 'opacity-25': form.processing }"
+          :disabled="form.processing"
+        >
+          {{ firm_integration.id ? "Update" : "Install" }}
+        </breeze-button>
+        <p v-if="!firm_integration.id" class="text-sm">
+          by clicking the button you agree to provide access for your firm data
+          to the 3rd party
         </p>
       </div>
-    </template>
-    <template v-slot:footer>
-      <breeze-button
-        @click="toggleInstallConfirmation()"
-        type="button"
-        color="gray"
-        theme="light"
-      >
-        Cancel
-      </breeze-button>
-
-      <inertia-link
-        method="post"
-        :href="
-          route('firms.integrations.installs.store', { firm, integration })
-        "
-        as="button"
-        ><breeze-button type="button" color="green">
-          Install
-        </breeze-button></inertia-link
-      >
-    </template>
-  </modal>
+    </form>
+  </page-block>
 </template>
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
+  import PageBlock from "@/Components/PageBlock"
+  import PageHeader from "@/Components/PageHeader"
+  import { useForm } from "@inertiajs/inertia-vue3"
   import BreezeButton from "@/Components/Button"
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { ElOption, ElSelect } from "element-plus"
-  import Modal from "@/Components/Modal"
-  import PageHeader from "@/Components/PageHeader"
-  import PageBlock from "@/Components/PageBlock"
 
   export default {
     layout: AuthenticatedLayout,
-    props: ["install"],
     components: {
-      PageBlock,
-      PageHeader,
-      Modal,
       BreezeButton,
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
       ElSelect,
       ElOption,
+      PageBlock,
+      PageHeader,
     },
-    computed: {
-      firm() {
-        return this.install.firm || {}
-      },
-      integration() {
-        return this.install.integration || {}
-      },
-    },
-    data() {
-      return {
-        need_install_confirmation: false,
-      }
-    },
-    methods: {
-      toggleInstallConfirmation() {
-        this.need_install_confirmation = !this.need_install_confirmation
-      },
+    props: ["firm", "firm_integration", "integrations"],
+    setup(props) {
+      const form = useForm({
+        integration_id: props.firm_integration.integration_id,
+      })
+
+      return { form }
     },
   }
 </script>

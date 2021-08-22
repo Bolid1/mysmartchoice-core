@@ -55,12 +55,7 @@ Route::resource('firms.accounts', Web\AccountsController::class)
 Route::resource('integrations', Web\IntegrationsController::class)
     ->middleware(['auth', 'verified']);
 
-Route::resource('firms.integrations.installs', Web\FirmIntegrationsController::class)
-    ->only([
-        'index',
-        'create',
-        'store',
-        'edit',
-        'update',
-    ])
-    ->middleware(['auth', 'verified']);
+Route::resource('firms.firm_integrations', App\Http\Controllers\Web\FirmIntegrationsController::class)
+    ->except('show')
+    ->middleware(['auth', 'verified'])
+;

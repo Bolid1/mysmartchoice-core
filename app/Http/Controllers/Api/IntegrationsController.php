@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateIntegrationRequest;
 use App\Http\Resources\IntegrationResource;
 use App\Models\Integration;
 use App\Models\User;
+use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,15 +27,13 @@ class IntegrationsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request, IntegrationsRepository $repository): AnonymousResourceCollection
     {
         /** @var User $user */
         $user = $request->user();
 
         return IntegrationResource::collection(
-            Integration::where('owner_id', $user->id)
-                       ->orWhere('status', Integration::STATUS_AVAILABLE)
-                       ->paginate()
+            $repository->getAvailableFor($user->id)->paginate()
         );
     }
 

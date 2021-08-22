@@ -51,9 +51,7 @@
             transition
             duration-300
           "
-          :href="
-            route('firms.integrations.installs.create', { firm, integration })
-          "
+          :href="route('firms.firm_integrations.create', { firm })"
           as="button"
           >Install</inertia-link
         >
@@ -75,10 +73,9 @@
             duration-300
           "
           :href="
-            route('firms.integrations.installs.edit', {
+            route('firms.firm_integrations.edit', {
               firm,
-              integration,
-              install,
+              firm_integration: install,
             })
           "
           as="button"

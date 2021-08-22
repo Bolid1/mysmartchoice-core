@@ -21,7 +21,7 @@ class FirmIntegrationPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -34,7 +34,7 @@ class FirmIntegrationPolicy
      */
     public function view(User $user, FirmIntegration $firmIntegration)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -74,7 +74,9 @@ class FirmIntegrationPolicy
      */
     public function delete(User $user, FirmIntegration $firmIntegration)
     {
-        return false;
+        $firmId = $firmIntegration->firm_id;
+
+        return $firmId && $user->firms->where('id', $firmId)->first();
     }
 
     /**
@@ -87,7 +89,9 @@ class FirmIntegrationPolicy
      */
     public function restore(User $user, FirmIntegration $firmIntegration)
     {
-        return false;
+        $firmId = $firmIntegration->firm_id;
+
+        return $firmId && $user->firms->where('id', $firmId)->first();
     }
 
     /**
@@ -100,6 +104,8 @@ class FirmIntegrationPolicy
      */
     public function forceDelete(User $user, FirmIntegration $firmIntegration)
     {
-        return false;
+        $firmId = $firmIntegration->firm_id;
+
+        return $firmId && $user->firms->where('id', $firmId)->first();
     }
 }

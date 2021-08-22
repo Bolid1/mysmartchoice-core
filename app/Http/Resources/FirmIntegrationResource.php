@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\FirmIntegration;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property FirmIntegration $resource
+ * @mixin FirmIntegration
+ */
 class FirmIntegrationResource extends JsonResource
 {
     /**
@@ -15,7 +20,7 @@ class FirmIntegrationResource extends JsonResource
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return parent::toArray($request);
     }

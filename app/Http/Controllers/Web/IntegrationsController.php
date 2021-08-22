@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateIntegrationRequest;
 use App\Http\Resources\IntegrationResource;
 use App\Models\Integration;
 use App\Models\User;
+use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -24,16 +25,14 @@ class IntegrationsController extends Controller
         $this->authorizeResource(Integration::class);
     }
 
-    public function index(Request $request): Response
+    public function index(Request $request, IntegrationsRepository $repository): Response
     {
         /** @var User $user */
         $user = $request->user();
 
         return inertia('Integrations', [
             'integrations' => IntegrationResource::collection(
-                Integration::where('owner_id', $user->id)
-                           ->orWhere('status', Integration::STATUS_AVAILABLE)
-                           ->paginate()
+                $repository->getAvailableFor($user->id)->paginate()
             ),
         ]);
     }

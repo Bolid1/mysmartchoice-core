@@ -71,3 +71,14 @@ Route::apiResource('integrations', Api\IntegrationsController::class)
      ])
      ->middleware('auth:api')
 ;
+
+Route::apiResource('firms.firm_integrations', App\Http\Controllers\Api\FirmIntegrationsController::class)
+     ->names([
+         'index' => 'api.firms.firm_integrations.index',
+         'show' => 'api.firms.firm_integrations.show',
+         'store' => 'api.firms.firm_integrations.store',
+         'update' => 'api.firms.firm_integrations.update',
+         'destroy' => 'api.firms.firm_integrations.destroy',
+     ])
+     ->middleware('auth:api')
+;
