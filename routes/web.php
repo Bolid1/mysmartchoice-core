@@ -59,3 +59,7 @@ Route::resource('firms.firm_integrations', App\Http\Controllers\Web\FirmIntegrat
     ->except('show')
     ->middleware(['auth', 'verified'])
 ;
+
+Route::resource('o_auth_clients', App\Http\Controllers\Web\OAuthClientsController::class)
+     ->middleware(['auth', 'verified'])
+;

@@ -82,3 +82,14 @@ Route::apiResource('firms.firm_integrations', App\Http\Controllers\Api\FirmInteg
      ])
      ->middleware('auth:api')
 ;
+
+Route::apiResource('o_auth_clients', App\Http\Controllers\Api\OAuthClientsController::class)
+     ->names([
+         'index' => 'api.o_auth_clients.index',
+         'show' => 'api.o_auth_clients.show',
+         'store' => 'api.o_auth_clients.store',
+         'update' => 'api.o_auth_clients.update',
+         'destroy' => 'api.o_auth_clients.destroy',
+     ])
+     ->middleware('auth:api')
+;

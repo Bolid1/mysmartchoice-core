@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FirmIntegrationResource;
 use App\Http\Resources\FirmResource;
 use App\Models\Firm;
-use App\Models\FirmIntegration;
-use App\Models\Integration;
 use App\Models\User;
-use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\Request;
 use Inertia\Response;
-use function collect;
 use function inertia;
 
 class FirmsController extends Controller

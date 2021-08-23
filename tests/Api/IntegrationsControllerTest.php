@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Api;
 
 use App\Models\Integration;
+use App\Models\OAuthClient as Client;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;

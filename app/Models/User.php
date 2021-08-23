@@ -16,7 +16,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 
@@ -35,7 +34,7 @@ use Laravel\Passport\Token;
  * @property int|null $firms_count
  * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property int|null $notifications_count
- * @property Collection|Client[] $clients
+ * @property Collection|OAuthClient[] $clients
  * @property int|null $clients_count
  * @property Collection|Token[] $tokens
  * @property int|null $tokens_count
@@ -43,8 +42,6 @@ use Laravel\Passport\Token;
  * @property int|null $comrades_count
  * @property Collection|Integration[] $integrations
  * @property int|null $integrations_count
- * @property Collection|Client[] $oauthClients
- * @property int|null $oauth_clients_count
  *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
@@ -167,10 +164,5 @@ class User extends Authenticatable
             )
             ->exists()
             ;
-    }
-
-    public function oauthClients(): HasMany
-    {
-        return $this->hasMany(Client::class);
     }
 }

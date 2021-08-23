@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
+use App\Models\OAuthClient;
 use App\Models\User;
 use App\Policies\AccountPolicy;
 use App\Policies\FirmIntegrationPolicy;
@@ -41,9 +42,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Passport::useClientModel(OAuthClient::class);
+
         if (!$this->app->routesAreCached()) {
             Passport::routes(null, [
-                'prefix' => 'api/oauth'
+                'prefix' => 'api/oauth',
             ]);
         }
     }

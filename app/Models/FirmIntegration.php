@@ -33,6 +33,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|FirmIntegration whereSettings($value)
  * @method static Builder|FirmIntegration whereStatus($value)
  * @mixin Eloquent
+ *
+ * @property \App\Models\Firm $firm
+ * @property \App\Models\Integration $integration
+ *
+ * @method static \Database\Factories\FirmIntegrationFactory factory(...$parameters)
  */
 class FirmIntegration extends Pivot
 {
