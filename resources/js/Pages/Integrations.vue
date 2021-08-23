@@ -1,14 +1,11 @@
 <template>
-  <!-- Page Heading -->
-  <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex">
-      <div class="flex-shrink-1">
-        <inertia-link :href="route('integrations.create')"
-          ><breeze-button>Create</breeze-button></inertia-link
-        >
-      </div>
-    </div>
-  </header>
+  <page-header>
+    <template #right>
+      <inertia-link :href="route('integrations.create')"
+        ><breeze-button color="green">Create</breeze-button></inertia-link
+      >
+    </template>
+  </page-header>
 
   <div class="pt-6 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -31,11 +28,13 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
+  import PageHeader from "@/Components/PageHeader"
 
   export default {
     layout: AuthenticatedLayout,
     props: ["integrations"],
     components: {
+      PageHeader,
       BreezeButton,
     },
   }
