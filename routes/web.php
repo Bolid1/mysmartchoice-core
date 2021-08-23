@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\OAuth\CallbacksController;
 use App\Http\Controllers\Web;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -55,11 +56,30 @@ Route::resource('firms.accounts', Web\AccountsController::class)
 Route::resource('integrations', Web\IntegrationsController::class)
     ->middleware(['auth', 'verified']);
 
-Route::resource('firms.firm_integrations', App\Http\Controllers\Web\FirmIntegrationsController::class)
+Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class)
     ->except('show')
     ->middleware(['auth', 'verified'])
 ;
 
-Route::resource('o_auth_clients', App\Http\Controllers\Web\OAuthClientsController::class)
+Route::resource('o_auth_clients', Web\OAuthClientsController::class)
      ->middleware(['auth', 'verified'])
 ;
+
+Route::middleware(['auth', 'verified'])->group(static function () {
+    Route::prefix('/oauth')->group(static function () {
+        Route::get(
+            '/tokens',
+            static fn () => Inertia::render('OAuth/Tokens')
+        )->name('oauth.tokens.index');
+
+        Route::get(
+            '/tokens/issue',
+            static fn () => Inertia::render('OAuth/TokenIssue')
+        )->name('oauth.tokens.issue');
+
+        Route::prefix('/callbacks')->group(static function () {
+            Route::get('test_code', [CallbacksController::class, 'testCode'])
+                 ->name('oauth.callbacks.test_code');
+        });
+    });
+});

@@ -7,6 +7,8 @@ namespace App\Policies;
 use App\Models\OAuthClient;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Request;
+use function route;
 
 class OAuthClientPolicy
 {
@@ -99,5 +101,32 @@ class OAuthClientPolicy
     public function forceDelete(User $user, OAuthClient $oAuthClient)
     {
         return $user->clients()->where('id', $oAuthClient->id)->exists();
+    }
+
+    /**
+     * @param User $user
+     * @param OAuthClient $oAuthClient
+     *
+     * @return bool Может ли пользователь пропустить окошко "вы даёте доступ, бла-бла-бла"?
+     */
+    public function skipsAuthorization(User $user, OAuthClient $oAuthClient): bool
+    {
+        return Request::input('skips_authorization')
+               && $user->getKey() === $oAuthClient->user_id
+               && $oAuthClient->redirect === route('oauth.callbacks.test_code')
+            ;
+    }
+
+    /**
+     * @param User $user
+     * @param OAuthClient $oAuthClient
+     *
+     * @return bool Может ли пользователь создавать тестовые токены на этом клиенте?
+     */
+    public function testExchange(User $user, OAuthClient $oAuthClient): bool
+    {
+        return $user->getKey() === $oAuthClient->user_id
+               && $oAuthClient->redirect === route('oauth.callbacks.test_code')
+            ;
     }
 }

@@ -9,6 +9,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client;
 use Laravel\Passport\Token;
@@ -56,4 +57,13 @@ use Laravel\Passport\Token;
  */
 class OAuthClient extends Client
 {
+    /**
+     * Determine if the client should skip the authorization prompt.
+     *
+     * @return bool
+     */
+    public function skipsAuthorization(): bool
+    {
+        return Gate::allows('skips-authorization', $this);
+    }
 }

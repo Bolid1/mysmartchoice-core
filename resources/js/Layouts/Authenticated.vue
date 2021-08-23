@@ -38,6 +38,14 @@
                   OAuth Clients
                 </breeze-nav-link>
               </div>
+              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <breeze-nav-link
+                  :href="route('oauth.tokens.index')"
+                  :active="route().current('oauth.tokens.index')"
+                >
+                  OAuth Tokens
+                </breeze-nav-link>
+              </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
