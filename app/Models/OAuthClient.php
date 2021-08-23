@@ -17,7 +17,7 @@ use Laravel\Passport\Token;
  * An application making protected resource requests on behalf of the
  * resource owner and with its authorization.
  *
- * @link https://datatracker.ietf.org/doc/html/rfc6749
+ * @see https://datatracker.ietf.org/doc/html/rfc6749
  *
  * @property int $id
  * @property Carbon|null $created_at
