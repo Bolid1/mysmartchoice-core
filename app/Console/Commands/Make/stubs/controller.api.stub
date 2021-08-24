@@ -25,7 +25,7 @@ class {{ models }}Controller extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return {{ model }}Resource::collection(
             {{ model }}::query()->paginate()
