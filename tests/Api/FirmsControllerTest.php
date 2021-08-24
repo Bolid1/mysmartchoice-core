@@ -8,6 +8,7 @@ use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -16,70 +17,121 @@ class FirmsControllerTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /**
-     * Display a listing of the firms.
-     *
-     * @return void
-     */
-    public function testGetList(): void
+    public function testIndex(): void
     {
         /** @var User $user */
-        $user = User::factory()->hasFirms(3)->createOne();
+        $user = User::factory()->hasFirms($cnt = 3)->createOne();
         Passport::actingAs($user);
 
-        $response = $this->get('/api/firms');
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure(
-            [
+        $this
+            ->getJson(route('api.firms.index'))
+            ->assertStatus(200)
+            ->assertJsonStructure([
                 'data' => [
                     '*' => [
                         'id',
                         'title',
+                        'created_at',
+                        'updated_at',
                     ],
                 ],
-            ]
-        );
-
-        $data = $response->json('data');
-
-        self::assertNotEmpty($data, 'Should has at least one firm');
+            ])
+            ->assertJsonCount($cnt, 'data')
+        ;
     }
 
-    /**
-     * Display the single firm.
-     *
-     * @return void
-     */
-    public function testShowFirm(): void
+    public function testStore(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
+
+        $this
+            ->postJson(route('api.firms.store'), [
+                'title' => $title = 'Firm title'
+            ])
+            ->assertStatus(201)
+            ->assertJson([
+                'data' => [
+                    // fixme: need more data checks
+                ],
+            ])
+        ;
+
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+        self::assertNotNull($firm);
+        self::assertEquals($title, $firm->title);
+    }
+
+    public function testShow(): void
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
+        Passport::actingAs($user);
+
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
+        $this
+            ->getJson(route('api.firms.show', $firm))
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $firm->id,
+                    // fixme: need more data checks
+                ],
+            ])
+        ;
+    }
+
+    public function testUpdate(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->hasFirms(1)->createOne();
         Passport::actingAs($user);
 
-        $response = $this->get("/api/firms/{$firm->id}");
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
 
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure(
-            [
+        $this
+            ->patchJson(route('api.firms.update', $firm), [
+                // fixme: need more data for patch
+            ])
+            ->assertStatus(200)
+            ->assertJson([
                 'data' => [
-                    'id',
-                    'title',
+                    'id' => $firm->id,
+                    // fixme: need more data for checks
                 ],
-            ]
-        );
+            ])
+        ;
+    }
 
-        $data = $response->json('data');
+    public function testDestroy(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->hasFirms(1)->createOne();
+        Passport::actingAs($user);
 
-        self::assertNotEmpty($data, 'Should has at least one firm');
-        self::assertArrayHasKey('id', $data, 'Firm in response should contains key "id"');
-        self::assertEquals($firm->id, $data['id'], 'Firm in response should has same value for "id" as in DB');
-        self::assertArrayHasKey('title', $data, 'Firm in response should contains key "title"');
-        self::assertEquals($firm->title, $data['title'], 'Firm in response should has same value for "title" as in DB');
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+
+        $this
+            ->deleteJson(route('api.firms.destroy', $firm))
+            ->assertStatus(200)
+            ->assertJson(
+                [
+                    'data' => [
+                        'id' => $firm->id,
+                        // fixme: need more data for checks
+                    ],
+                ]
+            )
+        ;
+
+        self::assertNull($firm->fresh());
+        // or for soft deletes:
+        // self::assertNotNull($firm->fresh());
     }
 }

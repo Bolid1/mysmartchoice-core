@@ -31,12 +31,6 @@ Route::get('/dashboard', [Web\FirmsController::class, 'index'])
 
 require __DIR__.'/auth.php';
 
-Route::resource('firms', Web\FirmsController::class)
-    ->only([
-        'show',
-    ])
-     ->middleware(['auth', 'verified']);
-
 Route::resource('users', Web\UsersController::class)
     ->only([
         'edit',
@@ -66,6 +60,8 @@ Route::resource('o_auth_clients', Web\OAuthClientsController::class)
 ;
 
 Route::middleware(['auth', 'verified'])->group(static function () {
+    Route::resource('firms', Web\FirmsController::class);
+
     Route::prefix('/oauth')->group(static function () {
         Route::get(
             '/tokens',

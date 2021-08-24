@@ -45,6 +45,13 @@ class Firm extends Model
 {
     use HasFactory;
 
+    /** @var positive-int Max number of firms per user. */
+    public const PER_USER_LIMIT = 10;
+
+    protected $fillable = [
+        'title',
+    ];
+
     /**
      * @return BelongsToMany in firm can be many users
      */

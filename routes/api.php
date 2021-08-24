@@ -28,18 +28,6 @@ Route::apiResource('users', Api\UsersController::class)
      ->middleware('auth:api')
 ;
 
-Route::apiResource('firms', Api\FirmsController::class)
-     ->only([
-         'index',
-         'show',
-     ])
-     ->names([
-         'index' => 'api.firms.index',
-         'show' => 'api.firms.show',
-     ])
-     ->middleware('auth:api')
-;
-
 Route::apiResource('firms.users', Api\UsersController::class)
      ->only([
          'index',
@@ -93,3 +81,16 @@ Route::apiResource('o_auth_clients', App\Http\Controllers\Api\OAuthClientsContro
      ])
      ->middleware('auth:api')
 ;
+
+Route::middleware('auth:api')->group(static function () {
+    Route::apiResource('firms', Api\FirmsController::class)
+         ->names([
+             'index' => 'api.firms.index',
+             'show' => 'api.firms.show',
+             'store' => 'api.firms.store',
+             'update' => 'api.firms.update',
+             'destroy' => 'api.firms.destroy',
+         ])
+    ;
+});
+

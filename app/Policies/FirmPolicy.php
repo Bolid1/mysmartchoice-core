@@ -34,7 +34,7 @@ class FirmPolicy
      */
     public function view(User $user, Firm $firm): Response
     {
-        return $user->isInFirm($firm->id)
+        return $user->isInFirm($firm->getKey())
             ? $this->allow()
             : $this->deny('You are not in the firm.');
     }
@@ -49,7 +49,7 @@ class FirmPolicy
      */
     public function viewUsers(User $user, Firm $firm): Response
     {
-        return $user->isInFirm($firm->id)
+        return $user->isInFirm($firm->getKey())
             ? $this->allow()
             : $this->deny('You are not authorized to view users of the firm.');
     }
@@ -57,55 +57,70 @@ class FirmPolicy
     /**
      * Determine whether the user can create models.
      *
+     * @param User $user
+     *
      * @return bool
      */
-    public function create(/*User $user*/): bool
+    public function create(User $user): bool
     {
-        return false;
+        $firmsCount = $user->firms_count;
+        if (null === $firmsCount) {
+            $firmsCount = $user->loadCount('firms')->firms_count;
+        }
+
+        return $firmsCount < Firm::PER_USER_LIMIT;
     }
 
     /**
      * Determine whether the user can update the model.
      *
+     * @param User $user
+     * @param Firm $firm
      * @return bool
      */
-    public function update(/*User $user, Firm $firm*/): bool
+    public function update(User $user, Firm $firm): bool
     {
-        return false;
+        return $user->isInFirm($firm->getKey());
     }
 
     /**
      * Determine whether the user can delete the model.
      *
+     * @param User $user
+     * @param Firm $firm
      * @return bool
      */
-    public function delete(/*User $user, Firm $firm*/): bool
+    public function delete(User $user, Firm $firm): bool
     {
-        return false;
+        return $user->isInFirm($firm->getKey());
     }
 
     /**
      * Determine whether the user can restore the model.
      *
+     * @param User $user
+     * @param Firm $firm
      * @return bool
      */
-    public function restore(/*User $user, Firm $firm*/): bool
+    public function restore(User $user, Firm $firm): bool
     {
-        return false;
+        return $user->isInFirm($firm->getKey());
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
+     * @param User $user
+     * @param Firm $firm
      * @return bool
      */
-    public function forceDelete(/*User $user, Firm $firm*/): bool
+    public function forceDelete(User $user, Firm $firm): bool
     {
-        return false;
+        return $user->isInFirm($firm->getKey());
     }
 
     public function manageIntegrations(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->id);
+        return $user->isInFirm($firm->getKey());
     }
 }

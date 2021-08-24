@@ -8,95 +8,142 @@ use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\URL;
 use Inertia\Testing\Assert;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
+use function route;
 
 class FirmsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
 
-    public function testGetList(): void
+    public function testIndex(): void
     {
         /** @var User $user */
-        $user = User::factory()->hasFirms($firmsCount = 4)->createOne();
+        $user = User::factory()->hasFirms($cnt = 3)->createOne();
         Passport::actingAs($user);
 
-        $this->get('/dashboard')->assertInertia(
-            fn (Assert $page) => $page
-                ->component('Dashboard')
-                ->has('firms', fn (Assert $page) => $page
-                    ->has('data', $firmsCount, fn (Assert $page) => $page
-                        ->where('id', $user->firms->first()->id)
-                        ->where('title', $user->firms->first()->title)
-                        ->has('created_at')
-                        ->has('updated_at')
-                    )
-                    ->where('links.first', URL::to('/dashboard?page=1'))
-                    ->where('links.last', URL::to('/dashboard?page=1'))
-                    ->has('links.next')
-                    ->has('links.prev')
-                    ->where('meta', [
-                        'current_page' => 1,
-                        'from' => 1,
-                        'last_page' => 1,
-                        'links' => [
-                            [
-                                'active' => false,
-                                'label' => '&laquo; Previous',
-                                'url' => null,
-                            ],
-                            [
-                                'active' => true,
-                                'label' => '1',
-                                'url' => URL::to('dashboard?page=1'),
-                            ],
-                            [
-                                'active' => false,
-                                'label' => 'Next &raquo;',
-                                'url' => null,
-                            ],
-                        ],
-                        'path' => URL::to('dashboard'),
-                        'per_page' => 15,
-                        'to' => $firmsCount,
-                        'total' => $firmsCount,
-                    ])
-                )
-        )
+        $this
+            ->get(route('firms.index'))
+            ->assertStatus(200)
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('Firms')
+            )
         ;
+    }
+
+    public function testCreate(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
+
+        $this
+            ->get(route('firms.create'))
+            ->assertStatus(200)
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('FirmEdit')
+            )
+        ;
+    }
+
+    public function testStore(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->createOne();
+        Passport::actingAs($user);
+
+        $this
+            ->postJson(route('firms.store'), [
+                'title' => $title = 'Firm title',
+            ])
+            ->assertStatus(303)
+        ;
+
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+        self::assertNotNull($firm);
+        self::assertEquals($title, $firm->title);
     }
 
     public function testShow(): void
     {
-        /** @var Firm $firm */
-        $firm = Firm::factory()->hasUsers(1)->createOne();
-
         /** @var User $user */
-        $user = User::find($firm->users->first()->id);
+        $user = User::factory()->hasFirms(1)->createOne();
         Passport::actingAs($user);
 
-        $this->get("/firms/{$firm->id}")->assertInertia(
-            fn (Assert $page) => $page
-                ->component('Firm')
-                ->has('firm', fn (Assert $page) => $page
-                    ->where('id', $user->firms->first()->id)
-                    ->where('title', $user->firms->first()->title)
-                    ->has('created_at')
-                    ->has('updated_at')
-                    ->has('users', 1, fn (Assert $page) => $page
-                        ->whereAll([
-                            'id' => $user->id,
-                            'name' => $user->name,
-                            'email' => $user->email,
-                        ])
-                        ->has('created_at')
-                        ->has('updated_at')
-                    )
-                )
-        )
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+
+        $this
+            ->get(route('firms.show', $firm))
+            ->assertStatus(200)
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('Firm')
+            )
         ;
+    }
+
+    public function testEdit(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->hasFirms(1)->createOne();
+        Passport::actingAs($user);
+
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+
+        $this
+            ->get(route('firms.edit', $firm))
+            ->assertStatus(200)
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('FirmEdit')
+            )
+        ;
+    }
+
+    public function testUpdate(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->hasFirms(1)->createOne();
+        Passport::actingAs($user);
+
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+
+        $this
+            ->patch(route('firms.update', $firm), [
+                // fixme: need more data for patch
+            ])
+            ->assertStatus(303)
+            ->assertRedirect(route('firms.edit', $firm))
+        ;
+
+        // self::assertEquals($newFieldValue, $firm->fresh()->field);
+    }
+
+    public function testDestroy(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->hasFirms(1)->createOne();
+        Passport::actingAs($user);
+
+        /** @var Firm $firm */
+        $firm = $user->firms->first();
+
+        $this
+            ->delete(route('firms.destroy', $firm))
+            ->assertStatus(303)
+            ->assertRedirect(route('firms.index'))
+        ;
+
+        self::assertNull($firm->fresh());
+        // or for soft deletes:
+        // self::assertNotNull($firm->fresh());
     }
 }
