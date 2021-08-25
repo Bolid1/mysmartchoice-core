@@ -8,11 +8,9 @@
     </template>
   </page-header>
 
-  <page-block>
-    <form @submit.prevent="true" class="p-4">
-      <!-- Client select -->
-      <div class="pt-2">
-        <breeze-label for="client_id">Client</breeze-label>
+  <el-card class="mt-2">
+    <el-form label-position="left" label-width="100px" :model="form">
+      <el-form-item label="Client" :error="form.errors.client_id">
         <el-select
           v-model="form.client_id"
           placeholder="Please, select..."
@@ -27,13 +25,10 @@
           >
           </el-option>
         </el-select>
-        <div v-if="form.errors.client_id">{{ form.errors.client_id }}</div>
-      </div>
+      </el-form-item>
 
-      <!-- submit -->
-      <div class="pt-2" v-if="client">
+      <el-form-item v-if="client">
         <inertia-link
-          class="underline"
           :href="
             route('passport.authorizations.authorize', {
               client_id: client.id,
@@ -47,18 +42,14 @@
               skips_authorization: true,
             })
           "
-          ><breeze-button
-            type="submit"
-            color="green"
-            :class="{ 'opacity-25': form.processing }"
-            :disabled="form.processing"
-          >
-            Issue
-          </breeze-button></inertia-link
         >
-      </div>
-    </form>
-  </page-block>
+          <el-button :disabled="form.processing" type="primary"
+            >Issue</el-button
+          ></inertia-link
+        >
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
@@ -71,6 +62,7 @@
   import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { useForm } from "@inertiajs/inertia-vue3"
   import { find } from "lodash"
+  import axios from "axios"
 
   export default {
     layout: AuthenticatedLayout,
