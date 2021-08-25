@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function compact;
 use function route;
@@ -25,7 +24,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -37,6 +35,7 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->get(route('firms.firm_integrations.index', compact('firm')))
             ->assertStatus(200)
             ->assertInertia(
@@ -50,11 +49,11 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
         $this
+            ->actingAs($user)
             ->get(route('firms.firm_integrations.create', compact('firm')))
             ->assertStatus(200)
             ->assertInertia(
@@ -68,13 +67,13 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         $this
+            ->actingAs($user)
             ->postJson(route('firms.firm_integrations.store', compact('firm')), [
                 'integration_id' => $integration->id,
             ])
@@ -91,7 +90,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -104,6 +102,7 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->get(route('firms.firm_integrations.edit', ['firm' => $firm, 'firm_integration' => $firmIntegration]))
             ->assertStatus(200)
             ->assertInertia(
@@ -117,7 +116,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -130,6 +128,7 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->patch(route('firms.firm_integrations.update', ['firm' => $firm, 'firm_integration' => $firmIntegration]), [
                 // fixme: need more data for patch
             ])
@@ -144,7 +143,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -157,6 +155,7 @@ class FirmIntegrationsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->delete(route('firms.firm_integrations.destroy', ['firm' => $firm, 'firm_integration' => $firmIntegration]))
             ->assertStatus(303)
             ->assertRedirect(route('firms.firm_integrations.index', compact('firm')))

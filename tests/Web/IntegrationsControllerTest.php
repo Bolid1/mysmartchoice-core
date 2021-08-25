@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
 
@@ -23,9 +22,9 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(3)->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->get(route('integrations.index'))
             ->assertStatus(200)
             ->assertInertia(
@@ -39,11 +38,11 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         $this
+            ->actingAs($user)
             ->get(route('integrations.create', $integration))
             ->assertStatus(200)
             ->assertInertia(
@@ -57,11 +56,11 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasClients(1)->createOne();
-        Passport::actingAs($user);
         /** @var Client $client */
         $client = $user->clients->first();
 
         $this
+            ->actingAs($user)
             ->post(route('integrations.store'), [
                 'title' => $title = $this->faker->jobTitle.' title', // some title less 5 characters length
                 'description' => $description = $this->faker->sentence,
@@ -85,11 +84,11 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         $this
+            ->actingAs($user)
             ->get(route('integrations.show', $integration))
             ->assertStatus(200)
             ->assertInertia(
@@ -103,11 +102,11 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         $this
+            ->actingAs($user)
             ->get(route('integrations.edit', $integration))
             ->assertStatus(200)
             ->assertInertia(
@@ -121,11 +120,11 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         $this
+            ->actingAs($user)
             ->patch(route('integrations.update', $integration), [
                 'title' => $newTitle = $this->faker->jobTitle.' title', // some title less 5 characters length
             ])
@@ -140,7 +139,6 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
@@ -149,6 +147,7 @@ class IntegrationsControllerTest extends TestCase
         $integration->save();
 
         $this
+            ->actingAs($user)
             ->deleteJson(route('integrations.destroy', $integration))
             ->assertStatus(303)
             ->assertRedirect(route('integrations.index'))

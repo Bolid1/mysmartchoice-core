@@ -10,7 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\URL;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UsersControllerTest extends TestCase
@@ -25,9 +24,11 @@ class UsersControllerTest extends TestCase
 
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
 
-        $this->get("/firms/{$firm->id}/users")->assertInertia(
+        $this
+            ->actingAs($user)
+            ->get("/firms/{$firm->id}/users")
+            ->assertInertia(
             fn (Assert $page) => $page
                 ->component('Users')
                 ->has('firm', fn (Assert $pageFirm) => $pageFirm
@@ -90,9 +91,11 @@ class UsersControllerTest extends TestCase
 
         /** @var User $user */
         $user = User::find($firm->users->first()->id);
-        Passport::actingAs($user);
 
-        $this->get("/users/{$user->id}/edit")->assertInertia(
+        $this
+            ->actingAs($user)
+            ->get("/users/{$user->id}/edit")
+            ->assertInertia(
             fn (Assert $page) => $page
                 ->component('UserEdit')
                 ->has('user', fn (Assert $page) => $page
@@ -115,22 +118,22 @@ class UsersControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         do {
             $newName = $this->faker->name;
             // Prevent same name generation
         } while ($newName === $user->name);
 
-        $response = $this->patch(
+        $this
+            ->actingAs($user)
+            ->patch(
             "/users/{$user->id}",
             [
                 'name' => $newName,
             ]
-        );
-
-        $response->assertStatus(303);
-        $response->assertRedirect("/users/{$user->id}/edit");
+        )
+            ->assertStatus(303)
+            ->assertRedirect("/users/{$user->id}/edit");
     }
 
     /**
@@ -142,9 +145,10 @@ class UsersControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
-        $response = $this->patch(
+        $this
+            ->actingAs($user)
+            ->patch(
             "/users/{$user->id}",
             [
                 // More than 255 symbols
@@ -155,9 +159,8 @@ class UsersControllerTest extends TestCase
                 'X-Inertia' => true,
                 'Referer' => $referer = URL::to("/users/{$user->id}/edit"),
             ]
-        );
-
-        $response->assertStatus(303);
-        $response->assertRedirect($referer);
+        )
+        ->assertStatus(303)
+        ->assertRedirect($referer);
     }
 }

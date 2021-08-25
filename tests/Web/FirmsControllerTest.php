@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
 
@@ -22,9 +21,9 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms($cnt = 3)->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->get(route('firms.index'))
             ->assertStatus(200)
             ->assertInertia(
@@ -38,9 +37,9 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->get(route('firms.create'))
             ->assertStatus(200)
             ->assertInertia(
@@ -54,9 +53,9 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->postJson(route('firms.store'), [
                 'title' => $title = 'Firm title',
             ])
@@ -73,12 +72,12 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
         $this
+            ->actingAs($user)
             ->get(route('firms.show', $firm))
             ->assertStatus(200)
             ->assertInertia(
@@ -92,12 +91,12 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
         $this
+            ->actingAs($user)
             ->get(route('firms.edit', $firm))
             ->assertStatus(200)
             ->assertInertia(
@@ -111,12 +110,12 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
         $this
+            ->actingAs($user)
             ->patch(route('firms.update', $firm), [
                 // fixme: need more data for patch
             ])
@@ -131,12 +130,12 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
 
         $this
+            ->actingAs($user)
             ->delete(route('firms.destroy', $firm))
             ->assertStatus(303)
             ->assertRedirect(route('firms.index'))

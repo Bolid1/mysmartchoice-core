@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function route;
 
@@ -22,11 +21,11 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         OAuthClient::factory()->count(3)->create();
 
         $this
+            ->actingAs($user)
             ->get(route('o_auth_clients.index'))
             ->assertStatus(200)
             ->assertInertia(
@@ -40,9 +39,9 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->get(route('o_auth_clients.create'))
             ->assertStatus(200)
             ->assertInertia(
@@ -56,9 +55,9 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         $this
+            ->actingAs($user)
             ->postJson(route('o_auth_clients.store'), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
@@ -73,7 +72,6 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
@@ -81,6 +79,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->get(route('o_auth_clients.show', $oAuthClient))
             ->assertStatus(200)
             ->assertInertia(
@@ -99,7 +98,6 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
@@ -107,6 +105,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->get(route('o_auth_clients.edit', $oAuthClient))
             ->assertStatus(200)
             ->assertInertia(
@@ -125,7 +124,6 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
@@ -133,6 +131,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->patch(route('o_auth_clients.update', $oAuthClient), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
@@ -148,7 +147,6 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
 
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
@@ -156,6 +154,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
+            ->actingAs($user)
             ->delete(route('o_auth_clients.destroy', $oAuthClient))
             ->assertStatus(303)
             ->assertRedirect(route('o_auth_clients.index'))

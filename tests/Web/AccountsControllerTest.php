@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\Assert;
-use Laravel\Passport\Passport;
 use Tests\TestCase;
 use function compact;
 use function route;
@@ -26,11 +25,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(5)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->getJson(route('firms.accounts.index', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
@@ -45,11 +44,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->getJson(route('firms.accounts.create', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
@@ -64,9 +63,9 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
 
         $response = $this
+            ->actingAs($user)
             ->postJson(route('firms.accounts.store', compact('firm')), $data = [
                 'title' => 'FooBarBaz',
                 'balance' => 123.32,
@@ -91,11 +90,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->getJson(route('firms.accounts.show', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
@@ -110,11 +109,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->getJson(route('firms.accounts.edit', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
@@ -129,11 +128,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->patchJson(route('firms.accounts.update', compact('firm', 'account')), [
                 'title' => $title = 'FooBarBaz',
             ])
@@ -154,11 +153,11 @@ class AccountsControllerTest extends TestCase
         $firm = Firm::factory()->hasUsers(1)->hasAccounts(1)->createOne();
         /** @var User $user */
         $user = $firm->users->first();
-        Passport::actingAs($user);
         /** @var Account $account */
         $account = $firm->accounts->first();
 
         $this
+            ->actingAs($user)
             ->deleteJson(route('firms.accounts.destroy', compact('firm', 'account')))
             ->assertStatus(303)
             ->assertRedirect(route('firms.accounts.index', compact('firm')))
