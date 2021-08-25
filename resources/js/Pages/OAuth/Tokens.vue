@@ -2,7 +2,7 @@
   <page-header>
     <template #right>
       <inertia-link :href="route('oauth.tokens.issue')">
-        <el-button type="primary">Issue</el-button>
+        <el-button plain type="success">Issue</el-button>
       </inertia-link>
     </template>
   </page-header>
