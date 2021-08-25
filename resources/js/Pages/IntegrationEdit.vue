@@ -11,86 +11,36 @@
     </div>
   </header>
 
-  <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <form
-          @submit.prevent="
-            integration.id
-              ? form.patch(route('integrations.update', integration))
-              : form.post(route('integrations.store'))
-          "
-          class="p-4"
-        >
-          <!-- title -->
-          <div class="pt-2">
-            <breeze-label for="title">Title</breeze-label>
-            <breeze-input
-              id="title"
-              type="text"
-              v-model="form.title"
-              class="mt-1 block w-full"
-              required
-              autofocus
-            />
-            <div v-if="form.errors.title">{{ form.errors.title }}</div>
-          </div>
+  <el-card class="mt-2">
+    <el-form label-position="left" label-width="100px" :model="form">
+      <el-form-item label="Title" :error="form.errors.title">
+        <el-input
+          id="title"
+          type="text"
+          v-model="form.title"
+          class="mt-1 block w-full"
+          required
+          autofocus
+        />
+      </el-form-item>
 
-          <!-- description -->
-          <div class="pt-2">
-            <breeze-label for="description">Description</breeze-label>
-            <breeze-input
-              id="description"
-              type="text"
-              v-model="form.description"
-              class="mt-1 block w-full"
-              required
-              autofocus
-            />
-            <div v-if="form.errors.description">
-              {{ form.errors.description }}
-            </div>
-          </div>
+      <el-form-item label="Description" :error="form.errors.description">
+        <el-input
+          id="description"
+          type="text"
+          v-model="form.description"
+          class="mt-1 block w-full"
+          required
+          autofocus
+        />
+      </el-form-item>
 
-          <!-- Auth section-->
-          <div class="pt-2">
-            <ul class="flex cursor-pointer">
-              <li class="py-2 px-6 ml-1 bg-white rounded-t-lg">OAuth2</li>
-              <li
-                class="
-                  py-2
-                  px-6
-                  ml-1
-                  bg-white
-                  rounded-t-lg
-                  text-gray-500
-                  bg-gray-200
-                "
-              >
-                Key
-              </li>
-              <li
-                class="
-                  py-2
-                  px-6
-                  ml-1
-                  bg-white
-                  rounded-t-lg
-                  text-gray-500
-                  bg-gray-200
-                "
-              >
-                Has no auth
-              </li>
-            </ul>
-          </div>
-
-          <!-- oauth2_client_id -->
-          <div class="pt-2">
-            <breeze-label for="oauth2_client_id"
-              >Select OAuth client</breeze-label
-            >
-
+      <el-tabs>
+        <el-tab-pane label="OAuth2">
+          <el-form-item
+            label="Client"
+            :error="form.errors['settings.oauth2_client_id']"
+          >
             <el-select
               v-model="form.settings.oauth2_client_id"
               placeholder="Please, select..."
@@ -105,34 +55,35 @@
               >
               </el-option>
             </el-select>
-            <div v-if="form.errors['settings.oauth2_client_id']">
-              {{ form.errors["settings.oauth2_client_id"] }}
-            </div>
-          </div>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane disabled label="Key"></el-tab-pane>
+        <el-tab-pane disabled label="No auth"></el-tab-pane>
+      </el-tabs>
 
-          <!-- submit -->
-          <div class="pt-2" v-if="integration.id">
-            <breeze-button
-              type="submit"
-              :class="{ 'opacity-25': form.processing }"
-              :disabled="form.processing"
-            >
-              Save
-            </breeze-button>
-          </div>
-          <div class="pt-2" v-else>
-            <breeze-button
-              type="submit"
-              :class="{ 'opacity-25': form.processing }"
-              :disabled="form.processing"
-            >
-              Create
-            </breeze-button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+      <el-button
+        v-if="!integration.id"
+        :disabled="form.processing"
+        type="primary"
+        @click="form.post(route('integrations.store'))"
+        >Create</el-button
+      >
+      <el-button
+        v-if="integration.id"
+        :disabled="form.processing"
+        type="primary"
+        @click="form.patch(route('integrations.update', { integration }))"
+        >Save</el-button
+      >
+      <el-button
+        v-if="integration.id"
+        :disabled="form.processing"
+        type="danger"
+        @click="form.delete(route('integrations.destroy', { integration }))"
+        >Delete</el-button
+      >
+    </el-form>
+  </el-card>
 </template>
 
 <script>
