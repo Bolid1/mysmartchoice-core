@@ -116,7 +116,7 @@
       return {
         clients: {},
         firms: {},
-        firm_scopes: ["view", "update", "destroy"],
+        firm_scopes: ["view", "update", "delete"],
       }
     },
     setup() {
