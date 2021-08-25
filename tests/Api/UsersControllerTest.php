@@ -28,22 +28,21 @@ class UsersControllerTest extends TestCase
 
         /** @var User $user */
         $user = $this->faker->randomElement($firm->users);
-        Passport::actingAs($user);
+        Passport::actingAs($user, ["view-firm-{$firm->getKey()}-users"]);
 
-        $response = $this->get("/api/firms/{$firm->id}/users");
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure(
-            [
-                'data' => [
-                    '*' => [
-                        'id',
-                        'name',
+        $response = $this
+            ->get("/api/firms/{$firm->getKey()}/users")
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'name',
+                        ],
                     ],
-                ],
-            ]
-        );
+                ]
+            );
 
         $data = $response->json('data');
 

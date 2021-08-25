@@ -41,6 +41,7 @@ class FirmsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreFirmRequest $request
+     *
      * @return JsonResource
      */
     public function store(StoreFirmRequest $request): JsonResource
@@ -57,6 +58,7 @@ class FirmsController extends Controller
      * Display the specified resource.
      *
      * @param  Firm $firm
+     *
      * @return JsonResource
      */
     public function show(Firm $firm): JsonResource
@@ -69,6 +71,7 @@ class FirmsController extends Controller
      *
      * @param  UpdateFirmRequest $request
      * @param  Firm $firm
+     *
      * @return JsonResource
      */
     public function update(UpdateFirmRequest $request, Firm $firm): JsonResource
@@ -82,6 +85,7 @@ class FirmsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Firm $firm
+     *
      * @return JsonResource
      */
     public function destroy(Firm $firm): JsonResource

@@ -27,14 +27,51 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item v-if="client">
+      <el-form-item label="Firm" :error="form.errors.firm_id">
+        <el-select
+          v-model="form.firm_id"
+          placeholder="Please, select..."
+          class="mt-1 block w-full"
+          filterable
+        >
+          <el-option
+            v-for="firm in firms.data"
+            :key="firm.id"
+            :label="firm.title"
+            :value="firm.id"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="Firm scopes" :error="form.errors.firm_scopes">
+        <el-select
+          v-model="form.firm_scopes"
+          placeholder="Please, select..."
+          class="mt-1 block w-full"
+          filterable
+          multiple
+        >
+          <el-option
+            v-for="scope in firm_scopes"
+            :key="scope"
+            :label="scope"
+            :value="scope"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item v-if="client && firm">
         <inertia-link
           :href="
             route('passport.authorizations.authorize', {
               client_id: client.id,
               redirect_uri: client.redirect,
               response_type: 'code',
-              scope: '',
+              scope: union(
+                map(form.firm_scopes, (scope) => `${scope}-firm-${firm.id}`)
+              ).join(' '),
               state: JSON.stringify({
                 client_id: client.id,
                 interface: '/oauth/tokens/issue',
@@ -61,7 +98,7 @@
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { useForm } from "@inertiajs/inertia-vue3"
-  import { find } from "lodash"
+  import { find, map, union } from "lodash"
   import axios from "axios"
 
   export default {
@@ -78,11 +115,15 @@
     data() {
       return {
         clients: {},
+        firms: {},
+        firm_scopes: ["view", "update", "destroy"],
       }
     },
     setup() {
       const form = useForm({
         client_id: "",
+        firm_id: "",
+        firm_scopes: "",
       })
 
       return { form }
@@ -95,11 +136,25 @@
           null
         )
       },
+      firm() {
+        return (
+          (this.form.firm_id &&
+            find(this.firms.data, { id: this.form.firm_id })) ||
+          null
+        )
+      },
     },
     created() {
       axios.get("/api/o_auth_clients/").then((response) => {
         this.clients = response.data
       })
+      axios.get("/api/firms/").then((response) => {
+        this.firms = response.data
+      })
+    },
+    methods: {
+      map,
+      union,
     },
   }
 </script>

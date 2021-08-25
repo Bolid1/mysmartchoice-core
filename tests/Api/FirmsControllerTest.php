@@ -8,9 +8,9 @@ use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
+use function route;
 
 class FirmsControllerTest extends TestCase
 {
@@ -21,7 +21,7 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms($cnt = 3)->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, ['view-firms']);
 
         $this
             ->getJson(route('api.firms.index'))
@@ -44,11 +44,11 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, ['create-firms']);
 
         $this
             ->postJson(route('api.firms.store'), [
-                'title' => $title = 'Firm title'
+                'title' => $title = 'Firm title',
             ])
             ->assertStatus(201)
             ->assertJson([
@@ -68,10 +68,11 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
+
+        Passport::actingAs($user, ["view-firm-{$firm->getKey()}"]);
 
         $this
             ->getJson(route('api.firms.show', $firm))
@@ -89,10 +90,11 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
+
+        Passport::actingAs($user, ["update-firm-{$firm->getKey()}"]);
 
         $this
             ->patchJson(route('api.firms.update', $firm), [
@@ -112,10 +114,11 @@ class FirmsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->createOne();
-        Passport::actingAs($user);
 
         /** @var Firm $firm */
         $firm = $user->firms->first();
+
+        Passport::actingAs($user, ["delete-firm-{$firm->getKey()}"]);
 
         $this
             ->deleteJson(route('api.firms.destroy', $firm))

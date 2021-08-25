@@ -2,32 +2,46 @@
   <page-header>
     <template #right>
       <inertia-link :href="route('oauth.tokens.issue')">
-        <breeze-button color="green">Issue</breeze-button>
+        <el-button type="primary">Issue</el-button>
       </inertia-link>
     </template>
   </page-header>
 
-  <div class="flex p-6">
-    <el-card v-for="token in tokens" class="mr-2">
-      <h5>{{ token.client.name }}</h5>
-      <div>Created at {{ token.created_at }}</div>
-      <div>Expire at {{ token.expires_at }}</div>
-      <breeze-button @click="revokeToken(token)" as="button" color="red"
-        >revoke</breeze-button
-      >
-    </el-card>
-  </div>
+  <el-row :gutter="12">
+    <el-col
+      v-for="token in tokens"
+      :xs="24"
+      :sm="12"
+      :md="8"
+      :lg="6"
+      :xl="4"
+      class="mt-2"
+    >
+      <el-card class="mr-2">
+        <h5>{{ token.client.name }}</h5>
+        <div>Created at {{ token.created_at }}</div>
+        <div>Expire at {{ token.expires_at }}</div>
+        <div>
+          Scopes:
+          <ol>
+            <li v-for="scope in token.scopes">{{ scope }}</li>
+          </ol>
+        </div>
+        <el-button @click="revokeToken(token)" type="danger">
+          Revoke
+        </el-button>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
-  import BreezeButton from "@/Components/Button"
-  import PageBlock from "@/Components/PageBlock"
 
   export default {
     layout: AuthenticatedLayout,
-    components: { PageBlock, BreezeButton, PageHeader },
+    components: { PageHeader },
     data() {
       return {
         tokens: [],

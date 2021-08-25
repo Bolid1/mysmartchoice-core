@@ -165,4 +165,9 @@ class User extends Authenticatable
             ->exists()
             ;
     }
+
+    public function noTokenOrTokenCan(string $scope): bool
+    {
+        return null === $this->token() || $this->tokenCan($scope);
+    }
 }

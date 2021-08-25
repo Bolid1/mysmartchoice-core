@@ -93,4 +93,3 @@ Route::middleware('auth:api')->group(static function () {
          ])
     ;
 });
-

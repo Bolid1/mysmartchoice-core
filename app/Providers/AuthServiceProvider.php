@@ -15,7 +15,9 @@ use App\Policies\FirmIntegrationPolicy;
 use App\Policies\FirmPolicy;
 use App\Policies\IntegrationPolicy;
 use App\Policies\UserPolicy;
+use App\Repositories\ScopeRepository;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Bridge\ScopeRepository as PassportScopeRepository;
 use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
@@ -33,6 +35,11 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
     ];
 
+    public function register(): void
+    {
+        $this->app->bind(PassportScopeRepository::class, ScopeRepository::class);
+    }
+
     /**
      * Register any authentication / authorization services.
      *
@@ -43,6 +50,14 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::useClientModel(OAuthClient::class);
+
+        Passport::tokensCan([
+            'view-firms' => 'View list of all your firms',
+            'create-firms' => 'View list of all your firms',
+            'update-firms' => 'Modify title of any your firms',
+            'destroy-firms' => 'Delete any of your firms',
+            /* @see \App\Services\DynamicScopesBuilder::$scopesPatterns */
+        ]);
 
         if (!$this->app->routesAreCached()) {
             Passport::routes(null, [

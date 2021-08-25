@@ -18,10 +18,9 @@ class FirmPolicy
      *
      * @return bool
      */
-    public function viewAny(/*User $user*/): bool
+    public function viewAny(User $user): bool
     {
-        // @TODO: $user->isActive
-        return true;
+        return $user->noTokenOrTokenCan('view-firms');
     }
 
     /**
@@ -34,7 +33,7 @@ class FirmPolicy
      */
     public function view(User $user, Firm $firm): Response
     {
-        return $user->isInFirm($firm->getKey())
+        return ($user->noTokenOrTokenCan("view-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey()))
             ? $this->allow()
             : $this->deny('You are not in the firm.');
     }
@@ -49,7 +48,7 @@ class FirmPolicy
      */
     public function viewUsers(User $user, Firm $firm): Response
     {
-        return $user->isInFirm($firm->getKey())
+        return ($user->noTokenOrTokenCan("view-firm-{$firm->getKey()}-users") && $user->isInFirm($firm->getKey()))
             ? $this->allow()
             : $this->deny('You are not authorized to view users of the firm.');
     }
@@ -63,6 +62,10 @@ class FirmPolicy
      */
     public function create(User $user): bool
     {
+        if (!$user->noTokenOrTokenCan('create-firms')) {
+            return false;
+        }
+
         $firmsCount = $user->firms_count;
         if (null === $firmsCount) {
             $firmsCount = $user->loadCount('firms')->firms_count;
@@ -76,11 +79,12 @@ class FirmPolicy
      *
      * @param User $user
      * @param Firm $firm
+     *
      * @return bool
      */
     public function update(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->getKey());
+        return $user->noTokenOrTokenCan("update-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
     }
 
     /**
@@ -88,11 +92,12 @@ class FirmPolicy
      *
      * @param User $user
      * @param Firm $firm
+     *
      * @return bool
      */
     public function delete(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->getKey());
+        return $user->noTokenOrTokenCan("delete-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
     }
 
     /**
@@ -100,11 +105,12 @@ class FirmPolicy
      *
      * @param User $user
      * @param Firm $firm
+     *
      * @return bool
      */
     public function restore(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->getKey());
+        return $user->noTokenOrTokenCan("restore-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
     }
 
     /**
@@ -112,15 +118,16 @@ class FirmPolicy
      *
      * @param User $user
      * @param Firm $firm
+     *
      * @return bool
      */
     public function forceDelete(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->getKey());
+        return $user->noTokenOrTokenCan("delete-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
     }
 
     public function manageIntegrations(User $user, Firm $firm): bool
     {
-        return $user->isInFirm($firm->getKey());
+        return null === $user->token() && $user->isInFirm($firm->getKey());
     }
 }

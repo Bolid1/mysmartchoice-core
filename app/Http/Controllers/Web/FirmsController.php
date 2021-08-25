@@ -61,6 +61,7 @@ class FirmsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreFirmRequest $request
+     *
      * @return RedirectResponse
      */
     public function store(StoreFirmRequest $request): RedirectResponse
@@ -77,6 +78,7 @@ class FirmsController extends Controller
      * Display the specified resource.
      *
      * @param  Firm  $firm
+     *
      * @return Response
      */
     public function show(Firm $firm): Response
@@ -100,6 +102,7 @@ class FirmsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Firm  $firm
+     *
      * @return Response
      */
     public function edit(Firm $firm): Response
@@ -116,6 +119,7 @@ class FirmsController extends Controller
      *
      * @param  UpdateFirmRequest $request
      * @param  Firm  $firm
+     *
      * @return RedirectResponse
      */
     public function update(UpdateFirmRequest $request, Firm $firm): RedirectResponse
@@ -129,6 +133,7 @@ class FirmsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Firm  $firm
+     *
      * @return RedirectResponse
      */
     public function destroy(Firm $firm): RedirectResponse
