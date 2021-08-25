@@ -8,7 +8,7 @@
             <div class="flex">
               <!-- Logo -->
               <div class="flex-shrink-0 flex items-center">
-                <inertia-link :href="route('dashboard')">
+                <inertia-link :href="route('firms.index')">
                   <breeze-application-logo class="block h-9 w-auto" />
                 </inertia-link>
               </div>
@@ -16,10 +16,10 @@
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <breeze-nav-link
-                  :href="route('dashboard')"
-                  :active="route().current('dashboard')"
+                  :href="route('firms.index')"
+                  :active="route().current('firms.index')"
                 >
-                  Dashboard
+                  Firms
                 </breeze-nav-link>
               </div>
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -172,10 +172,10 @@
         >
           <div class="pt-2 pb-3 space-y-1">
             <breeze-responsive-nav-link
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
+              :href="route('firms.index')"
+              :active="route().current('firms.index')"
             >
-              Dashboard
+              Firms
             </breeze-responsive-nav-link>
           </div>
           <div class="pt-2 pb-3 space-y-1">

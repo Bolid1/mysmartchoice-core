@@ -14,10 +14,10 @@
     <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
       <template v-if="$page.props.auth.user">
         <inertia-link
-          :href="route('dashboard')"
+          :href="route('firms.index')"
           class="text-sm text-gray-700 underline"
         >
-          Dashboard
+          Firms
         </inertia-link>
 
         <inertia-link

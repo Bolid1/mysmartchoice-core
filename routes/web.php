@@ -26,9 +26,6 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
     'phpVersion' => \PHP_VERSION,
 ]));
 
-Route::get('/dashboard', [Web\FirmsController::class, 'index'])
-     ->middleware(['auth', 'verified'])->name('dashboard');
-
 require __DIR__.'/auth.php';
 
 Route::resource('users', Web\UsersController::class)
