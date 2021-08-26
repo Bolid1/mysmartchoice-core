@@ -34,6 +34,7 @@ use function data_get;
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
  * @property string|null $o_auth2_client_id
+ * @property array $o_auth2_scopes
  * @property Firm $firm
  *
  * @method static IntegrationFactory factory(...$parameters)
@@ -103,5 +104,10 @@ class Integration extends Model
     public function getOAuth2ClientIdAttribute(): ?string
     {
         return data_get($this->settings, 'oauth2_client_id');
+    }
+
+    public function getOAuth2ScopesAttribute(): array
+    {
+        return (array)data_get($this->settings, 'oauth2_scopes', []);
     }
 }

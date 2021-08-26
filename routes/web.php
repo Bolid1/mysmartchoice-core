@@ -47,17 +47,13 @@ Route::resource('firms.accounts', Web\AccountsController::class)
 Route::resource('integrations', Web\IntegrationsController::class)
     ->middleware(['auth', 'verified']);
 
-Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class)
-    ->except('show')
-    ->middleware(['auth', 'verified'])
-;
-
 Route::resource('o_auth_clients', Web\OAuthClientsController::class)
      ->middleware(['auth', 'verified'])
 ;
 
 Route::middleware(['auth', 'verified'])->group(static function () {
     Route::resource('firms', Web\FirmsController::class);
+    Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class);
 
     Route::prefix('/oauth')->group(static function () {
         Route::get(

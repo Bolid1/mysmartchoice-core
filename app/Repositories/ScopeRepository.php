@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Services\DynamicScopesBuilder;
 use Laravel\Passport\Passport;
+use function array_map;
 
 class ScopeRepository extends \Laravel\Passport\Bridge\ScopeRepository
 {
@@ -30,5 +31,10 @@ class ScopeRepository extends \Laravel\Passport\Bridge\ScopeRepository
         }
 
         return parent::getScopeEntityByIdentifier($identifier);
+    }
+
+    public function getScopesEntitiesByIdentifiers(array $identifiers): array
+    {
+        return array_map([$this, 'getScopeEntityByIdentifier'], $identifiers);
     }
 }

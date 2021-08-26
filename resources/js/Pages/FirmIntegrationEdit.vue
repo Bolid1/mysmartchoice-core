@@ -49,7 +49,11 @@
 
         <el-form-item>
           <el-button-group>
-            <el-button type="primary" :disabled="form.processing">
+            <el-button
+              type="primary"
+              native-type="submit"
+              :disabled="form.processing"
+            >
               {{ firm_integration.id ? "Update" : "Install" }}
             </el-button>
 
@@ -79,10 +83,15 @@
               ></a
             >
           </el-button-group>
-          <p class="text-sm">
+          <p class="text-sm" v-if="!firm_integration.id">
             by clicking the button you agree to provide access for your firm
-            data to the 3rd party
+            data to the 3rd party{{ used_scopes?.length ? ":" : "" }}
           </p>
+          <ul class="text-sm" v-if="!firm_integration.id">
+            <li v-for="scope in used_scopes">
+              {{ scope }}
+            </li>
+          </ul>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -100,9 +109,10 @@
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
   import { useForm } from "@inertiajs/inertia-vue3"
-  import { head, filter, find, join } from "lodash"
+  import { get, filter, find, join } from "lodash"
   import { tokensManager } from "@/Managers/OAuth/Tokens"
   import TokenCard from "@/Components/OAuth/TokenCard"
+  import { scopesManager } from "@/Managers/OAuth/Scopes"
 
   export default {
     layout: AuthenticatedLayout,
@@ -114,6 +124,7 @@
     data() {
       return {
         tokens: [],
+        scopes: [],
       }
     },
     setup(props) {
@@ -125,7 +136,25 @@
     },
     computed: {
       integration() {
-        return head(this.integrations.data)
+        return (
+          (this.form.integration_id &&
+            find(this.integrations.data, { id: this.form.integration_id })) ||
+          null
+        )
+      },
+      used_scopes() {
+        const integrationScopes = get(
+          this.integration,
+          "settings.oauth2_scopes"
+        )
+
+        return integrationScopes?.length
+          ? filter(this.scopes, ({ key }) =>
+              find(integrationScopes, (scope) => {
+                return scope === key
+              })
+            ).map((scope) => this.prepareScopeDescription(scope))
+          : []
       },
     },
     methods: {
@@ -142,11 +171,20 @@
             ))
         )
       },
+      loadScopes() {
+        scopesManager.load().then((scopes) => (this.scopes = scopes))
+      },
+      prepareScopeDescription(scope) {
+        return scopesManager.prepareDescription(scope.description, {
+          firm: this.firm.title,
+        })
+      },
     },
     created() {
       if (this.firm_integration.id) {
         this.loadTokens()
       }
+      this.loadScopes()
     },
   }
 </script>

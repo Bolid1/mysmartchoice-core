@@ -2,7 +2,7 @@
 
 - [ ] Integrations
   - [x] Firm should become part of access token scope
-  - [ ] Send token just after integration installed
+  - [x] Send token just after integration installed
   - [ ] Integration can upload own javascript to interact with interface
 - [ ] Transactions management
     - [ ] Users can manage their transactions

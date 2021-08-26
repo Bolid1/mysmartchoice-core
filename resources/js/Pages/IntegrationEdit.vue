@@ -111,6 +111,7 @@
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import { useForm } from "@inertiajs/inertia-vue3"
   import { has, get, extend } from "lodash"
+  import { scopesManager } from "@/Managers/OAuth/Scopes"
 
   export default {
     layout: AuthenticatedLayout,
@@ -145,8 +146,8 @@
       axios.get("/api/oauth/clients").then((response) => {
         this.oauth_clients = response.data
       })
-      axios.get("/api/oauth/scopes").then((response) => {
-        this.oauth_scopes = response.data
+      scopesManager.load().then((scopes) => {
+        this.oauth_scopes = scopes
       })
     },
   }

@@ -82,12 +82,12 @@
       <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <!--            <inertia-link-->
-            <!--              class="underline"-->
-            <!--              :href="route('firms.integrations', firm)"-->
-            <!--            >-->
-            Integrations
-            <!--            </inertia-link>-->
+            <inertia-link
+              class="underline"
+              :href="route('firms.firm_integrations.index', { firm })"
+            >
+              Integrations
+            </inertia-link>
           </h3>
         </div>
       </header>

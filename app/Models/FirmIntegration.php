@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\FirmIntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,10 +19,13 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $firm_id
+ * @property Firm $firm
  * @property int $integration_id
+ * @property Integration $integration
  * @property string $status
  * @property mixed|null $settings
  *
+ * @method static FirmIntegrationFactory factory(...$parameters)
  * @method static Builder|FirmIntegration newModelQuery()
  * @method static Builder|FirmIntegration newQuery()
  * @method static Builder|FirmIntegration query()
@@ -33,11 +37,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|FirmIntegration whereSettings($value)
  * @method static Builder|FirmIntegration whereStatus($value)
  * @mixin Eloquent
- *
- * @property \App\Models\Firm $firm
- * @property \App\Models\Integration $integration
- *
- * @method static \Database\Factories\FirmIntegrationFactory factory(...$parameters)
  */
 class FirmIntegration extends Pivot
 {
