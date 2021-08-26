@@ -7,6 +7,8 @@ namespace App\Models;
 use Database\Factories\IntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\ArrayObject;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +17,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 use Laravel\Passport\Passport;
 use function data_get;
+use function is_iterable;
 
 /**
  * External application, that can interact with current app.
@@ -33,9 +37,10 @@ use function data_get;
  * @property array|null $settings
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
- * @property string|null $o_auth2_client_id
- * @property array $o_auth2_scopes
- * @property Firm $firm
+ * @property-read string|null $o_auth2_client_id
+ * @property-read array $o_auth2_scopes
+ * @property array $javascript_file
+ * @property-read string auth
  *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
@@ -63,6 +68,7 @@ class Integration extends Model
     public const STATUS_DRAFT = 'draft';
     public const STATUS_AVAILABLE = 'available';
     public const AUTH_OAUTH2 = 'oauth2';
+    public const AUTH_NONE = 'none';
 
     protected $casts = [
         'owner_id' => 'int',
@@ -101,6 +107,28 @@ class Integration extends Model
         return $this->hasOne(Passport::clientModel(), 'id', 'oAuth2ClientId');
     }
 
+    public function setSettingsAttribute($settings): self
+    {
+        if (! is_iterable($settings)) {
+            throw new InvalidArgumentException('Unexpected value for integration settings');
+        }
+
+        foreach ($settings as $key => $value) {
+            if ($this->hasSetMutator($key)) {
+                $this->setMutatedAttributeValue($key, $value);
+            } else {
+                $this->fillJsonAttribute("settings->{$key}", $value);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAuthAttribute(): string
+    {
+        return data_get($this->settings, 'auth', self::AUTH_NONE);
+    }
+
     public function getOAuth2ClientIdAttribute(): ?string
     {
         return data_get($this->settings, 'oauth2_client_id');
@@ -109,5 +137,15 @@ class Integration extends Model
     public function getOAuth2ScopesAttribute(): array
     {
         return (array)data_get($this->settings, 'oauth2_scopes', []);
+    }
+
+    public function getJavascriptFileAttribute(): ?string
+    {
+        return data_get($this->settings, 'javascript_file');
+    }
+
+    public function setJavascriptFileAttribute(string $file): self
+    {
+        return $this->fillJsonAttribute('settings->javascript_file', $file);
     }
 }

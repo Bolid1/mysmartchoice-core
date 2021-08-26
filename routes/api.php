@@ -49,17 +49,6 @@ Route::apiResource('firms.accounts', Api\AccountsController::class)
      ->middleware('auth:api')
 ;
 
-Route::apiResource('integrations', Api\IntegrationsController::class)
-     ->names([
-         'index' => 'api.integrations.index',
-         'show' => 'api.integrations.show',
-         'store' => 'api.integrations.store',
-         'update' => 'api.integrations.update',
-         'destroy' => 'api.integrations.destroy',
-     ])
-     ->middleware('auth:api')
-;
-
 Route::apiResource('firms.firm_integrations', App\Http\Controllers\Api\FirmIntegrationsController::class)
      ->names([
          'index' => 'api.firms.firm_integrations.index',
@@ -92,6 +81,22 @@ Route::middleware('auth:api')->group(static function () {
              'destroy' => 'api.firms.destroy',
          ])
     ;
+
+    Route::apiResource('integrations', Api\IntegrationsController::class)
+         ->names([
+             'index' => 'api.integrations.index',
+             'show' => 'api.integrations.show',
+             'store' => 'api.integrations.store',
+             'update' => 'api.integrations.update',
+             'destroy' => 'api.integrations.destroy',
+         ])
+         ->middleware('auth:api')
+    ;
+
+    Route::post(
+        '/integrations/{integration}/javascript',
+        [Api\IntegrationsController::class, 'uploadJS']
+    );
 
     Route::get('/oauth/scopes', [Api\OAuth\ScopesController::class, 'index']);
 });

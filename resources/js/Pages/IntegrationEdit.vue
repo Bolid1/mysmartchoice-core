@@ -103,6 +103,28 @@
         @click="form.delete(route('integrations.destroy', { integration }))"
         >Delete</el-button
       >
+
+      <el-tabs v-if="integration.id">
+        <el-tab-pane label="JavaScript">
+          <el-form-item label="File with code">
+            <el-upload
+              class="upload-demo"
+              drag
+              :action="`/api/integrations/${integration.id}/javascript`"
+              with-credentials
+              :file-list="javascript_files"
+              accept=".js"
+              :show-file-list="false"
+              :http-request="upload"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                Drop file here or <em>click to upload</em>
+              </div>
+            </el-upload>
+          </el-form-item>
+        </el-tab-pane>
+      </el-tabs>
     </el-form>
   </el-card>
 </template>
@@ -110,7 +132,7 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import { useForm } from "@inertiajs/inertia-vue3"
-  import { has, get, extend } from "lodash"
+  import { forEach, get, has, extend } from "lodash"
   import { scopesManager } from "@/Managers/OAuth/Scopes"
 
   export default {
@@ -120,6 +142,7 @@
       return {
         oauth_clients: {},
         oauth_scopes: [],
+        javascript_files: [],
       }
     },
     setup(props) {
@@ -141,6 +164,46 @@
     methods: {
       has,
       get,
+      upload({
+        action,
+        data,
+        file,
+        filename,
+        headers,
+        onError,
+        onProgress,
+        onSuccess,
+      }) {
+        const formData = new FormData()
+
+        formData.append(filename, file)
+
+        forEach(data, (item, key) => {
+          formData.append(key, item)
+        })
+
+        /*
+         action: "/api/integrations/9/javascript"
+         data: {}
+         file: File {uid: 1629988444951, name: "scratch.js", lastModified: 1613861013187, lastModifiedDate: Sun Feb 21 2021 01:43:33 GMT+0300 (Москва, стандартное время), webkitRelativePath: "", …}
+         filename: "file"
+         headers: {}
+         onError: (err) => {…}
+         onProgress: (e) => { props.onProgress(e, rawFile); }
+         onSuccess: (res) => {…}
+         withCredentials: true
+         */
+
+        return axios
+          .post(action, formData, {
+            headers: Object.assign(
+              { "Content-Type": "multipart/form-data" },
+              headers
+            ),
+            onUploadProgress: onProgress,
+          })
+          .then(onSuccess, onError)
+      },
     },
     created() {
       axios.get("/api/oauth/clients").then((response) => {

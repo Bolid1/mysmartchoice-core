@@ -185,6 +185,19 @@
         this.loadTokens()
       }
       this.loadScopes()
+
+      if (
+        this.firm_integration.id &&
+        this.integration.settings.javascript_file
+      ) {
+        this.$loadScript(this.integration.settings.javascript_file)
+          .then(() => {
+            // Script is loaded, do something
+          })
+          .catch(() => {
+            // Failed to fetch script
+          })
+      }
     },
   }
 </script>

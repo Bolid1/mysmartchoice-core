@@ -6,6 +6,7 @@ namespace App\Observers;
 
 use App\Jobs\SendOAuthCodeJob;
 use App\Models\FirmIntegration;
+use App\Models\Integration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +31,7 @@ class FirmIntegrationObserver
      */
     public function created(FirmIntegration $firmIntegration): void
     {
-        if ($userId = Auth::id()) {
+        if (($firmIntegration->integration->auth === Integration::AUTH_OAUTH2) && ($userId = Auth::id())) {
             Bus::dispatch(new SendOAuthCodeJob(
                 $userId,
                 $firmIntegration->integration->o_auth2_client_id,
@@ -42,7 +43,7 @@ class FirmIntegrationObserver
         }
 
         Log::info('Firm integration created', [
-            'user_id' => $userId,
+            'user_id' => $userId ?? null,
             'firm_integration' => $firmIntegration->getAttributes(),
         ]);
     }

@@ -37,11 +37,10 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
-  import { View } from "@element-plus/icons"
 
   export default {
     layout: AuthenticatedLayout,
-    components: { PageHeader, View },
+    components: { PageHeader },
     props: ["can", "firms"],
   }
 </script>

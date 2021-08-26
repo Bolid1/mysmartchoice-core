@@ -14,6 +14,8 @@ use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class IntegrationsController extends Controller
 {
@@ -97,5 +99,29 @@ class IntegrationsController extends Controller
         $integration->delete();
 
         return IntegrationResource::make($integration);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function uploadJS(Request $request, Integration $integration): array
+    {
+        $request->validate([
+            'file' => 'required|file|max:1024|mimetypes:application/javascript,text/plain',
+        ]);
+
+        /** @var UploadedFile $file */
+        $file = $request->file('file');
+        $stored = $file->storeAs(
+            'integrations',
+            "{$integration->id}.js",
+            'public',
+        );
+
+        $integration->javascript_file = Storage::url($stored);
+
+        $integration->save();
+
+        return ['url' => $integration->javascript_file];
     }
 }

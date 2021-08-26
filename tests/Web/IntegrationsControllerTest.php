@@ -67,6 +67,7 @@ class IntegrationsControllerTest extends TestCase
                 'settings' => $settings = [
                     'auth' => 'oauth2',
                     'oauth2_client_id' => $client->getKey(),
+                    'oauth2_scopes' => ['*'],
                 ],
             ])
             ->assertStatus(303)

@@ -74,9 +74,6 @@ class IntegrationsController extends Controller
 
     public function edit(Request $request, Integration $integration): Response
     {
-        /** @var User $user */
-        $user = $request->user();
-
         IntegrationResource::withoutWrapping();
 
         return inertia('IntegrationEdit', [

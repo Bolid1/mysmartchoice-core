@@ -42,7 +42,7 @@ class StoreIntegrationRequest extends FormRequest
                 'required_if:settings.auth,'.Integration::AUTH_OAUTH2,
                 'array',
             ],
-            'settings.oauth2_scopes.*' => 'string|in:'.implode(',', config('oauth.scopes.keys')),
+            'settings.oauth2_scopes.*' => 'string|in:*,'.implode(',', config('oauth.scopes.keys')),
         ];
     }
 }
