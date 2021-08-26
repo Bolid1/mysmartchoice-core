@@ -53,6 +53,7 @@ class CallbacksController extends Controller
         $data = $request->validate([
             'code' => 'required|string|required|min:10',
             'state.client_id' => 'required|string|required|min:10',
+            'state.interface' => 'string',
         ]);
 
         /** @var OAuthClient $client */
@@ -104,6 +105,8 @@ class CallbacksController extends Controller
         //    ];
         //}
 
-        return Redirect::route('oauth.tokens.index', [], 303);
+        return empty($data['state']['interface'])
+            ? Redirect::route('oauth.tokens.index', [], 303)
+            : Redirect::to($data['state']['interface'], 303);
     }
 }

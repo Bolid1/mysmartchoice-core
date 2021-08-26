@@ -81,7 +81,6 @@ class IntegrationsController extends Controller
 
         return inertia('IntegrationEdit', [
             'integration' => IntegrationResource::make($integration),
-            'oauth_clients' => $user->clients()->paginate(),
         ]);
     }
 

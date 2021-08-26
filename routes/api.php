@@ -92,4 +92,6 @@ Route::middleware('auth:api')->group(static function () {
              'destroy' => 'api.firms.destroy',
          ])
     ;
+
+    Route::get('/oauth/scopes', [Api\OAuth\ScopesController::class, 'index']);
 });

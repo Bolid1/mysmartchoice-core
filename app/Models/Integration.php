@@ -12,8 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Laravel\Passport\Passport;
+use function data_get;
 
 /**
  * External application, that can interact with current app.
@@ -30,6 +33,8 @@ use Illuminate\Support\Carbon;
  * @property array|null $settings
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
+ * @property string|null $o_auth2_client_id
+ * @property Firm $firm
  *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
@@ -88,5 +93,15 @@ class Integration extends Model
     public function integrationsInstalls(): HasMany
     {
         return $this->hasMany(FirmIntegration::class);
+    }
+
+    public function client(): HasOne
+    {
+        return $this->hasOne(Passport::clientModel(), 'id', 'oAuth2ClientId');
+    }
+
+    public function getOAuth2ClientIdAttribute(): ?string
+    {
+        return data_get($this->settings, 'oauth2_client_id');
     }
 }

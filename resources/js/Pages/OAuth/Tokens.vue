@@ -17,20 +17,7 @@
       :xl="4"
       class="mt-2"
     >
-      <el-card class="mr-2">
-        <h5>{{ token.client.name }}</h5>
-        <div>Created at {{ token.created_at }}</div>
-        <div>Expire at {{ token.expires_at }}</div>
-        <div>
-          Scopes:
-          <ol>
-            <li v-for="scope in token.scopes">{{ scope }}</li>
-          </ol>
-        </div>
-        <el-button @click="revokeToken(token)" type="danger">
-          Revoke
-        </el-button>
-      </el-card>
+      <token-card class="mr-2" :token="token" @revoked="loadTokens()" />
     </el-col>
   </el-row>
 </template>
@@ -38,30 +25,23 @@
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
+  import { tokensManager } from "@/Managers/OAuth/Tokens"
+  import TokenCard from "@/Components/OAuth/TokenCard"
 
   export default {
     layout: AuthenticatedLayout,
-    components: { PageHeader },
+    components: { TokenCard, PageHeader },
     data() {
       return {
         tokens: [],
       }
     },
     created() {
-      axios.get("/api/oauth/tokens/").then((response) => {
-        this.tokens = response.data
-      })
+      this.loadTokens()
     },
     methods: {
       loadTokens() {
-        axios.get("/api/oauth/tokens/").then((response) => {
-          this.tokens = response.data
-        })
-      },
-      revokeToken(token) {
-        axios
-          .delete(`/api/oauth/tokens/${token.id}`)
-          .then(() => this.loadTokens())
+        tokensManager.load().then((tokens) => (this.tokens = tokens))
       },
     },
   }

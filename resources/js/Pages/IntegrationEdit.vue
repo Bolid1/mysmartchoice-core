@@ -56,6 +56,29 @@
               </el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item
+            label="Scopes"
+            :error="form.errors['settings.oauth2_scopes']"
+          >
+            <el-select
+              v-model="form.settings.oauth2_scopes"
+              placeholder="Please, select..."
+              class="mt-1 block w-full"
+              filterable
+              multiple
+            >
+              <el-option
+                v-for="scope in oauth_scopes"
+                :key="scope.key"
+                :label="scope.description"
+                :value="scope.key"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <!-- todo: select desired scopes -->
         </el-tab-pane>
         <el-tab-pane disabled label="Key"></el-tab-pane>
         <el-tab-pane disabled label="No auth"></el-tab-pane>
@@ -98,7 +121,7 @@
 
   export default {
     layout: AuthenticatedLayout,
-    props: ["integration", "oauth_clients"],
+    props: ["integration"],
     components: {
       BreezeButton,
       BreezeInput,
@@ -106,6 +129,12 @@
       BreezeValidationErrors,
       ElSelect,
       ElOption,
+    },
+    data() {
+      return {
+        oauth_clients: {},
+        oauth_scopes: [],
+      }
     },
     setup(props) {
       const form = useForm({
@@ -115,6 +144,7 @@
           {
             auth: "oauth2",
             oauth2_client_id: "",
+            oauth2_scopes: [],
           },
           props.integration.settings
         ),
@@ -125,6 +155,14 @@
     methods: {
       has,
       get,
+    },
+    created() {
+      axios.get("/api/oauth/clients").then((response) => {
+        this.oauth_clients = response.data
+      })
+      axios.get("/api/oauth/scopes").then((response) => {
+        this.oauth_scopes = response.data
+      })
     },
   }
 </script>

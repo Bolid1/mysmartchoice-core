@@ -19,6 +19,7 @@ use App\Repositories\ScopeRepository;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Bridge\ScopeRepository as PassportScopeRepository;
 use Laravel\Passport\Passport;
+use function config;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -51,13 +52,11 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::useClientModel(OAuthClient::class);
 
-        Passport::tokensCan([
-            'view-firms' => 'View list of all your firms',
-            'create-firms' => 'View list of all your firms',
-            'update-firms' => 'Modify title of any your firms',
-            'destroy-firms' => 'Delete any of your firms',
-            /* @see \App\Services\DynamicScopesBuilder::$scopesPatterns */
-        ]);
+        Passport::tokensCan(config('oauth.scopes.plain'));
+        /*
+         * Dynamic scopes in config('oauth.scopes.patterns')
+         * @see \App\Services\DynamicScopesBuilder::$scopesPatterns
+         */
 
         if (!$this->app->routesAreCached()) {
             Passport::routes(null, [

@@ -12,94 +12,141 @@
     -> {{ firm_integration.id || "Connect new" }}
   </page-header>
 
-  <page-block>
-    <form
-      @submit.prevent="
-        firm_integration.id
-          ? form.patch(
-              route('firms.firm_integrations.update', {
-                firm,
-                firm_integration,
-              })
-            )
-          : form.post(route('firms.firm_integrations.store', firm))
-      "
-      class="p-4"
-    >
-      <!-- Integration select -->
-      <div class="pt-2">
-        <breeze-label for="integration">Integration</breeze-label>
-
-        <el-select
-          v-model="form.integration_id"
-          placeholder="Integration"
-          class="mt-1 block w-full"
-          filterable
-          :disabled="Boolean(firm_integration.id)"
-        >
-          <el-option
-            v-for="integration in integrations.data"
-            :key="integration.id"
-            :label="`${integration.title} [${integration.description}]`"
-            :value="integration.id"
+  <el-tabs type="border-card">
+    <el-tab-pane label="Settings">
+      <el-form
+        @submit.prevent="
+          firm_integration.id
+            ? form.patch(
+                route('firms.firm_integrations.update', {
+                  firm,
+                  firm_integration,
+                })
+              )
+            : form.post(route('firms.firm_integrations.store', firm))
+        "
+        label-position="left"
+        label-width="100px"
+        :model="form"
+      >
+        <el-form-item label="Integration" :error="form.errors.integration_id">
+          <el-select
+            v-model="form.integration_id"
+            placeholder="Integration"
+            class="mt-1 block w-full"
+            filterable
+            :disabled="Boolean(firm_integration.id)"
           >
-          </el-option>
-        </el-select>
+            <el-option
+              v-for="integration in integrations.data"
+              :key="integration.id"
+              :label="`${integration.title} [${integration.description}]`"
+              :value="integration.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-        <div v-if="form.errors.integration_id">
-          {{ form.errors.integration_id }}
-        </div>
-      </div>
+        <el-form-item>
+          <el-button-group>
+            <el-button type="primary" :disabled="form.processing">
+              {{ firm_integration.id ? "Update" : "Install" }}
+            </el-button>
 
-      <!-- submit -->
-      <div class="pt-2">
-        <breeze-button
-          type="submit"
-          color="green"
-          :class="{ 'opacity-25': form.processing }"
-          :disabled="form.processing"
-        >
-          {{ firm_integration.id ? "Update" : "Install" }}
-        </breeze-button>
-        <p v-if="!firm_integration.id" class="text-sm">
-          by clicking the button you agree to provide access for your firm data
-          to the 3rd party
-        </p>
-      </div>
-    </form>
-  </page-block>
+            <a
+              v-if="
+                firm_integration.id &&
+                integration?.settings.auth === 'oauth2' &&
+                integration.client
+              "
+              :href="
+                route('passport.authorizations.authorize', {
+                  client_id: integration.settings.oauth2_client_id,
+                  redirect_uri: integration.client.redirect,
+                  response_type: 'code',
+                  scope: String(
+                    join(integration.settings.oauth2_scopes || [], ' ')
+                  ).replaceAll('{firm}', String(firm.id)),
+                  state: JSON.stringify({
+                    client_id: integration.settings.oauth2_client_id,
+                    interface: `/firms/${firm.id}/firm_integrations/${firm_integration.id}/edit`,
+                  }),
+                })
+              "
+            >
+              <el-button :disabled="form.processing" type="primary"
+                >Authorize</el-button
+              ></a
+            >
+          </el-button-group>
+          <p class="text-sm">
+            by clicking the button you agree to provide access for your firm
+            data to the 3rd party
+          </p>
+        </el-form-item>
+      </el-form>
+    </el-tab-pane>
+    <el-tab-pane label="Tokens">
+      <el-row>
+        <el-col v-for="token in tokens">
+          <token-card :token="token" @revoked="loadTokens()" />
+        </el-col>
+      </el-row>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
-  import PageBlock from "@/Components/PageBlock"
   import PageHeader from "@/Components/PageHeader"
   import { useForm } from "@inertiajs/inertia-vue3"
-  import BreezeButton from "@/Components/Button"
-  import BreezeInput from "@/Components/Input"
-  import BreezeLabel from "@/Components/Label"
-  import BreezeValidationErrors from "@/Components/ValidationErrors"
-  import { ElOption, ElSelect } from "element-plus"
+  import { head, filter, find, join } from "lodash"
+  import { tokensManager } from "@/Managers/OAuth/Tokens"
+  import TokenCard from "@/Components/OAuth/TokenCard"
 
   export default {
     layout: AuthenticatedLayout,
     components: {
-      BreezeButton,
-      BreezeInput,
-      BreezeLabel,
-      BreezeValidationErrors,
-      ElSelect,
-      ElOption,
-      PageBlock,
+      TokenCard,
       PageHeader,
     },
     props: ["firm", "firm_integration", "integrations"],
+    data() {
+      return {
+        tokens: [],
+      }
+    },
     setup(props) {
       const form = useForm({
         integration_id: props.firm_integration.integration_id,
       })
 
       return { form }
+    },
+    computed: {
+      integration() {
+        return head(this.integrations.data)
+      },
+    },
+    methods: {
+      join,
+      loadTokens() {
+        const regexp = new RegExp(`firm-${this.firm.id}[^\d]*`)
+
+        tokensManager.load().then(
+          (tokens) =>
+            (this.tokens = filter(tokens, {
+              client_id: this.integration.client?.id,
+            }).filter((token) =>
+              find(token.scopes, (scope) => regexp.test(String(scope)))
+            ))
+        )
+      },
+    },
+    created() {
+      if (this.firm_integration.id) {
+        this.loadTokens()
+      }
     },
   }
 </script>

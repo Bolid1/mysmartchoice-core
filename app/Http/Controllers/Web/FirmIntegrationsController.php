@@ -138,6 +138,7 @@ class FirmIntegrationsController extends Controller
                 $repository
                     ->getAvailableFor($user->id)
                     ->whereId($firmIntegration->integration_id)
+                    ->with('client')
                     ->paginate()
             ),
         ]);
