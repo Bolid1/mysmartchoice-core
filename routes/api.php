@@ -96,7 +96,8 @@ Route::middleware('auth:api')->group(static function () {
     Route::post(
         '/integrations/{integration}/javascript',
         [Api\IntegrationsController::class, 'uploadJS']
-    );
+    )->name('api.integrations.javascript');
 
-    Route::get('/oauth/scopes', [Api\OAuth\ScopesController::class, 'index']);
+    Route::get('/oauth/scopes', [Api\OAuth\ScopesController::class, 'index'])
+         ->name('api.oauth.scopes.index');
 });
