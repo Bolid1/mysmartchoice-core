@@ -7,8 +7,6 @@ namespace App\Models;
 use Database\Factories\IntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\ArrayObject;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,10 +35,10 @@ use function is_iterable;
  * @property array|null $settings
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
- * @property-read string|null $o_auth2_client_id
- * @property-read array $o_auth2_scopes
+ * @property string|null $o_auth2_client_id
+ * @property array $o_auth2_scopes
  * @property array $javascript_file
- * @property-read string auth
+ * @property string auth
  *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
@@ -109,7 +107,7 @@ class Integration extends Model
 
     public function setSettingsAttribute($settings): self
     {
-        if (! is_iterable($settings)) {
+        if (!is_iterable($settings)) {
             throw new InvalidArgumentException('Unexpected value for integration settings');
         }
 

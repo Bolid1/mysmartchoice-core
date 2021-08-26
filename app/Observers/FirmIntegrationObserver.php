@@ -31,7 +31,7 @@ class FirmIntegrationObserver
      */
     public function created(FirmIntegration $firmIntegration): void
     {
-        if (($firmIntegration->integration->auth === Integration::AUTH_OAUTH2) && ($userId = Auth::id())) {
+        if ((Integration::AUTH_OAUTH2 === $firmIntegration->integration->auth) && ($userId = Auth::id())) {
             Bus::dispatch(new SendOAuthCodeJob(
                 $userId,
                 $firmIntegration->integration->o_auth2_client_id,
