@@ -77,8 +77,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-
-          <!-- todo: select desired scopes -->
         </el-tab-pane>
         <el-tab-pane disabled label="Key"></el-tab-pane>
         <el-tab-pane disabled label="No auth"></el-tab-pane>
@@ -111,25 +109,12 @@
 
 <script>
   import AuthenticatedLayout from "@/Layouts/Authenticated"
-  import BreezeButton from "@/Components/Button"
-  import BreezeInput from "@/Components/Input"
-  import BreezeLabel from "@/Components/Label"
-  import BreezeValidationErrors from "@/Components/ValidationErrors"
-  import { ElOption, ElSelect } from "element-plus"
   import { useForm } from "@inertiajs/inertia-vue3"
   import { has, get, extend } from "lodash"
 
   export default {
     layout: AuthenticatedLayout,
     props: ["integration"],
-    components: {
-      BreezeButton,
-      BreezeInput,
-      BreezeLabel,
-      BreezeValidationErrors,
-      ElSelect,
-      ElOption,
-    },
     data() {
       return {
         oauth_clients: {},
