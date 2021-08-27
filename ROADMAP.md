@@ -1,10 +1,11 @@
 # Project roadmap
 
 ## Prepare core
-- [x] Integrations
+- [ ] Integrations
   - [x] Firm should become part of access token scope
   - [x] Send token just after integration installed
   - [x] Integration can upload own javascript to interact with interface
+  - [ ] Callback url when token revoked
 - [ ] ZenMoney integration
   - [ ] From ZenMoney to app
     - [ ] Accounts
