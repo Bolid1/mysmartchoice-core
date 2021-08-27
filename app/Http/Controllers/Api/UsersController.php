@@ -47,6 +47,18 @@ class UsersController extends Controller
     }
 
     /**
+     * Display the current user.
+     *
+     * @param Request $request
+     *
+     * @return JsonResource
+     */
+    public function me(Request $request): JsonResource
+    {
+        return new UserResource($request->user());
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param Request $request

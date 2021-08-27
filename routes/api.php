@@ -15,19 +15,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('users', Api\UsersController::class)
-     ->only([
-         'show',
-         'update',
-     ])
-     ->names([
-         'index' => 'api.users.index',
-         'show' => 'api.users.show',
-         'update' => 'api.users.update',
-     ])
-     ->middleware('auth:api')
-;
-
 Route::apiResource('firms.users', Api\UsersController::class)
      ->only([
          'index',
@@ -72,6 +59,20 @@ Route::apiResource('o_auth_clients', App\Http\Controllers\Api\OAuthClientsContro
 ;
 
 Route::middleware('auth:api')->group(static function () {
+    Route::get('/users/me', [Api\UsersController::class, 'me'])->name('api.users.me');
+
+    Route::apiResource('users', Api\UsersController::class)
+         ->only([
+             'show',
+             'update',
+         ])
+         ->names([
+             'index' => 'api.users.index',
+             'show' => 'api.users.show',
+             'update' => 'api.users.update',
+         ])
+    ;
+
     Route::apiResource('firms', Api\FirmsController::class)
          ->names([
              'index' => 'api.firms.index',
