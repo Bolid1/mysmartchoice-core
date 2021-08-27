@@ -51,7 +51,7 @@ class CallbacksController extends Controller
         }
 
         $data = $request->validate([
-            'code' => 'required|string|required|min:10',
+            'code' => 'required|string|min:10',
             'state.client_id' => 'required|string|required|min:10',
             'state.interface' => 'string',
         ]);
