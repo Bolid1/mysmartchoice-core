@@ -6,6 +6,7 @@
   - [x] Send token just after integration installed
   - [x] Integration can upload own javascript to interact with interface
   - [ ] Callback url when token revoked
+  - [ ] One time token
 - [ ] ZenMoney integration
   - [ ] From ZenMoney to app
     - [ ] Accounts
