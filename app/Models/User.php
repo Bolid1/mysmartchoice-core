@@ -18,6 +18,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\PersonalAccessTokenResult;
 use Laravel\Passport\Token;
 
 /**
@@ -60,7 +61,9 @@ use Laravel\Passport\Token;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens;
+    use HasApiTokens {
+        createToken as createPersonalToken;
+    }
     use HasFactory;
     use Notifiable;
 
@@ -177,5 +180,18 @@ class User extends Authenticatable
     public function noTokenOrTokenCan(string $scope): bool
     {
         return $this->noToken() || $this->tokenCan($scope);
+    }
+
+    /**
+     * Create a new personal access token for the user.
+     *
+     * @param  string  $name
+     * @param  array  $scopes
+     *
+     * @return PersonalAccessTokenResult
+     */
+    public function createToken($name, array $scopes = []): PersonalAccessTokenResult
+    {
+        return $this->createPersonalToken($name, ['view-me']);
     }
 }
