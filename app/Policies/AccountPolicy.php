@@ -90,36 +90,4 @@ class AccountPolicy
         return $user->noTokenOrTokenCan("delete-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param Account $account
-     *
-     * @return bool
-     */
-    public function restore(User $user, Account $account): bool
-    {
-        $firmId = $account->firm_id;
-
-        return $user->noTokenOrTokenCan("restore-firm-{$firmId}-accounts")
-               && $user->isInFirm($firmId);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param Account $account
-     *
-     * @return bool
-     */
-    public function forceDelete(User $user, Account $account): bool
-    {
-        $firmId = $account->firm_id;
-
-        return $user->noTokenOrTokenCan("force_delete-firm-{$firmId}-accounts")
-               && $user->isInFirm($firmId);
-    }
 }

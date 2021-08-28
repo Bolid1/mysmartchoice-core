@@ -7,6 +7,9 @@ namespace Database\Factories;
 use App\Models\Firm;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @method self hasUsers($countOrStateOrCallback = 1, $stateOrCallback = [])
+ */
 class FirmFactory extends Factory
 {
     /**

@@ -21,9 +21,11 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
-
         OAuthClient::factory()->count(3)->create();
+
+        Passport::actingAs($user, [
+            'view-oauth_clients',
+        ]);
 
         $this
             ->getJson(route('api.o_auth_clients.index'))
@@ -44,7 +46,9 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, [
+            'create-oauth_clients',
+        ]);
 
         $response = $this
             ->postJson(route('api.o_auth_clients.store'), [
@@ -70,11 +74,13 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
-
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
             'user_id' => $user->id,
+        ]);
+
+        Passport::actingAs($user, [
+            'view-oauth_clients',
         ]);
 
         $this
@@ -92,11 +98,13 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
-
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
             'user_id' => $user->id,
+        ]);
+
+        Passport::actingAs($user, [
+            'update-oauth_clients',
         ]);
 
         $this
@@ -117,11 +125,13 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
-
         /** @var OAuthClient $oAuthClient */
         $oAuthClient = OAuthClient::factory()->createOne([
             'user_id' => $user->id,
+        ]);
+
+        Passport::actingAs($user, [
+            'delete-oauth_clients',
         ]);
 
         $this

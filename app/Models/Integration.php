@@ -92,6 +92,11 @@ class Integration extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function isOwner(User|int $user): bool
+    {
+        return $this->owner_id === ($user instanceof User ? $user->id : $user);
+    }
+
     /**
      * @return HasMany There are many installs in different firms can be in integration
      */

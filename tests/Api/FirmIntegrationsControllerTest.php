@@ -24,7 +24,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -33,6 +32,10 @@ class FirmIntegrationsControllerTest extends TestCase
         FirmIntegration::factory()->count(3)->create([
             'firm_id' => $firm->id,
             'integration_id' => $integration->id,
+        ]);
+
+        Passport::actingAs($user, [
+            "view-firm-{$firm->id}-firm_integrations",
         ]);
 
         $this
@@ -55,11 +58,14 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
         $integration = $user->integrations->first();
+
+        Passport::actingAs($user, [
+            "create-firm-{$firm->id}-firm_integrations",
+        ]);
 
         $this
             ->postJson(route('api.firms.firm_integrations.store', compact('firm')), [
@@ -78,7 +84,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -88,6 +93,10 @@ class FirmIntegrationsControllerTest extends TestCase
         $firmIntegration = FirmIntegration::factory()->createOne([
             'firm_id' => $firm->id,
             'integration_id' => $integration->id,
+        ]);
+
+        Passport::actingAs($user, [
+            "view-firm-{$firm->id}-firm_integrations",
         ]);
 
         $this
@@ -109,7 +118,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -119,6 +127,10 @@ class FirmIntegrationsControllerTest extends TestCase
         $firmIntegration = FirmIntegration::factory()->createOne([
             'firm_id' => $firm->id,
             'integration_id' => $integration->id,
+        ]);
+
+        Passport::actingAs($user, [
+            "update-firm-{$firm->id}-firm_integrations",
         ]);
 
         $this
@@ -142,7 +154,6 @@ class FirmIntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Firm $firm */
         $firm = $user->firms->first();
         /** @var Integration $integration */
@@ -152,6 +163,10 @@ class FirmIntegrationsControllerTest extends TestCase
         $firmIntegration = FirmIntegration::factory()->createOne([
             'firm_id' => $firm->id,
             'integration_id' => $integration->id,
+        ]);
+
+        Passport::actingAs($user, [
+            "delete-firm-{$firm->id}-firm_integrations",
         ]);
 
         $this
@@ -171,7 +186,5 @@ class FirmIntegrationsControllerTest extends TestCase
         ;
 
         self::assertNull($firmIntegration->fresh());
-        // or for soft deletes:
-        // self::assertNotNull($firmIntegration->fresh());
     }
 }

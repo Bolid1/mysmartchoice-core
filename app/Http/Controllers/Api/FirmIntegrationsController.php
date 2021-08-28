@@ -21,7 +21,7 @@ class FirmIntegrationsController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(FirmIntegration::class);
+        $this->authorizeResource(FirmIntegration::class.',firm', 'firm_integration,firm');
     }
 
     /**

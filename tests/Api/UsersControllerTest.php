@@ -28,9 +28,8 @@ class UsersControllerTest extends TestCase
 
         /** @var User $user */
         $user = $this->faker->randomElement($firm->users);
-        Passport::actingAs($user, ["view-firm-{$firm->getKey()}-users"]);
 
-        $response = $this
+        $check = fn () => $this
             ->get("/api/firms/{$firm->getKey()}/users")
             ->assertStatus(200)
             ->assertJsonStructure(
@@ -42,11 +41,13 @@ class UsersControllerTest extends TestCase
                         ],
                     ],
                 ]
-            );
+            )
+            ->assertJsonCount(4, 'data');
 
-        $data = $response->json('data');
-
-        self::assertNotEmpty($data, 'Should has at least one user');
+        Passport::actingAs($user, ['view-firms-users']);
+        $check();
+        Passport::actingAs($user, ["view-firm-{$firm->getKey()}-users"]);
+        $check();
     }
 
     /**
@@ -61,31 +62,24 @@ class UsersControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
+        Passport::actingAs($actingUser, [
+            'view-firms-users',
+        ]);
 
         /** @var User $user */
         $user = $firm->users->last();
 
-        $response = $this->get("/api/users/{$user->id}");
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure(
-            [
-                'data' => [
-                    'id',
-                    'name',
-                ],
-            ]
-        );
-
-        $data = $response->json('data');
-
-        self::assertNotEmpty($data, 'Should has at least one user');
-        self::assertArrayHasKey('id', $data, 'User in response should contains key "id"');
-        self::assertEquals($user->id, $data['id'], 'User in response should has same value for "id" as in DB');
-        self::assertArrayHasKey('name', $data, 'User in response should contains key "name"');
-        self::assertEquals($user->name, $data['name'], 'User in response should has same value for "name" as in DB');
+        $this
+            ->get("/api/users/{$user->id}")
+            ->assertStatus(200)
+            ->assertJson(
+                [
+                    'data' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ],
+                ]
+            );
     }
 
     /**
@@ -97,7 +91,10 @@ class UsersControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, [
+            'view-me',
+            'update-me',
+        ]);
 
         do {
             $newName = $this->faker->name;
@@ -148,7 +145,9 @@ class UsersControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, [
+            'update-me',
+        ]);
 
         $response = $this->patchJson(
             "/api/users/{$user->id}",

@@ -39,21 +39,6 @@ class FirmPolicy
     }
 
     /**
-     * Determine whether the user can view the firm users.
-     *
-     * @param User $user
-     * @param Firm $firm
-     *
-     * @return Response
-     */
-    public function viewUsers(User $user, Firm $firm): Response
-    {
-        return ($user->noTokenOrTokenCan("view-firm-{$firm->getKey()}-users") && $user->isInFirm($firm->getKey()))
-            ? $this->allow()
-            : $this->deny('You are not authorized to view users of the firm.');
-    }
-
-    /**
      * Determine whether the user can create models.
      *
      * @param User $user
@@ -96,32 +81,6 @@ class FirmPolicy
      * @return bool
      */
     public function delete(User $user, Firm $firm): bool
-    {
-        return $user->noTokenOrTokenCan("delete-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param Firm $firm
-     *
-     * @return bool
-     */
-    public function restore(User $user, Firm $firm): bool
-    {
-        return $user->noTokenOrTokenCan("restore-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param Firm $firm
-     *
-     * @return bool
-     */
-    public function forceDelete(User $user, Firm $firm): bool
     {
         return $user->noTokenOrTokenCan("delete-firm-{$firm->getKey()}") && $user->isInFirm($firm->getKey());
     }

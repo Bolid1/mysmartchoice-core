@@ -22,7 +22,9 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(3)->createOne();
-        Passport::actingAs($user);
+        Passport::actingAs($user, [
+            'view-integrations',
+        ]);
 
         $this
             ->getJson(route('api.integrations.index'))
@@ -47,9 +49,12 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasClients(1)->createOne();
-        Passport::actingAs($user);
         /** @var Client $client */
         $client = $user->clients->first();
+
+        Passport::actingAs($user, [
+            'create-integrations',
+        ]);
 
         $this
             ->postJson(route('api.integrations.store'), [
@@ -78,9 +83,12 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
+
+        Passport::actingAs($user, [
+            'view-integrations',
+        ]);
 
         $this
             ->getJson(route('api.integrations.show', $integration))
@@ -101,11 +109,14 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->hasClients(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
         /** @var Client $client */
         $client = $user->clients->first();
+
+        Passport::actingAs($user, [
+            'update-integrations',
+        ]);
 
         $this
             ->patchJson(route('api.integrations.update', $integration), [
@@ -134,13 +145,16 @@ class IntegrationsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
-        Passport::actingAs($user);
         /** @var Integration $integration */
         $integration = $user->integrations->first();
 
         // Ensure that integration can be deleted
         $integration->status = Integration::STATUS_DRAFT;
         $integration->save();
+
+        Passport::actingAs($user, [
+            'delete-integrations',
+        ]);
 
         $this
             ->deleteJson(route('api.integrations.destroy', $integration))

@@ -11,13 +11,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Gate;
 
 class UsersController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(User::class);
+        $this->authorizeResource(User::class.',firm', 'user,firm');
     }
 
     /**
@@ -27,8 +26,6 @@ class UsersController extends Controller
      */
     public function index(Firm $firm): AnonymousResourceCollection
     {
-        Gate::authorize('view-users', $firm);
-
         return UserResource::collection(
             $firm->users()->select(['*'])->paginate(null, [])
         );

@@ -57,6 +57,14 @@ use Laravel\Passport\Token;
  */
 class OAuthClient extends Client
 {
+    protected $casts = [
+        'grant_types' => 'array',
+        'personal_access_client' => 'bool',
+        'password_client' => 'bool',
+        'revoked' => 'bool',
+        'user_id' => 'int',
+    ];
+
     /**
      * Determine if the client should skip the authorization prompt.
      *
@@ -65,5 +73,10 @@ class OAuthClient extends Client
     public function skipsAuthorization(): bool
     {
         return Gate::allows('skips-authorization', $this);
+    }
+
+    public function isOwner(User|int $user): bool
+    {
+        return $this->user_id === ($user instanceof User ? $user->id : $user);
     }
 }

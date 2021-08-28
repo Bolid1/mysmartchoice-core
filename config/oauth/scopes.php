@@ -27,6 +27,16 @@ return [
         'create-firms' => 'View list of all your firms',
         'update-firms' => 'Modify title of any your firms',
         'destroy-firms' => 'Delete any of your firms',
+        'view-integrations' => 'View any integration',
+        'create-integrations' => 'Create integration',
+        'update-integrations' => 'Update any integration',
+        'delete-integrations' => 'Delete any integration',
+        'view-oauth_clients' => 'View any OAuth client',
+        'create-oauth_clients' => 'Create OAuth client',
+        'update-oauth_clients' => 'Update any OAuth client',
+        'delete-oauth_clients' => 'Delete any OAuth client',
+        'view-me' => 'View self profile',
+        'update-me' => 'Update self profile',
     ],
 
     'patterns' => $patterns = [
@@ -62,13 +72,21 @@ return [
             'pattern' => '/^delete-firm-(?P<firm>\d+)-accounts$/',
             'description' => $makeDescriptionCallback('Delete any account in firm {firm}'),
         ],
-        'restore-firm-{firm}-accounts' => [
-            'pattern' => '/^restore-firm-(?P<firm>\d+)-accounts$/',
-            'description' => $makeDescriptionCallback('Restore any account in firm {firm}'),
+        'view-firm-{firm}-firm_integrations' => [
+            'pattern' => '/^view-firm-(?P<firm>\d+)-firm_integrations$/',
+            'description' => $makeDescriptionCallback('View any integration install in firm {firm}'),
         ],
-        'force_delete-firm-{firm}-accounts' => [
-            'pattern' => '/^force_delete-firm-(?P<firm>\d+)-accounts$/',
-            'description' => $makeDescriptionCallback('Finally delete any account in firm {firm}'),
+        'create-firm-{firm}-firm_integrations' => [
+            'pattern' => '/^create-firm-(?P<firm>\d+)-firm_integrations$/',
+            'description' => $makeDescriptionCallback('Install any integration in firm {firm}'),
+        ],
+        'update-firm-{firm}-firm_integrations' => [
+            'pattern' => '/^update-firm-(?P<firm>\d+)-firm_integrations$/',
+            'description' => $makeDescriptionCallback('Update any integration in firm {firm}'),
+        ],
+        'delete-firm-{firm}-firm_integrations' => [
+            'pattern' => '/^delete-firm-(?P<firm>\d+)-firm_integrations$/',
+            'description' => $makeDescriptionCallback('Delete any integration in firm {firm}'),
         ],
     ],
 

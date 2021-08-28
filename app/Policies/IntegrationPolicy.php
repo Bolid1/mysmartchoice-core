@@ -7,7 +7,7 @@ namespace App\Policies;
 use App\Models\Integration;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
+use JetBrains\PhpStorm\Pure;
 
 class IntegrationPolicy
 {
@@ -18,11 +18,12 @@ class IntegrationPolicy
      *
      * @param User $user
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function viewAny(User $user)
+    #[Pure]
+    public function viewAny(User $user): bool
     {
-        return true;
+        return $user->noTokenOrTokenCan('view-integrations');
     }
 
     /**
@@ -31,12 +32,14 @@ class IntegrationPolicy
      * @param User $user
      * @param Integration $integration
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function view(User $user, Integration $integration)
+    #[Pure]
+    public function view(User $user, Integration $integration): bool
     {
-        return Integration::STATUS_AVAILABLE === $integration->status
-               || $integration->owner_id === $user->id
+        return $user->noTokenOrTokenCan('view-integrations')
+            && (Integration::STATUS_AVAILABLE === $integration->status
+               || $integration->isOwner($user))
         ;
     }
 
@@ -45,11 +48,12 @@ class IntegrationPolicy
      *
      * @param User $user
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function create(User $user)
+    #[Pure]
+    public function create(User $user): bool
     {
-        return true;
+        return $user->noTokenOrTokenCan('create-integrations');
     }
 
     /**
@@ -58,11 +62,13 @@ class IntegrationPolicy
      * @param User $user
      * @param Integration $integration
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function update(User $user, Integration $integration)
+    #[Pure]
+    public function update(User $user, Integration $integration): bool
     {
-        return $integration->owner_id === $user->id;
+        return $user->noTokenOrTokenCan('update-integrations')
+               && $integration->isOwner($user);
     }
 
     /**
@@ -71,38 +77,14 @@ class IntegrationPolicy
      * @param User $user
      * @param Integration $integration
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, Integration $integration)
+    #[Pure]
+    public function delete(User $user, Integration $integration): bool
     {
-        return Integration::STATUS_DRAFT === $integration->status
-               && $integration->owner_id === $user->id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param Integration $integration
-     *
-     * @return Response|bool
-     */
-    public function restore(User $user, Integration $integration)
-    {
-        return $integration->owner_id === $user->id;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param Integration $integration
-     *
-     * @return Response|bool
-     */
-    public function forceDelete(User $user, Integration $integration)
-    {
-        return $this->delete($user, $integration);
+        return $user->noTokenOrTokenCan('delete-integrations')
+               && Integration::STATUS_DRAFT === $integration->status
+               && $integration->isOwner($user);
     }
 
     /**
@@ -111,9 +93,10 @@ class IntegrationPolicy
      *
      * @return bool Can user install this integration into any firm?
      */
+    #[Pure]
     public function install(User $user, Integration $integration): bool
     {
         return Integration::STATUS_AVAILABLE === $integration->status
-               || $user->integrations()->find($integration->id);
+               || $integration->isOwner($user);
     }
 }

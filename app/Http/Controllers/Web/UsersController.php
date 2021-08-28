@@ -10,7 +10,6 @@ use App\Http\Resources\UserResource;
 use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Response;
 use function inertia;
@@ -19,7 +18,7 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(User::class);
+        $this->authorizeResource(User::class.',firm', 'user,firm');
     }
 
     /**
@@ -29,8 +28,6 @@ class UsersController extends Controller
      */
     public function index(Firm $firm): Response
     {
-        Gate::authorize('view-users', $firm);
-
         FirmResource::withoutWrapping();
 
         return inertia('Users', [

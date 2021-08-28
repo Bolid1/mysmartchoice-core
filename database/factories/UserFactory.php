@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 use function now;
 use function resolve;
 
+/**
+ * @method self hasIntegrations($countOrStateOrCallback = 1, $stateOrCallback = [])
+ * @method self hasClients($countOrStateOrCallback = 1, $stateOrCallback = [])
+ */
 class UserFactory extends Factory
 {
     /**
