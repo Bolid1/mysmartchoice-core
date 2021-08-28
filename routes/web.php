@@ -28,32 +28,23 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
 
 require __DIR__.'/auth.php';
 
-Route::resource('users', Web\UsersController::class)
-    ->only([
-        'edit',
-        'update',
-    ])
-    ->middleware(['auth', 'verified']);
-
-Route::resource('firms.users', Web\UsersController::class)
-    ->only([
-        'index',
-    ])
-    ->middleware(['auth', 'verified']);
-
-Route::resource('firms.accounts', Web\AccountsController::class)
-    ->middleware(['auth', 'verified']);
-
-Route::resource('integrations', Web\IntegrationsController::class)
-    ->middleware(['auth', 'verified']);
-
-Route::resource('o_auth_clients', Web\OAuthClientsController::class)
-     ->middleware(['auth', 'verified'])
-;
-
 Route::middleware(['auth', 'verified'])->group(static function () {
     Route::resource('firms', Web\FirmsController::class);
     Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class);
+    Route::resource('firms.accounts', Web\AccountsController::class);
+    Route::resource('integrations', Web\IntegrationsController::class);
+    Route::resource('o_auth_clients', Web\OAuthClientsController::class);
+    Route::resource('users', Web\UsersController::class)
+         ->only([
+             'edit',
+             'update',
+         ])
+    ;
+    Route::resource('firms.users', Web\UsersController::class)
+         ->only([
+             'index',
+         ])
+    ;
 
     Route::prefix('/oauth')->group(static function () {
         Route::get(

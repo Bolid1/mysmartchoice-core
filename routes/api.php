@@ -15,50 +15,46 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('firms.users', Api\UsersController::class)
-     ->only([
-         'index',
-     ])
-     ->names([
-         'index' => 'api.firms.users.index',
-     ])
-     ->middleware('auth:api')
-;
-
-Route::apiResource('firms.accounts', Api\AccountsController::class)
-     ->names([
-         'index' => 'api.firms.accounts.index',
-         'show' => 'api.firms.accounts.show',
-         'store' => 'api.firms.accounts.store',
-         'update' => 'api.firms.accounts.update',
-         'destroy' => 'api.firms.accounts.destroy',
-     ])
-     ->middleware('auth:api')
-;
-
-Route::apiResource('firms.firm_integrations', App\Http\Controllers\Api\FirmIntegrationsController::class)
-     ->names([
-         'index' => 'api.firms.firm_integrations.index',
-         'show' => 'api.firms.firm_integrations.show',
-         'store' => 'api.firms.firm_integrations.store',
-         'update' => 'api.firms.firm_integrations.update',
-         'destroy' => 'api.firms.firm_integrations.destroy',
-     ])
-     ->middleware('auth:api')
-;
-
-Route::apiResource('o_auth_clients', App\Http\Controllers\Api\OAuthClientsController::class)
-     ->names([
-         'index' => 'api.o_auth_clients.index',
-         'show' => 'api.o_auth_clients.show',
-         'store' => 'api.o_auth_clients.store',
-         'update' => 'api.o_auth_clients.update',
-         'destroy' => 'api.o_auth_clients.destroy',
-     ])
-     ->middleware('auth:api')
-;
-
 Route::middleware('auth:api')->group(static function () {
+    Route::apiResource('firms.users', Api\UsersController::class)
+         ->only([
+             'index',
+         ])
+         ->names([
+             'index' => 'api.firms.users.index',
+         ])
+    ;
+
+    Route::apiResource('firms.accounts', Api\AccountsController::class)
+         ->names([
+             'index' => 'api.firms.accounts.index',
+             'show' => 'api.firms.accounts.show',
+             'store' => 'api.firms.accounts.store',
+             'update' => 'api.firms.accounts.update',
+             'destroy' => 'api.firms.accounts.destroy',
+         ])
+    ;
+
+    Route::apiResource('firms.firm_integrations', App\Http\Controllers\Api\FirmIntegrationsController::class)
+         ->names([
+             'index' => 'api.firms.firm_integrations.index',
+             'show' => 'api.firms.firm_integrations.show',
+             'store' => 'api.firms.firm_integrations.store',
+             'update' => 'api.firms.firm_integrations.update',
+             'destroy' => 'api.firms.firm_integrations.destroy',
+         ])
+    ;
+
+    Route::apiResource('o_auth_clients', App\Http\Controllers\Api\OAuthClientsController::class)
+         ->names([
+             'index' => 'api.o_auth_clients.index',
+             'show' => 'api.o_auth_clients.show',
+             'store' => 'api.o_auth_clients.store',
+             'update' => 'api.o_auth_clients.update',
+             'destroy' => 'api.o_auth_clients.destroy',
+         ])
+    ;
+
     Route::get('/users/me', [Api\UsersController::class, 'me'])->name('api.users.me');
 
     Route::apiResource('users', Api\UsersController::class)
@@ -91,7 +87,6 @@ Route::middleware('auth:api')->group(static function () {
              'update' => 'api.integrations.update',
              'destroy' => 'api.integrations.destroy',
          ])
-         ->middleware('auth:api')
     ;
 
     Route::post(
