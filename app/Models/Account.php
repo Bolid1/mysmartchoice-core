@@ -51,6 +51,7 @@ class Account extends Model
     protected $casts = [
         'title' => 'string',
         'balance' => 'float',
+        'firm_id' => 'int',
     ];
 
     protected $fillable = [

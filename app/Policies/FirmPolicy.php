@@ -128,6 +128,6 @@ class FirmPolicy
 
     public function manageIntegrations(User $user, Firm $firm): bool
     {
-        return null === $user->token() && $user->isInFirm($firm->getKey());
+        return $user->noToken() && $user->isInFirm($firm->getKey());
     }
 }

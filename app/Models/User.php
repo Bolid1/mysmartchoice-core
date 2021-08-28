@@ -16,6 +16,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use JetBrains\PhpStorm\Pure;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
 
@@ -166,8 +167,15 @@ class User extends Authenticatable
             ;
     }
 
-    public function noTokenOrTokenCan(string $scope): bool
-    {
-        return null === $this->token() || $this->tokenCan($scope);
-    }
+    #[Pure]
+     public function noToken(): bool
+     {
+         return null === $this->token();
+     }
+
+    #[Pure]
+     public function noTokenOrTokenCan(string $scope): bool
+     {
+         return $this->noToken() || $this->tokenCan($scope);
+     }
 }

@@ -54,7 +54,9 @@ class AccountsControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
+        Passport::actingAs($actingUser, [
+            "view-firms-{$firm->id}-accounts",
+        ]);
 
         /** @var Account $account */
         $account = $firm->accounts->first();
@@ -120,7 +122,9 @@ class AccountsControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
+        Passport::actingAs($actingUser, [
+            "update-firms-{$firm->id}-accounts",
+        ]);
 
         /** @var Account $account */
         $account = $firm->accounts->first();
@@ -162,7 +166,9 @@ class AccountsControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
+        Passport::actingAs($actingUser, [
+            "delete-firms-{$firm->id}-accounts",
+        ]);
 
         /** @var Account $account */
         $account = $firm->accounts->first();

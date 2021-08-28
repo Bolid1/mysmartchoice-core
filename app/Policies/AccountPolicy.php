@@ -21,7 +21,7 @@ class AccountPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return null !== $user->id;
     }
 
     /**
@@ -34,8 +34,10 @@ class AccountPolicy
      */
     public function view(User $user, Account $account): bool
     {
-        return $user->firms()->where($user->firms()->qualifyColumn('id'), $account->firm_id)->exists()
-        ;
+        $firmId = $account->firm_id;
+
+        return $user->noTokenOrTokenCan("view-firms-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -47,7 +49,7 @@ class AccountPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return null !== $user->id;
     }
 
     /**
@@ -60,8 +62,10 @@ class AccountPolicy
      */
     public function update(User $user, Account $account): bool
     {
-        return $user->firms()->where($user->firms()->qualifyColumn('id'), $account->firm_id)->exists()
-        ;
+        $firmId = $account->firm_id;
+
+        return $user->noTokenOrTokenCan("update-firms-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -74,8 +78,10 @@ class AccountPolicy
      */
     public function delete(User $user, Account $account): bool
     {
-        return $user->firms()->where($user->firms()->qualifyColumn('id'), $account->firm_id)->exists()
-        ;
+        $firmId = $account->firm_id;
+
+        return $user->noTokenOrTokenCan("delete-firms-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -88,8 +94,10 @@ class AccountPolicy
      */
     public function restore(User $user, Account $account): bool
     {
-        return $user->firms()->where($user->firms()->qualifyColumn('id'), $account->firm_id)->exists()
-        ;
+        $firmId = $account->firm_id;
+
+        return $user->noTokenOrTokenCan("restore-firms-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -102,7 +110,9 @@ class AccountPolicy
      */
     public function forceDelete(User $user, Account $account): bool
     {
-        return $user->firms()->where($user->firms()->qualifyColumn('id'), $account->firm_id)->exists()
-        ;
+        $firmId = $account->firm_id;
+
+        return $user->noTokenOrTokenCan("force_delete-firms-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 }
