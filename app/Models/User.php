@@ -168,14 +168,14 @@ class User extends Authenticatable
     }
 
     #[Pure]
-     public function noToken(): bool
-     {
-         return null === $this->token();
-     }
+    public function noToken(): bool
+    {
+        return null === $this->token();
+    }
 
     #[Pure]
-     public function noTokenOrTokenCan(string $scope): bool
-     {
-         return $this->noToken() || $this->tokenCan($scope);
-     }
+    public function noTokenOrTokenCan(string $scope): bool
+    {
+        return $this->noToken() || $this->tokenCan($scope);
+    }
 }
