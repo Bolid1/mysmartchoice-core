@@ -22,7 +22,7 @@ class AccountsController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Account::class);
+        $this->authorizeResource(Account::class.',firm', 'account,firm');
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Account;
+use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,9 +20,12 @@ class AccountPolicy
      *
      * @return bool
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Firm $firm): bool
     {
-        return null !== $user->id;
+        $firmId = $firm->id;
+
+        return $user->noTokenOrTokenCan("view-firm-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -36,7 +40,7 @@ class AccountPolicy
     {
         $firmId = $account->firm_id;
 
-        return $user->noTokenOrTokenCan("view-firms-{$firmId}-accounts")
+        return $user->noTokenOrTokenCan("view-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
 
@@ -47,9 +51,12 @@ class AccountPolicy
      *
      * @return bool
      */
-    public function create(User $user): bool
+    public function create(User $user, Firm $firm): bool
     {
-        return null !== $user->id;
+        $firmId = $firm->id;
+
+        return $user->noTokenOrTokenCan("create-firm-{$firmId}-accounts")
+               && $user->isInFirm($firmId);
     }
 
     /**
@@ -64,7 +71,7 @@ class AccountPolicy
     {
         $firmId = $account->firm_id;
 
-        return $user->noTokenOrTokenCan("update-firms-{$firmId}-accounts")
+        return $user->noTokenOrTokenCan("update-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
 
@@ -80,7 +87,7 @@ class AccountPolicy
     {
         $firmId = $account->firm_id;
 
-        return $user->noTokenOrTokenCan("delete-firms-{$firmId}-accounts")
+        return $user->noTokenOrTokenCan("delete-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
 
@@ -96,7 +103,7 @@ class AccountPolicy
     {
         $firmId = $account->firm_id;
 
-        return $user->noTokenOrTokenCan("restore-firms-{$firmId}-accounts")
+        return $user->noTokenOrTokenCan("restore-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
 
@@ -112,7 +119,7 @@ class AccountPolicy
     {
         $firmId = $account->firm_id;
 
-        return $user->noTokenOrTokenCan("force_delete-firms-{$firmId}-accounts")
+        return $user->noTokenOrTokenCan("force_delete-firm-{$firmId}-accounts")
                && $user->isInFirm($firmId);
     }
 }

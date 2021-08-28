@@ -24,27 +24,25 @@ class AccountsControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
+        Passport::actingAs($actingUser, [
+            "view-firm-{$firm->id}-accounts",
+        ]);
 
-        $response = $this->getJson("/api/firms/{$firm->id}/accounts");
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure(
-            [
-                'data' => [
-                    '*' => [
-                        'id',
-                        'title',
-                        'balance',
+        $this
+            ->getJson("/api/firms/{$firm->id}/accounts")
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'title',
+                            'balance',
+                        ],
                     ],
-                ],
-            ]
-        );
-
-        $data = $response->json('data');
-
-        self::assertNotEmpty($data, 'Should has at least one account');
+                ]
+            )
+            ->assertJsonCount(15, 'data');
     }
 
     public function testShow(): void
@@ -55,27 +53,26 @@ class AccountsControllerTest extends TestCase
         /** @var User $user */
         $actingUser = $firm->users->first();
         Passport::actingAs($actingUser, [
-            "view-firms-{$firm->id}-accounts",
+            "view-firm-{$firm->id}-accounts",
         ]);
 
         /** @var Account $account */
         $account = $firm->accounts->first();
 
-        $response = $this->getJson("/api/firms/{$firm->id}/accounts/{$account->id}");
-
-        $response->assertStatus(200);
-
-        $response->assertJson([
-            'data' => [
-                'id' => $account->id,
-                'created_at' => $account->created_at->toJSON(),
-                'updated_at' => $account->updated_at->toJSON(),
-                'title' => $account->title,
-                'balance' => $account->balance,
-                'firm_id' => $account->firm_id,
-                'deleted_at' => $account->deleted_at,
-            ],
-        ]);
+        $this
+            ->getJson("/api/firms/{$firm->id}/accounts/{$account->id}")
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $account->id,
+                    'created_at' => $account->created_at->toJSON(),
+                    'updated_at' => $account->updated_at->toJSON(),
+                    'title' => $account->title,
+                    'balance' => $account->balance,
+                    'firm_id' => $account->firm_id,
+                    'deleted_at' => $account->deleted_at,
+                ],
+            ]);
     }
 
     public function testStore(): void
@@ -85,34 +82,21 @@ class AccountsControllerTest extends TestCase
 
         /** @var User $user */
         $actingUser = $firm->users->first();
-        Passport::actingAs($actingUser);
-
-        $response = $this->postJson(
-            "/api/firms/{$firm->id}/accounts",
-            $expected = Account::factory()->makeOne()->toArray()
-        );
-
-        $response->assertStatus(201);
-
-        $response->assertJsonStructure(
-            [
-                'data' => [
-                        'id',
-                        'created_at',
-                        'updated_at',
-                        'title',
-                        'balance',
-                        'firm_id',
-                        // 'deleted_at',
-                ],
-            ]
-        );
-
-        $response->assertJson([
-            'data' => $expected + [
-                'firm_id' => $firm->id,
-            ],
+        Passport::actingAs($actingUser, [
+            "create-firm-{$firm->id}-accounts",
         ]);
+
+        $this
+            ->postJson(
+                "/api/firms/{$firm->id}/accounts",
+                $expected = Account::factory()->makeOne()->toArray()
+            )
+            ->assertStatus(201)
+            ->assertJson([
+                'data' => $expected + [
+                    'firm_id' => $firm->id,
+                ],
+            ]);
     }
 
     public function testUpdate(): void
@@ -123,7 +107,7 @@ class AccountsControllerTest extends TestCase
         /** @var User $user */
         $actingUser = $firm->users->first();
         Passport::actingAs($actingUser, [
-            "update-firms-{$firm->id}-accounts",
+            "update-firm-{$firm->id}-accounts",
         ]);
 
         /** @var Account $account */
@@ -167,7 +151,7 @@ class AccountsControllerTest extends TestCase
         /** @var User $user */
         $actingUser = $firm->users->first();
         Passport::actingAs($actingUser, [
-            "delete-firms-{$firm->id}-accounts",
+            "delete-firm-{$firm->id}-accounts",
         ]);
 
         /** @var Account $account */
