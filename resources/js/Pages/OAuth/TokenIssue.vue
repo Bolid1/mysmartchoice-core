@@ -27,6 +27,24 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="Plain scopes" :error="form.errors.plain_scopes">
+        <el-select
+          v-model="form.plain_scopes"
+          placeholder="Please, select..."
+          class="mt-1 block w-full"
+          filterable
+          multiple
+        >
+          <el-option
+            v-for="scope in plain_scopes"
+            :key="scope.key"
+            :label="scope.description"
+            :value="scope.key"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="Firm" :error="form.errors.firm_id">
         <el-select
           v-model="form.firm_id"
@@ -53,10 +71,10 @@
           multiple
         >
           <el-option
-            v-for="scope in firm_scopes"
-            :key="scope"
-            :label="scope"
-            :value="scope"
+            v-for="scope in available_firm_scopes"
+            :key="scope.key"
+            :label="String(scope.description).replace('{firm}', firm.title)"
+            :value="scope.key"
           >
           </el-option>
         </el-select>
@@ -70,11 +88,16 @@
               redirect_uri: client.redirect,
               response_type: 'code',
               scope: union(
-                map(form.firm_scopes, (scope) => `${scope}-firm-${firm.id}`)
+                map(form.firm_scopes, (scope) =>
+                  String(scope).replace('{firm}', String(form.firm_id))
+                ),
+                form.plain_scopes
               ).join(' '),
               state: JSON.stringify({
                 client_id: client.id,
                 interface: '/oauth/tokens/issue',
+                user_id: Number($page.props.auth.user.id),
+                firm_id: Number(form.firm_id),
               }),
               skips_authorization: true,
             })
@@ -98,8 +121,9 @@
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { useForm } from "@inertiajs/inertia-vue3"
-  import { find, map, union } from "lodash"
+  import { filter, find, map, union } from "lodash"
   import axios from "axios"
+  import { scopesManager } from "@/Managers/OAuth/Scopes"
 
   export default {
     layout: AuthenticatedLayout,
@@ -116,17 +140,9 @@
       return {
         clients: {},
         firms: {},
-        firm_scopes: ["view", "update", "delete"],
+        available_firm_scopes: {},
+        plain_scopes: {},
       }
-    },
-    setup() {
-      const form = useForm({
-        client_id: "",
-        firm_id: "",
-        firm_scopes: "",
-      })
-
-      return { form }
     },
     computed: {
       client() {
@@ -144,6 +160,20 @@
         )
       },
     },
+    methods: {
+      map,
+      union,
+    },
+    setup() {
+      const form = useForm({
+        client_id: "",
+        firm_id: "",
+        firm_scopes: "",
+        plain_scopes: "",
+      })
+
+      return { form }
+    },
     created() {
       axios.get("/api/o_auth_clients/").then((response) => {
         this.clients = response.data
@@ -151,10 +181,17 @@
       axios.get("/api/firms/").then((response) => {
         this.firms = response.data
       })
-    },
-    methods: {
-      map,
-      union,
+
+      scopesManager.load().then((scopes) => {
+        this.available_firm_scopes = filter(
+          scopes,
+          (scope) => String(scope.key).indexOf("{firm}") !== -1
+        )
+        this.plain_scopes = filter(
+          scopes,
+          (scope) => String(scope.key).indexOf("{") === -1
+        )
+      })
     },
   }
 </script>

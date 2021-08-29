@@ -30,6 +30,7 @@ class SendOAuthCodeJob implements ShouldQueue
     use SerializesModels;
 
     private int    $userId;
+    private int    $firmId;
     private string $clientId;
     private array  $scopes;
 
@@ -38,9 +39,10 @@ class SendOAuthCodeJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(int $userId, string $clientId, array $scopes)
+    public function __construct(int $userId, int $firmId, string $clientId, array $scopes)
     {
         $this->userId = $userId;
+        $this->firmId = $firmId;
         $this->clientId = $clientId;
         $this->scopes = $scopes;
     }
@@ -60,6 +62,7 @@ class SendOAuthCodeJob implements ShouldQueue
     {
         Log::info('New '.__CLASS__, [
             'user_id' => $this->userId,
+            'firm_id' => $this->firmId,
             'client_id' => $this->clientId,
             'scopes' => $this->scopes,
         ]);
@@ -67,6 +70,7 @@ class SendOAuthCodeJob implements ShouldQueue
         if (!$client = $clientRepository->getClientEntity($this->clientId)) {
             Log::error('Client not found by identifier', [
                 'user_id' => $this->userId,
+                'firm_id' => $this->firmId,
                 'client_id' => $this->clientId,
                 'scopes' => $this->scopes,
             ]);
@@ -77,6 +81,7 @@ class SendOAuthCodeJob implements ShouldQueue
         if (!$user = \App\Models\User::find($this->userId)) {
             Log::error('User not found by identifier', [
                 'user_id' => $this->userId,
+                'firm_id' => $this->firmId,
                 'client_id' => $this->clientId,
                 'scopes' => $this->scopes,
             ]);
@@ -97,6 +102,8 @@ class SendOAuthCodeJob implements ShouldQueue
             json_encode([
                 'client_id' => $this->clientId,
                 'interface' => null,
+                'user_id' => $this->userId,
+                'firm_id' => $this->firmId,
             ], JSON_THROW_ON_ERROR)
         );
         $authorizationRequest->setUser(new User($user->getAuthIdentifier()));
@@ -109,6 +116,7 @@ class SendOAuthCodeJob implements ShouldQueue
 
         Log::info('Location for code sending is built', [
             'user_id' => $this->userId,
+            'firm_id' => $this->firmId,
             'client_id' => $this->clientId,
             'scopes' => $this->scopes,
             'location' => $location,

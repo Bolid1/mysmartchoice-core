@@ -74,6 +74,8 @@
                   state: JSON.stringify({
                     client_id: integration.settings.oauth2_client_id,
                     interface: `/firms/${firm.id}/firm_integrations/${firm_integration.id}/edit`,
+                    user_id: firm_integration.user_id,
+                    firm_id: firm_integration.firm_id,
                   }),
                 })
               "
