@@ -34,6 +34,7 @@ class FirmIntegrationObserver
         if ((Integration::AUTH_OAUTH2 === $firmIntegration->integration->auth) && ($userId = Auth::id())) {
             Bus::dispatch(new SendOAuthCodeJob(
                 $userId,
+                $firmIntegration->firm_id,
                 $firmIntegration->integration->o_auth2_client_id,
                 array_map(
                     static fn ($scope) => str_replace('{firm}', (string)$firmIntegration->firm_id, $scope),
