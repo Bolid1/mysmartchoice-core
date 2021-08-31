@@ -16,7 +16,12 @@
       </h2>
       <div class="flex-shrink-1">
         <inertia-link :href="route('firms.accounts.edit', { firm, account })"
-          ><breeze-button>Edit</breeze-button></inertia-link
+          ><el-button plain type="primary">Edit</el-button></inertia-link
+        >
+        <inertia-link
+          :href="route('firms.accounts.destroy', { firm, account })"
+          method="delete"
+          ><el-button plain type="danger">Delete</el-button></inertia-link
         >
       </div>
     </div>
