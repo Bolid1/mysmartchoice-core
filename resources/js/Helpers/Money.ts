@@ -1,6 +1,6 @@
-const numberFormatters = {}
+const numberFormatters: Record<string, Intl.NumberFormat> = {}
 
-function getOrCreateNumberFormat(currency) {
+function getOrCreateNumberFormat(currency: string) {
   if (!(currency in numberFormatters)) {
     numberFormatters[currency] = new Intl.NumberFormat(undefined, {
       currency,
@@ -12,6 +12,6 @@ function getOrCreateNumberFormat(currency) {
   return numberFormatters[currency]
 }
 
-export function formatMoney(currency, money) {
+export function formatMoney(currency: string, money: number | bigint) {
   return getOrCreateNumberFormat(currency).format(money)
 }
