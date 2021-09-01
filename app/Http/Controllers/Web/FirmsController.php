@@ -95,6 +95,7 @@ class FirmsController extends Controller
 
         return inertia('Firm', [
             'firm' => FirmResource::make($firm),
+            'balances' => $firm->getBalanceByCurrencies(),
         ]);
     }
 

@@ -8,6 +8,24 @@
     </div>
   </header>
 
+  <div class="pt-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <el-row :gutter="12" justify="space-between">
+      <el-col
+        v-for="(balance, currency) in balances"
+        :xs="12"
+        :sm="6"
+        :md="4"
+        :lg="4"
+        :xl="3"
+        class="mt-2"
+      >
+        <el-card>
+          {{ formatMoney(currency, balance) }}
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+
   <div class="pt-6">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <header class="bg-white shadow">
@@ -105,16 +123,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  // @ts-ignore
   import AuthenticatedLayout from "@/Layouts/Authenticated"
+  // @ts-ignore
   import UserCard from "@/Components/UserCard"
+  // @ts-ignore
   import FirmIntegrationCard from "@/Components/FirmIntegrationCard"
+  import { formatMoney } from "@/Helpers/Money"
+  import { defineComponent } from "vue"
 
-  export default {
-    components: { FirmIntegrationCard, UserCard },
+  export default defineComponent({
     layout: AuthenticatedLayout,
-    props: ["firm"],
-  }
+    components: { FirmIntegrationCard, UserCard },
+    props: {
+      firm: Object,
+      balances: Object,
+    },
+    setup() {
+      return {
+        formatMoney,
+      }
+    },
+  })
 </script>
 
 <style scoped></style>

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection as BaseCollection;
 
 /**
  * A business concern, especially one involving a
@@ -74,5 +75,15 @@ class Firm extends Model
     public function integrationsInstalls(): HasMany
     {
         return $this->hasMany(FirmIntegration::class);
+    }
+
+    public function getBalanceByCurrencies(): BaseCollection
+    {
+        return $this
+            ->accounts
+            ->groupBy('currency')
+            ->map(
+                static fn (BaseCollection $accounts) => $accounts->sum('balance'),
+            );
     }
 }
