@@ -1,13 +1,13 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="route('firms.show', firm)">{{
+      <inertia-link class="underline" :href="$route('firms.show', firm)">{{
         firm.title
       }}</inertia-link>
       -> Integrations
     </template>
     <template #right>
-      <inertia-link :href="route('firms.firm_integrations.create', firm)"
+      <inertia-link :href="$route('firms.firm_integrations.create', firm)"
         ><breeze-button>Create</breeze-button></inertia-link
       >
     </template>

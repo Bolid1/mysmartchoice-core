@@ -1,19 +1,19 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="route('o_auth_clients.index')"
+      <inertia-link class="underline" :href="$route('o_auth_clients.index')"
         >OAuth Clients</inertia-link
       >
       -> {{ o_auth_client.name }}
     </template>
     <template #right>
       <inertia-link
-        :href="route('o_auth_clients.destroy', o_auth_client)"
+        :href="$route('o_auth_clients.destroy', o_auth_client)"
         class="pr-2"
         method="delete"
         ><breeze-button color="red">Delete</breeze-button></inertia-link
       >
-      <inertia-link :href="route('o_auth_clients.edit', o_auth_client)"
+      <inertia-link :href="$route('o_auth_clients.edit', o_auth_client)"
         ><breeze-button color="green">Edit</breeze-button></inertia-link
       >
     </template>

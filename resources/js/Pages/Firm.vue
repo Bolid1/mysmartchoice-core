@@ -33,7 +33,7 @@
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
             <inertia-link
               class="underline"
-              :href="route('firms.accounts.index', firm)"
+              :href="$route('firms.accounts.index', firm)"
             >
               Accounts
             </inertia-link>
@@ -46,7 +46,7 @@
           <div v-for="account in firm.accounts">
             <inertia-link
               class="underline"
-              :href="route('firms.accounts.show', { firm, account })"
+              :href="$route('firms.accounts.show', { firm, account })"
             >
               Account "{{ account.title }}" balance = {{ account.balance }}
             </inertia-link>
@@ -63,7 +63,7 @@
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
             <inertia-link
               class="underline"
-              :href="route('firms.users.index', firm)"
+              :href="$route('firms.users.index', firm)"
             >
               Users
             </inertia-link>
@@ -102,7 +102,7 @@
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
             <inertia-link
               class="underline"
-              :href="route('firms.firm_integrations.index', { firm })"
+              :href="$route('firms.firm_integrations.index', { firm })"
             >
               Integrations
             </inertia-link>

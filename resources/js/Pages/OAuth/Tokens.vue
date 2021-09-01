@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="route('oauth.tokens.issue')">
+      <inertia-link :href="$route('oauth.tokens.issue')">
         <el-button plain type="success">Issue</el-button>
       </inertia-link>
     </template>

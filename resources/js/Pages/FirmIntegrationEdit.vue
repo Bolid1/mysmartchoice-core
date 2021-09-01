@@ -1,12 +1,12 @@
 <template>
   <page-header>
-    <inertia-link class="underline" :href="route('firms.show', firm)">{{
+    <inertia-link class="underline" :href="$route('firms.show', firm)">{{
       firm.title
     }}</inertia-link>
     ->
     <inertia-link
       class="underline"
-      :href="route('firms.firm_integrations.index', firm)"
+      :href="$route('firms.firm_integrations.index', firm)"
       >Integrations</inertia-link
     >
     -> {{ firm_integration.id || "Connect new" }}
@@ -18,12 +18,12 @@
         @submit.prevent="
           firm_integration.id
             ? form.patch(
-                route('firms.firm_integrations.update', {
+                $route('firms.firm_integrations.update', {
                   firm,
                   firm_integration,
                 })
               )
-            : form.post(route('firms.firm_integrations.store', firm))
+            : form.post($route('firms.firm_integrations.store', firm))
         "
         label-position="left"
         label-width="100px"
@@ -64,7 +64,7 @@
                 integration.client
               "
               :href="
-                route('passport.authorizations.authorize', {
+                $route('passport.authorizations.authorize', {
                   client_id: integration.settings.oauth2_client_id,
                   redirect_uri: integration.client.redirect,
                   response_type: 'code',

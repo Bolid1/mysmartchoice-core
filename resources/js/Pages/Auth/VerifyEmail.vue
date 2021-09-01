@@ -23,7 +23,7 @@
       </breeze-button>
 
       <inertia-link
-        :href="route('logout')"
+        :href="$route('logout')"
         method="post"
         as="button"
         class="underline text-sm text-gray-600 hover:text-gray-900"
@@ -56,7 +56,7 @@
 
     methods: {
       submit() {
-        this.form.post(this.route("verification.send"))
+        this.form.post(this.$route("verification.send"))
       },
     },
 

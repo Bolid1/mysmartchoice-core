@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="route('o_auth_clients.create')"
+      <inertia-link :href="$route('o_auth_clients.create')"
         ><breeze-button color="green">Create</breeze-button></inertia-link
       >
     </template>
@@ -11,7 +11,7 @@
     <div v-for="o_auth_client in o_auth_clients.data" class="p-2">
       <inertia-link
         class="underline"
-        :href="route('o_auth_clients.show', o_auth_client)"
+        :href="$route('o_auth_clients.show', o_auth_client)"
       >
         OAuthClient#{{ o_auth_client.id }} [{{ o_auth_client.name }}]
       </inertia-link>

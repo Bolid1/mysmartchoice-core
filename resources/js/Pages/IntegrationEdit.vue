@@ -3,7 +3,7 @@
   <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        <inertia-link class="underline" :href="route('integrations.index')"
+        <inertia-link class="underline" :href="$route('integrations.index')"
           >Integrations</inertia-link
         >
         -> {{ integration.title || "Create" }}
@@ -86,21 +86,21 @@
         v-if="!integration.id"
         :disabled="form.processing"
         type="primary"
-        @click="form.post(route('integrations.store'))"
+        @click="form.post($route('integrations.store'))"
         >Create</el-button
       >
       <el-button
         v-if="integration.id"
         :disabled="form.processing"
         type="primary"
-        @click="form.patch(route('integrations.update', { integration }))"
+        @click="form.patch($route('integrations.update', { integration }))"
         >Save</el-button
       >
       <el-button
         v-if="integration.id"
         :disabled="form.processing"
         type="danger"
-        @click="form.delete(route('integrations.destroy', { integration }))"
+        @click="form.delete($route('integrations.destroy', { integration }))"
         >Delete</el-button
       >
 

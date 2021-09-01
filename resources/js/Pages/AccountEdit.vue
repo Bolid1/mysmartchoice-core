@@ -3,13 +3,13 @@
   <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        <inertia-link class="underline" :href="route('firms.show', firm)">{{
+        <inertia-link class="underline" :href="$route('firms.show', firm)">{{
           firm.title
         }}</inertia-link>
         ->
         <inertia-link
           class="underline"
-          :href="route('firms.accounts.index', firm)"
+          :href="$route('firms.accounts.index', firm)"
           >Accounts</inertia-link
         >
         -> {{ account.title || "Create" }}
@@ -23,8 +23,8 @@
         <form
           @submit.prevent="
             account.id
-              ? form.patch(route('firms.accounts.update', { firm, account }))
-              : form.post(route('firms.accounts.store', firm))
+              ? form.patch($route('firms.accounts.update', { firm, account }))
+              : form.post($route('firms.accounts.store', firm))
           "
           class="p-4"
         >

@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="route('integrations.create')"
+      <inertia-link :href="$route('integrations.create')"
         ><breeze-button color="green">Create</breeze-button></inertia-link
       >
     </template>
@@ -14,7 +14,7 @@
           <div v-for="integration in integrations.data">
             <inertia-link
               class="underline"
-              :href="route('integrations.show', integration)"
+              :href="$route('integrations.show', integration)"
             >
               Integration#{{ integration.id }} ({{ integration.title }})
             </inertia-link>

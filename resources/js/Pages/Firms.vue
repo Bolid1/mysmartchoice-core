@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="route('firms.create')">
+      <inertia-link :href="$route('firms.create')">
         <el-button :disabled="!can.add" plain type="success">
           Create
         </el-button>
@@ -22,10 +22,10 @@
       <el-card class="mr-2" shadow="hover">
         <h5>{{ firm.title }}</h5>
         <div class="mt-2 flex justify-end">
-          <inertia-link :href="route('firms.show', { firm })" class="ml-2">
+          <inertia-link :href="$route('firms.show', { firm })" class="ml-2">
             <el-button plain type="primary">View</el-button>
           </inertia-link>
-          <inertia-link :href="route('firms.edit', { firm })" class="ml-2"
+          <inertia-link :href="$route('firms.edit', { firm })" class="ml-2"
             ><el-button plain type="primary">Edit</el-button></inertia-link
           >
         </div>

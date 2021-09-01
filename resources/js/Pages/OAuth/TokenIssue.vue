@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="route('oauth.tokens.index')"
+      <inertia-link class="underline" :href="$route('oauth.tokens.index')"
         >Tokens</inertia-link
       >
       -> Issue
@@ -83,7 +83,7 @@
       <el-form-item v-if="client && firm">
         <inertia-link
           :href="
-            route('passport.authorizations.authorize', {
+            $route('passport.authorizations.authorize', {
               client_id: client.id,
               redirect_uri: client.redirect,
               response_type: 'code',

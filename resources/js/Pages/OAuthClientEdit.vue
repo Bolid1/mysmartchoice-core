@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="route('o_auth_clients.index')"
+      <inertia-link class="underline" :href="$route('o_auth_clients.index')"
         >OAuth Clients</inertia-link
       >
       -> {{ o_auth_client.name || "Create" }}
@@ -9,14 +9,14 @@
     <template #right>
       <inertia-link
         v-if="o_auth_client.id"
-        :href="route('o_auth_clients.destroy', o_auth_client)"
+        :href="$route('o_auth_clients.destroy', o_auth_client)"
         method="delete"
         class="pr-2"
         ><breeze-button color="red">Delete</breeze-button></inertia-link
       >
       <inertia-link
         v-if="o_auth_client.id"
-        :href="route('o_auth_clients.show', o_auth_client)"
+        :href="$route('o_auth_clients.show', o_auth_client)"
         ><breeze-button color="gray">View</breeze-button></inertia-link
       >
     </template>
@@ -27,11 +27,11 @@
       @submit.prevent="
         o_auth_client.id
           ? form.patch(
-              route('o_auth_clients.update', {
+              $route('o_auth_clients.update', {
                 o_auth_client,
               })
             )
-          : form.post(route('o_auth_clients.store'))
+          : form.post($route('o_auth_clients.store'))
       "
       class="p-4"
     >

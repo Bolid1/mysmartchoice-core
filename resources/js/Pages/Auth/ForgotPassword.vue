@@ -67,7 +67,7 @@
 
     methods: {
       submit() {
-        this.form.post(this.route("password.email"))
+        this.form.post(this.$route("password.email"))
       },
     },
   }

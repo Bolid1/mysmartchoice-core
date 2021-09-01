@@ -1,7 +1,7 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="route('firms.index')"
+      <inertia-link class="underline" :href="$route('firms.index')"
         >Firms</inertia-link
       >
       -> {{ firm.title || "Create" }}
@@ -19,21 +19,21 @@
           v-if="!firm.id"
           :disabled="form.processing"
           type="primary"
-          @click="form.post(route('firms.store'))"
+          @click="form.post($route('firms.store'))"
           >Create</el-button
         >
         <el-button
           v-if="firm.id"
           :disabled="form.processing"
           type="primary"
-          @click="form.patch(route('firms.update', { firm }))"
+          @click="form.patch($route('firms.update', { firm }))"
           >Save</el-button
         >
         <el-button
           v-if="firm.id"
           :disabled="form.processing"
           type="danger"
-          @click="form.delete(route('firms.destroy', { firm }))"
+          @click="form.delete($route('firms.destroy', { firm }))"
           >Delete</el-button
         >
       </el-form-item>

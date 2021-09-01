@@ -56,7 +56,7 @@
     <div class="flex justify-end mt-4">
       <inertia-link
         class="text-xl font-medium text-indigo-500"
-        :href="route('users.edit', user)"
+        :href="$route('users.edit', user)"
         >{{ user.name }}</inertia-link
       >
     </div>

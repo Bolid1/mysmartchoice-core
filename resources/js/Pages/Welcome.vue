@@ -14,14 +14,14 @@
     <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
       <template v-if="$page.props.auth.user">
         <inertia-link
-          :href="route('firms.index')"
+          :href="$route('firms.index')"
           class="text-sm text-gray-700 underline"
         >
           Firms
         </inertia-link>
 
         <inertia-link
-          :href="route('logout')"
+          :href="$route('logout')"
           method="post"
           as="button"
           class="ml-4 text-sm text-gray-700 underline"
@@ -31,7 +31,7 @@
       </template>
       <template v-else>
         <inertia-link
-          :href="route('login')"
+          :href="$route('login')"
           class="text-sm text-gray-700 underline"
         >
           Log in
@@ -39,7 +39,7 @@
 
         <inertia-link
           v-if="canRegister"
-          :href="route('register')"
+          :href="$route('register')"
           class="ml-4 text-sm text-gray-700 underline"
         >
           Register
