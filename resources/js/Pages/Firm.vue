@@ -123,7 +123,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
   // @ts-ignore
   import AuthenticatedLayout from "@/Layouts/Authenticated"
   // @ts-ignore
