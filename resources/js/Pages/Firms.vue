@@ -1,14 +1,4 @@
 <template>
-  <page-header>
-    <template #right>
-      <Link :href="this.$route('firms.create')">
-        <el-button :disabled="!can.add" plain type="success">
-          Create
-        </el-button>
-      </Link>
-    </template>
-  </page-header>
-
   <el-row :gutter="12">
     <el-col
       v-for="firm in firms.data"
@@ -28,6 +18,16 @@
           <Link :href="this.$route('firms.edit', { firm })" class="ml-2"
             ><el-button plain type="primary">Edit</el-button></Link
           >
+        </div>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mt-2">
+      <el-card class="mr-2" shadow="hover">
+        <el-skeleton :rows="0" />
+        <div class="mt-2 flex justify-end">
+          <Link :href="this.$route('firms.create')" class="ml-2">
+            <el-button plain type="success">Create</el-button>
+          </Link>
         </div>
       </el-card>
     </el-col>
