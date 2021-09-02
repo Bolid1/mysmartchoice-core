@@ -85,7 +85,7 @@
       <el-form-item v-if="client && firm">
         <Link
           :href="
-            $route('passport.authorizations.authorize', {
+            this.$route('passport.authorizations.authorize', {
               client_id: client.id,
               redirect_uri: client.redirect,
               response_type: 'code',
@@ -98,7 +98,7 @@
               state: JSON.stringify({
                 client_id: client.id,
                 interface: '/oauth/tokens/issue',
-                user_id: Number($page.props.auth.user.id),
+                user_id: Number(this.$page.props.auth.user.id),
                 firm_id: Number(form.firm_id),
               }),
               skips_authorization: true,
