@@ -20,7 +20,7 @@ class OAuthClientsController extends Controller
 
     public function __construct(ClientController $controller)
     {
-        $this->authorizeResource(OAuthClient::class);
+        $this->authorizeResource(OAuthClient::class, 'oauth_client');
         $this->controller = $controller;
     }
 
@@ -32,7 +32,7 @@ class OAuthClientsController extends Controller
     public function index(Request $request): Response
     {
         return inertia('OAuthClients', [
-            'o_auth_clients' => OAuthClientResource::collection(
+            'oauth_clients' => OAuthClientResource::collection(
                 $this->controller->forUser($request)
             ),
         ]);
@@ -48,7 +48,7 @@ class OAuthClientsController extends Controller
         OAuthClientResource::withoutWrapping();
 
         return inertia('OAuthClientEdit', [
-            'o_auth_client' => OAuthClientResource::make(OAuthClient::make([])),
+            'oauth_client' => OAuthClientResource::make(OAuthClient::make([])),
         ]);
     }
 
@@ -63,7 +63,7 @@ class OAuthClientsController extends Controller
     {
         $client = $this->controller->store($request);
 
-        return Redirect::route('o_auth_clients.edit', ['o_auth_client' => $client], 303);
+        return Redirect::route('oauth_clients.edit', ['oauth_client' => $client], 303);
     }
 
     /**
@@ -78,7 +78,7 @@ class OAuthClientsController extends Controller
         OAuthClientResource::withoutWrapping();
 
         return inertia('OAuthClient', [
-            'o_auth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+            'oauth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
         ]);
     }
 
@@ -94,7 +94,7 @@ class OAuthClientsController extends Controller
         OAuthClientResource::withoutWrapping();
 
         return inertia('OAuthClientEdit', [
-            'o_auth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+            'oauth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
         ]);
     }
 
@@ -110,7 +110,7 @@ class OAuthClientsController extends Controller
     {
         $this->controller->update($request, $oAuthClient->getKey());
 
-        return Redirect::route('o_auth_clients.edit', ['o_auth_client' => $oAuthClient], 303);
+        return Redirect::route('oauth_clients.edit', ['oauth_client' => $oAuthClient], 303);
     }
 
     /**
@@ -124,6 +124,6 @@ class OAuthClientsController extends Controller
     {
         $this->controller->destroy($request, $oAuthClient->getKey());
 
-        return Redirect::route('o_auth_clients.index', [], 303);
+        return Redirect::route('oauth_clients.index', [], 303);
     }
 }

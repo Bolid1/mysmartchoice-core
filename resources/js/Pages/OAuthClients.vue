@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="12">
     <el-col
-      v-for="oauth_client in o_auth_clients.data"
+      v-for="oauth_client in oauth_clients.data"
       :xs="24"
       :sm="12"
       :md="8"
@@ -18,13 +18,13 @@
         </p>
         <div class="mt-2 flex justify-end">
           <Link
-            :href="this.$route('o_auth_clients.show', oauth_client)"
+            :href="this.$route('oauth_clients.show', oauth_client)"
             class="ml-2"
           >
             <el-button plain type="primary">View</el-button>
           </Link>
           <Link
-            :href="this.$route('o_auth_clients.edit', oauth_client)"
+            :href="this.$route('oauth_clients.edit', oauth_client)"
             class="ml-2"
             ><el-button plain type="primary">Edit</el-button></Link
           >
@@ -35,7 +35,7 @@
       <el-card class="mr-2" shadow="hover">
         <el-skeleton :rows="2" />
         <div class="mt-2 flex justify-end">
-          <Link :href="this.$route('o_auth_clients.create')" class="ml-2">
+          <Link :href="this.$route('oauth_clients.create')" class="ml-2">
             <el-button plain type="success">Create</el-button>
           </Link>
         </div>
@@ -53,7 +53,7 @@
 
   export default defineComponent({
     components: { PageBlock, PageHeader, Link, BreezeButton },
-    props: ["o_auth_clients"],
+    props: ["oauth_clients"],
   })
 </script>
 

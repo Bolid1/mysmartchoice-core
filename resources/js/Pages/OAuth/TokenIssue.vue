@@ -2,8 +2,8 @@
   <page-header>
     <template #default>
       <Link class="underline" :href="this.$route('oauth.tokens.index')"
-        >Tokens</Link
-      >
+        >Tokens
+      </Link>
       -> Issue
     </template>
   </page-header>
@@ -106,9 +106,9 @@
           "
         >
           <el-button :disabled="form.processing" type="primary"
-            >Issue</el-button
-          ></Link
-        >
+            >Issue
+          </el-button>
+        </Link>
       </el-form-item>
     </el-form>
   </el-card>
@@ -174,7 +174,7 @@
       return { form }
     },
     created() {
-      axios.get("/api/o_auth_clients/").then((response) => {
+      axios.get("/api/oauth_clients/").then((response) => {
         this.clients = response.data
       })
       axios.get("/api/firms/").then((response) => {

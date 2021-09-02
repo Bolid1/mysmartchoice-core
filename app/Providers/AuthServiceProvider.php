@@ -14,6 +14,7 @@ use App\Policies\AccountPolicy;
 use App\Policies\FirmIntegrationPolicy;
 use App\Policies\FirmPolicy;
 use App\Policies\IntegrationPolicy;
+use App\Policies\OAuthClientPolicy;
 use App\Policies\UserPolicy;
 use App\Repositories\ScopeRepository;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -33,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         FirmIntegration::class => FirmIntegrationPolicy::class,
         Firm::class => FirmPolicy::class,
         Integration::class => IntegrationPolicy::class,
+        OAuthClient::class => OAuthClientPolicy::class,
         User::class => UserPolicy::class,
     ];
 

@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(static function () {
     Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class);
     Route::resource('firms.accounts', Web\AccountsController::class);
     Route::resource('integrations', Web\IntegrationsController::class);
-    Route::resource('o_auth_clients', Web\OAuthClientsController::class);
+    Route::resource('oauth_clients', Web\OAuthClientsController::class);
     Route::resource('users', Web\UsersController::class)
          ->only([
              'edit',

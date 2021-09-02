@@ -18,7 +18,7 @@ class OAuthClientsController extends Controller
 
     public function __construct(ClientController $controller)
     {
-        $this->authorizeResource(OAuthClient::class);
+        $this->authorizeResource(OAuthClient::class, 'oauth_client');
         $this->controller = $controller;
     }
 

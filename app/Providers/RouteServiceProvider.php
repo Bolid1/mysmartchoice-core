@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\FirmIntegration;
+use App\Models\OAuthClient;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -38,11 +39,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
-        Route::model('install', FirmIntegration::class);
+        Route::model('oauth_client', OAuthClient::class);
 
         $this->routes(function () {
             Route::prefix('api')

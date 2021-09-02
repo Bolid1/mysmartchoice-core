@@ -28,7 +28,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
-            ->getJson(route('api.o_auth_clients.index'))
+            ->getJson(route('api.oauth_clients.index'))
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -51,7 +51,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $response = $this
-            ->postJson(route('api.o_auth_clients.store'), [
+            ->postJson(route('api.oauth_clients.store'), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
             ])
@@ -74,8 +74,8 @@ class OAuthClientsControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->createOne();
-        /** @var OAuthClient $oAuthClient */
-        $oAuthClient = OAuthClient::factory()->createOne([
+        /** @var OAuthClient $client */
+        $client = OAuthClient::factory()->createOne([
             'user_id' => $user->id,
         ]);
 
@@ -84,11 +84,11 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
-            ->getJson(route('api.o_auth_clients.show', $oAuthClient))
+            ->getJson(route('api.oauth_clients.show', $client->id))
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
-                    'id' => $oAuthClient->id,
+                    'id' => $client->id,
                 ],
             ])
         ;
@@ -108,7 +108,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
-            ->patchJson(route('api.o_auth_clients.update', $oAuthClient), [
+            ->patchJson(route('api.oauth_clients.update', $oAuthClient), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
             ])
@@ -135,7 +135,7 @@ class OAuthClientsControllerTest extends TestCase
         ]);
 
         $this
-            ->deleteJson(route('api.o_auth_clients.destroy', $oAuthClient))
+            ->deleteJson(route('api.oauth_clients.destroy', $oAuthClient))
             ->assertStatus(200)
             ->assertJson(
                 [

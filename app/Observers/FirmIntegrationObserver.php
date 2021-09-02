@@ -35,10 +35,10 @@ class FirmIntegrationObserver
             Bus::dispatch(new SendOAuthCodeJob(
                 $userId,
                 $firmIntegration->firm_id,
-                $firmIntegration->integration->o_auth2_client_id,
+                $firmIntegration->integration->oauth2_client_id,
                 array_map(
                     static fn ($scope) => str_replace('{firm}', (string)$firmIntegration->firm_id, $scope),
-                    $firmIntegration->integration->o_auth2_scopes
+                    $firmIntegration->integration->oauth2_scopes
                 )
             ));
         }

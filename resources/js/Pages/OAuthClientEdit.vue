@@ -1,23 +1,23 @@
 <template>
   <page-header>
     <template #default>
-      <Link class="underline" :href="this.$route('o_auth_clients.index')"
+      <Link class="underline" :href="this.$route('oauth_clients.index')"
         >OAuth Clients</Link
       >
-      -> {{ o_auth_client.name || "Create" }}
+      -> {{ oauth_client.name || "Create" }}
     </template>
     <template #right>
       <Link
-        v-if="o_auth_client.id"
-        :href="this.$route('o_auth_clients.destroy', o_auth_client)"
+        v-if="oauth_client.id"
+        :href="this.$route('oauth_clients.destroy', oauth_client)"
         method="delete"
         as="button"
         class="pr-2"
         ><breeze-button color="red">Delete</breeze-button></Link
       >
       <Link
-        v-if="o_auth_client.id"
-        :href="this.$route('o_auth_clients.show', o_auth_client)"
+        v-if="oauth_client.id"
+        :href="this.$route('oauth_clients.show', oauth_client)"
         ><breeze-button color="gray">View</breeze-button></Link
       >
     </template>
@@ -26,35 +26,35 @@
   <page-block>
     <form
       @submit.prevent="
-        o_auth_client.id
+        oauth_client.id
           ? form.patch(
-              $route('o_auth_clients.update', {
-                o_auth_client,
+              $route('oauth_clients.update', {
+                oauth_client,
               })
             )
-          : form.post($route('o_auth_clients.store'))
+          : form.post($route('oauth_clients.store'))
       "
       class="p-4"
     >
       <!-- id -->
-      <div class="pt-2" v-if="o_auth_client.id">
+      <div class="pt-2" v-if="oauth_client.id">
         <breeze-label for="id">Id</breeze-label>
         <breeze-input
           id="id"
           type="text"
-          v-model="o_auth_client.id"
+          v-model="oauth_client.id"
           class="mt-1 block w-full bg-gray-100"
           disabled
         />
       </div>
 
       <!-- secret -->
-      <div class="pt-2" v-if="o_auth_client.secret">
+      <div class="pt-2" v-if="oauth_client.secret">
         <breeze-label for="secret">Secret</breeze-label>
         <breeze-input
           id="secret"
           type="text"
-          v-model="o_auth_client.secret"
+          v-model="oauth_client.secret"
           class="mt-1 block w-full bg-gray-100"
           disabled
         />
@@ -97,7 +97,7 @@
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
         >
-          {{ o_auth_client.id ? "Update" : "Create" }}
+          {{ oauth_client.id ? "Update" : "Create" }}
         </breeze-button>
       </div>
     </form>
@@ -109,7 +109,6 @@
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
-  import { ElOption, ElSelect } from "element-plus"
   import PageBlock from "@/Components/PageBlock"
   import PageHeader from "@/Components/PageHeader"
   import { Link, useForm } from "@inertiajs/inertia-vue3"
@@ -125,11 +124,11 @@
       PageHeader,
       Link,
     },
-    props: ["o_auth_client"],
+    props: ["oauth_client"],
     setup(props) {
       const form = useForm({
-        name: props.o_auth_client.name,
-        redirect: props.o_auth_client.redirect,
+        name: props.oauth_client.name,
+        redirect: props.oauth_client.redirect,
       })
 
       return { form }

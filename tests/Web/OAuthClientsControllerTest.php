@@ -26,7 +26,7 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->get(route('o_auth_clients.index'))
+            ->get(route('oauth_clients.index'))
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
@@ -42,7 +42,7 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->get(route('o_auth_clients.create'))
+            ->get(route('oauth_clients.create'))
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
@@ -58,7 +58,7 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->postJson(route('o_auth_clients.store'), [
+            ->postJson(route('oauth_clients.store'), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
             ])
@@ -80,12 +80,12 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->get(route('o_auth_clients.show', $oAuthClient))
+            ->get(route('oauth_clients.show', $oAuthClient))
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('OAuthClient')
-                    ->has('o_auth_client', fn (Assert $page) => $page
+                    ->has('oauth_client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)
                         ->etc()
@@ -106,12 +106,12 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->get(route('o_auth_clients.edit', $oAuthClient))
+            ->get(route('oauth_clients.edit', $oAuthClient))
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('OAuthClientEdit')
-                    ->has('o_auth_client', fn (Assert $page) => $page
+                    ->has('oauth_client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)
                         ->etc()
@@ -132,12 +132,12 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->patch(route('o_auth_clients.update', $oAuthClient), [
+            ->patch(route('oauth_clients.update', $oAuthClient), [
                 'name' => $this->faker->jobTitle,
                 'redirect' => $this->faker->url,
             ])
             ->assertStatus(303)
-            ->assertRedirect(route('o_auth_clients.edit', $oAuthClient))
+            ->assertRedirect(route('oauth_clients.edit', $oAuthClient))
         ;
 
         // self::assertEquals($newFieldValue, $oAuthClient->fresh()->field);
@@ -155,9 +155,9 @@ class OAuthClientsControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->delete(route('o_auth_clients.destroy', $oAuthClient))
+            ->delete(route('oauth_clients.destroy', $oAuthClient))
             ->assertStatus(303)
-            ->assertRedirect(route('o_auth_clients.index'))
+            ->assertRedirect(route('oauth_clients.index'))
         ;
 
         self::assertNotNull($fresh = $oAuthClient->fresh());

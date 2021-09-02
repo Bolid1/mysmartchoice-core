@@ -35,8 +35,8 @@ use function is_iterable;
  * @property array|null $settings
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
- * @property string|null $o_auth2_client_id
- * @property array $o_auth2_scopes
+ * @property string|null $oauth2_client_id
+ * @property array $oauth2_scopes
  * @property array $javascript_file
  * @property string auth
  *
