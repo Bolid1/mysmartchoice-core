@@ -9,15 +9,34 @@
         active-text-color="#ffd04b"
         :collapse="isMenuCollapsed"
       >
-        <el-menu-item @click="toggleMenuCollapsed()">
-          <i
-            :class="{
-              'el-icon-s-fold': !isMenuCollapsed,
-              'el-icon-s-unfold': isMenuCollapsed,
-            }"
-          ></i>
-          <span>App name</span>
-        </el-menu-item>
+        <el-sub-menu index="user">
+          <template #title>
+            <i
+              :class="{
+                'el-icon-s-fold': !isMenuCollapsed,
+                'el-icon-s-unfold': isMenuCollapsed,
+              }"
+              @click="toggleMenuCollapsed()"
+            ></i>
+            <span>{{ $page.props.auth.user.name }}</span>
+          </template>
+          <el-menu-item index="profile">
+            <Link
+              class="block w-full"
+              :href="this.$route('users.edit', this.$page.props.auth.user)"
+              >Profile</Link
+            >
+          </el-menu-item>
+          <el-menu-item>
+            <Link
+              class="block w-full text-left"
+              :href="this.$route('logout')"
+              method="post"
+              as="button"
+              >Log Out</Link
+            >
+          </el-menu-item>
+        </el-sub-menu>
         <el-menu-item v-for="menuItem in menuItems" :index="menuItem.route">
           <Link :href="menuItem.href" class="block w-full">
             <i :class="menuItem.icon"></i>
@@ -27,32 +46,9 @@
       </el-menu>
     </el-aside>
 
-    <el-container>
-      <el-header class="flex justify-end">
-        <el-dropdown class="mt-8">
-          <span>{{ $page.props.auth.user.name }}</span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>
-                <Link
-                  :href="this.$route('users.edit', this.$page.props.auth.user)"
-                  >Profile</Link
-                >
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <Link :href="this.$route('logout')" method="post" as="button"
-                  >Log Out</Link
-                >
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </el-header>
-
-      <el-main>
-        <slot />
-      </el-main>
-    </el-container>
+    <el-main>
+      <slot />
+    </el-main>
   </el-container>
 </template>
 
@@ -106,7 +102,16 @@
         })
       },
       activeIndex() {
-        return this.menuItems.find(({ active }) => active)?.route
+        return (
+          this.menuItems.find(({ active }) => active)?.route ||
+          (this.isProfileActive && "profile")
+        )
+      },
+      isProfileActive() {
+        return (
+          this.$page.url ===
+          this.$route("users.edit", this.$page.props.auth.user, false)
+        )
       },
     },
 
