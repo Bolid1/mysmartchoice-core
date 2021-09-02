@@ -1,24 +1,18 @@
 <template>
-  <page-header>
-    <template #right>
-      <Link :href="this.$route('oauth.tokens.issue')">
-        <el-button plain type="success">Issue</el-button>
-      </Link>
-    </template>
-  </page-header>
-
   <el-row :gutter="12">
-    <el-col
-      v-for="token in tokens"
-      :xs="24"
-      :sm="12"
-      :md="8"
-      :lg="6"
-      :xl="4"
-      class="mt-2"
-    >
-      <token-card class="mr-2" :token="token" @revoked="loadTokens()" />
-    </el-col>
+    <list-col v-for="token in tokens">
+      <token-card class="h-full" :token="token" @revoked="loadTokens()" />
+    </list-col>
+    <list-col>
+      <list-card>
+        <el-skeleton :rows="4" />
+        <template #buttons>
+          <Link :href="this.$route('oauth.tokens.issue')" class="ml-2">
+            <el-button plain type="success">Create</el-button>
+          </Link>
+        </template>
+      </list-card>
+    </list-col>
   </el-row>
 </template>
 
@@ -28,9 +22,11 @@
   import TokenCard from "@/Components/OAuth/TokenCard"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
+  import ListCol from "@/Components/ListCol"
+  import ListCard from "@/Components/ListCard"
 
   export default defineComponent({
-    components: { Link, TokenCard, PageHeader },
+    components: { ListCard, ListCol, Link, TokenCard, PageHeader },
     data() {
       return {
         tokens: [],

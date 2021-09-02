@@ -1,22 +1,14 @@
 <template>
   <el-row :gutter="12">
-    <el-col
-      v-for="oauth_client in oauth_clients.data"
-      :xs="24"
-      :sm="12"
-      :md="8"
-      :lg="6"
-      :xl="4"
-      class="mt-2"
-    >
-      <el-card class="mr-2" shadow="hover">
+    <list-col v-for="oauth_client in oauth_clients.data" :key="oauth_client.id">
+      <list-card>
         <h5>{{ oauth_client.name }}</h5>
         <p>
           <el-link :href="oauth_client.redirect" target="_blank">{{
             oauth_client.redirect
           }}</el-link>
         </p>
-        <div class="mt-2 flex justify-end">
+        <template #buttons>
           <Link
             :href="this.$route('oauth_clients.show', oauth_client)"
             class="ml-2"
@@ -28,19 +20,20 @@
             class="ml-2"
             ><el-button plain type="primary">Edit</el-button></Link
           >
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mt-2">
-      <el-card class="mr-2" shadow="hover">
+        </template>
+      </list-card>
+    </list-col>
+
+    <list-col>
+      <list-card>
         <el-skeleton :rows="2" />
-        <div class="mt-2 flex justify-end">
+        <template #buttons>
           <Link :href="this.$route('oauth_clients.create')" class="ml-2">
             <el-button plain type="success">Create</el-button>
           </Link>
-        </div>
-      </el-card>
-    </el-col>
+        </template>
+      </list-card>
+    </list-col>
   </el-row>
 </template>
 
@@ -50,9 +43,18 @@
   import PageBlock from "@/Components/PageBlock"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
+  import ListCard from "@/Components/ListCard"
+  import ListCol from "@/Components/ListCol"
 
   export default defineComponent({
-    components: { PageBlock, PageHeader, Link, BreezeButton },
+    components: {
+      ListCol,
+      ListCard,
+      PageBlock,
+      PageHeader,
+      Link,
+      BreezeButton,
+    },
     props: ["oauth_clients"],
   })
 </script>

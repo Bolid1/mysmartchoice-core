@@ -1,18 +1,10 @@
 <template>
   <el-row :gutter="12">
-    <el-col
-      v-for="integration in integrations.data"
-      :xs="24"
-      :sm="12"
-      :md="8"
-      :lg="6"
-      :xl="4"
-      class="mt-2"
-    >
-      <el-card class="mr-2" shadow="hover">
+    <list-col v-for="integration in integrations.data">
+      <list-card class="h-full" shadow="hover">
         <h5>{{ integration.title }}</h5>
         <p>{{ integration.description }}</p>
-        <div class="mt-2 flex justify-end">
+        <template #buttons>
           <Link
             :href="this.$route('integrations.show', { integration })"
             class="ml-2"
@@ -24,19 +16,19 @@
             class="ml-2"
             ><el-button plain type="primary">Edit</el-button></Link
           >
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mt-2">
-      <el-card class="mr-2" shadow="hover">
+        </template>
+      </list-card>
+    </list-col>
+    <list-col>
+      <list-card>
         <el-skeleton :rows="2" />
-        <div class="mt-2 flex justify-end">
+        <template #buttons>
           <Link :href="this.$route('integrations.create')" class="ml-2">
             <el-button plain type="success">Create</el-button>
           </Link>
-        </div>
-      </el-card>
-    </el-col>
+        </template>
+      </list-card>
+    </list-col>
   </el-row>
 </template>
 
@@ -45,10 +37,14 @@
   import PageHeader from "@/Components/PageHeader"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
+  import ListCol from "@/Components/ListCol"
+  import ListCard from "@/Components/ListCard"
 
   export default defineComponent({
     props: ["integrations"],
     components: {
+      ListCard,
+      ListCol,
       PageHeader,
       BreezeButton,
       Link,
