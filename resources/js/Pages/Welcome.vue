@@ -190,6 +190,7 @@
   import { Link } from "@inertiajs/inertia-vue3"
 
   export default defineComponent({
+    layout: null,
     props: {
       canLogin: Boolean,
       canRegister: Boolean,
