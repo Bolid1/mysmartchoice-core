@@ -1,22 +1,47 @@
 <template>
-  <page-header>
-    <template #right>
-      <Link :href="this.$route('o_auth_clients.create')"
-        ><breeze-button color="green">Create</breeze-button></Link
-      >
-    </template>
-  </page-header>
-
-  <page-block>
-    <div v-for="o_auth_client in o_auth_clients.data" class="p-2">
-      <Link
-        class="underline"
-        :href="this.$route('o_auth_clients.show', o_auth_client)"
-      >
-        OAuthClient#{{ o_auth_client.id }} [{{ o_auth_client.name }}]
-      </Link>
-    </div>
-  </page-block>
+  <el-row :gutter="12">
+    <el-col
+      v-for="oauth_client in o_auth_clients.data"
+      :xs="24"
+      :sm="12"
+      :md="8"
+      :lg="6"
+      :xl="4"
+      class="mt-2"
+    >
+      <el-card class="mr-2" shadow="hover">
+        <h5>{{ oauth_client.name }}</h5>
+        <p>
+          <el-link :href="oauth_client.redirect" target="_blank">{{
+            oauth_client.redirect
+          }}</el-link>
+        </p>
+        <div class="mt-2 flex justify-end">
+          <Link
+            :href="this.$route('o_auth_clients.show', oauth_client)"
+            class="ml-2"
+          >
+            <el-button plain type="primary">View</el-button>
+          </Link>
+          <Link
+            :href="this.$route('o_auth_clients.edit', oauth_client)"
+            class="ml-2"
+            ><el-button plain type="primary">Edit</el-button></Link
+          >
+        </div>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mt-2">
+      <el-card class="mr-2" shadow="hover">
+        <el-skeleton :rows="2" />
+        <div class="mt-2 flex justify-end">
+          <Link :href="this.$route('o_auth_clients.create')" class="ml-2">
+            <el-button plain type="success">Create</el-button>
+          </Link>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
