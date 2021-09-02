@@ -1,28 +1,43 @@
 <template>
-  <page-header>
-    <template #right>
-      <Link :href="this.$route('integrations.create')"
-        ><breeze-button color="green">Create</breeze-button></Link
-      >
-    </template>
-  </page-header>
-
-  <div class="pt-6 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-      <div class="bg-white overflow-hidden shadow-sm">
-        <div class="py-6 px-4 sm:px-6 lg:px-8">
-          <div v-for="integration in integrations.data">
-            <Link
-              class="underline"
-              :href="this.$route('integrations.show', integration)"
-            >
-              Integration#{{ integration.id }} ({{ integration.title }})
-            </Link>
-          </div>
+  <el-row :gutter="12">
+    <el-col
+      v-for="integration in integrations.data"
+      :xs="24"
+      :sm="12"
+      :md="8"
+      :lg="6"
+      :xl="4"
+      class="mt-2"
+    >
+      <el-card class="mr-2" shadow="hover">
+        <h5>{{ integration.title }}</h5>
+        <p>{{ integration.description }}</p>
+        <div class="mt-2 flex justify-end">
+          <Link
+            :href="this.$route('integrations.show', { integration })"
+            class="ml-2"
+          >
+            <el-button plain type="primary">View</el-button>
+          </Link>
+          <Link
+            :href="this.$route('integrations.edit', { integration })"
+            class="ml-2"
+            ><el-button plain type="primary">Edit</el-button></Link
+          >
         </div>
-      </div>
-    </div>
-  </div>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mt-2">
+      <el-card class="mr-2" shadow="hover">
+        <el-skeleton :rows="2" />
+        <div class="mt-2 flex justify-end">
+          <Link :href="this.$route('integrations.create')" class="ml-2">
+            <el-button plain type="success">Create</el-button>
+          </Link>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
