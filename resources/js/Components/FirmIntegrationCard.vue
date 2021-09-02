@@ -34,7 +34,7 @@
         <button class="block text-xl font-semibold text-gray-700 cursor-auto">
           {{ install.status }}
         </button>
-        <inertia-link
+        <Link
           v-if="install.status === 'installable'"
           class="
             text-lg
@@ -51,11 +51,11 @@
             transition
             duration-300
           "
-          :href="$route('firms.firm_integrations.create', { firm })"
+          :href="this.$route('firms.firm_integrations.create', { firm })"
           as="button"
-          >Install</inertia-link
+          >Install</Link
         >
-        <inertia-link
+        <Link
           v-else-if="install.status === 'installed'"
           class="
             text-lg
@@ -79,7 +79,7 @@
             })
           "
           as="button"
-          >Settings</inertia-link
+          >Settings</Link
         >
         <span
           v-else
@@ -106,8 +106,12 @@
 </template>
 
 <script>
-  export default {
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
+
+  export default defineComponent({
     props: ["install"],
+    components: { Link },
     computed: {
       firm() {
         return this.install.firm || {}
@@ -123,7 +127,7 @@
           .join("")
       },
     },
-  }
+  })
 </script>
 
 <style scoped></style>

@@ -3,8 +3,8 @@
   <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        <inertia-link class="underline" :href="$route('integrations.index')"
-          >Integrations</inertia-link
+        <Link class="underline" :href="this.$route('integrations.index')"
+          >Integrations</Link
         >
         -> {{ integration.title || "Create" }}
       </h2>
@@ -130,14 +130,14 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
-  import { useForm } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
   import { forEach, get, has, extend } from "lodash"
   import { scopesManager } from "@/Managers/OAuth/Scopes"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     props: ["integration"],
+    components: { Link },
     data() {
       return {
         oauth_clients: {},
@@ -213,7 +213,7 @@
         this.oauth_scopes = scopes
       })
     },
-  }
+  })
 </script>
 
 <style scoped></style>

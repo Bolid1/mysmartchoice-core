@@ -31,12 +31,12 @@
       <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <inertia-link
+            <Link
               class="underline"
-              :href="$route('firms.accounts.index', firm)"
+              :href="this.$route('firms.accounts.index', firm)"
             >
               Accounts
-            </inertia-link>
+            </Link>
           </h3>
         </div>
       </header>
@@ -44,12 +44,12 @@
       <div class="bg-white overflow-hidden shadow-sm">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div v-for="account in firm.accounts">
-            <inertia-link
+            <Link
               class="underline"
-              :href="$route('firms.accounts.show', { firm, account })"
+              :href="this.$route('firms.accounts.show', { firm, account })"
             >
               Account "{{ account.title }}" balance = {{ account.balance }}
-            </inertia-link>
+            </Link>
           </div>
         </div>
       </div>
@@ -61,12 +61,12 @@
       <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <inertia-link
+            <Link
               class="underline"
-              :href="$route('firms.users.index', firm)"
+              :href="this.$route('firms.users.index', firm)"
             >
               Users
-            </inertia-link>
+            </Link>
           </h3>
         </div>
       </header>
@@ -100,12 +100,12 @@
       <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
           <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <inertia-link
+            <Link
               class="underline"
-              :href="$route('firms.firm_integrations.index', { firm })"
+              :href="this.$route('firms.firm_integrations.index', { firm })"
             >
               Integrations
-            </inertia-link>
+            </Link>
           </h3>
         </div>
       </header>
@@ -124,18 +124,14 @@
 </template>
 
 <script>
-  // @ts-ignore
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
-  // @ts-ignore
   import UserCard from "@/Components/UserCard"
-  // @ts-ignore
   import FirmIntegrationCard from "@/Components/FirmIntegrationCard"
   import { formatMoney } from "@/Helpers/Money"
   import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
   export default defineComponent({
-    layout: AuthenticatedLayout,
-    components: { FirmIntegrationCard, UserCard },
+    components: { Link, FirmIntegrationCard, UserCard },
     props: {
       firm: Object,
       balances: Object,

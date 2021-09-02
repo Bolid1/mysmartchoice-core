@@ -1,11 +1,11 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="$route('firms.create')">
+      <Link :href="this.$route('firms.create')">
         <el-button :disabled="!can.add" plain type="success">
           Create
         </el-button>
-      </inertia-link>
+      </Link>
     </template>
   </page-header>
 
@@ -22,11 +22,11 @@
       <el-card class="mr-2" shadow="hover">
         <h5>{{ firm.title }}</h5>
         <div class="mt-2 flex justify-end">
-          <inertia-link :href="$route('firms.show', { firm })" class="ml-2">
+          <Link :href="this.$route('firms.show', { firm })" class="ml-2">
             <el-button plain type="primary">View</el-button>
-          </inertia-link>
-          <inertia-link :href="$route('firms.edit', { firm })" class="ml-2"
-            ><el-button plain type="primary">Edit</el-button></inertia-link
+          </Link>
+          <Link :href="this.$route('firms.edit', { firm })" class="ml-2"
+            ><el-button plain type="primary">Edit</el-button></Link
           >
         </div>
       </el-card>
@@ -35,14 +35,14 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
+  import { Link } from "@inertiajs/inertia-vue3"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
-    components: { PageHeader },
+  export default defineComponent({
+    components: { Link, PageHeader },
     props: ["can", "firms"],
-  }
+  })
 </script>
 
 <style scoped></style>

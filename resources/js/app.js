@@ -2,6 +2,7 @@ require("./bootstrap")
 
 // Import modules...
 import { createApp, h } from "vue"
+import Layout from "./Layouts/Authenticated"
 
 // InertiaJS good for quickstart with vue in laravel ecosystem
 // https://inertiajs.com
@@ -19,7 +20,14 @@ import "element-plus/dist/index.css"
 import LoadScript from "vue-plugin-load-script"
 
 createInertiaApp({
-  resolve: (name) => require(`./Pages/${name}`),
+  resolve: (name) => {
+    const page = require(`./Pages/${name}`).default
+    if (page.layout === undefined) {
+      page.layout = Layout
+    }
+
+    return page
+  },
   setup({ el, app, props, plugin }) {
     createApp({ render: () => h(app, props) })
       .mixin({ methods: { $route: route } })

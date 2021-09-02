@@ -11,9 +11,9 @@
     "
   >
     <div>
-      <inertia-link href="/">
+      <Link href="/">
         <breeze-application-logo class="w-20 h-20 fill-current text-gray-500" />
-      </inertia-link>
+      </Link>
     </div>
 
     <div
@@ -36,10 +36,13 @@
 
 <script>
   import BreezeApplicationLogo from "@/Components/ApplicationLogo"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     components: {
       BreezeApplicationLogo,
+      Link,
     },
-  }
+  })
 </script>

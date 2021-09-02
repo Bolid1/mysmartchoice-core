@@ -1,9 +1,7 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="$route('firms.index')"
-        >Firms</inertia-link
-      >
+      <Link class="underline" :href="this.$route('firms.index')">Firms</Link>
       -> {{ firm.title || "Create" }}
     </template>
   </page-header>
@@ -42,13 +40,12 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
-  import { useForm } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
-    components: { PageHeader },
+  export default defineComponent({
+    components: { Link, PageHeader },
     props: ["firm"],
     setup(props) {
       const form = useForm({
@@ -57,7 +54,7 @@
 
       return { form }
     },
-  }
+  })
 </script>
 
 <style scoped></style>

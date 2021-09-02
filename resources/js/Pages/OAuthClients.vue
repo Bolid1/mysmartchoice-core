@@ -1,35 +1,35 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="$route('o_auth_clients.create')"
-        ><breeze-button color="green">Create</breeze-button></inertia-link
+      <Link :href="this.$route('o_auth_clients.create')"
+        ><breeze-button color="green">Create</breeze-button></Link
       >
     </template>
   </page-header>
 
   <page-block>
     <div v-for="o_auth_client in o_auth_clients.data" class="p-2">
-      <inertia-link
+      <Link
         class="underline"
-        :href="$route('o_auth_clients.show', o_auth_client)"
+        :href="this.$route('o_auth_clients.show', o_auth_client)"
       >
         OAuthClient#{{ o_auth_client.id }} [{{ o_auth_client.name }}]
-      </inertia-link>
+      </Link>
     </div>
   </page-block>
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
   import BreezeButton from "@/Components/Button"
   import PageBlock from "@/Components/PageBlock"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
-    layout: AuthenticatedLayout,
-    components: { PageBlock, PageHeader, BreezeButton },
+  export default defineComponent({
+    components: { PageBlock, PageHeader, Link, BreezeButton },
     props: ["o_auth_clients"],
-  }
+  })
 </script>
 
 <style scoped></style>

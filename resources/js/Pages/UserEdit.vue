@@ -19,6 +19,7 @@
               id="name"
               type="text"
               v-model="form.name"
+              autocomplete="username"
               class="mt-1 block w-full"
               required
               autofocus
@@ -33,6 +34,7 @@
               id="email"
               type="email"
               v-model="form.email"
+              autocomplete="email"
               class="mt-1 block w-full bg-gray-100"
               required
               disabled
@@ -47,6 +49,7 @@
               id="password"
               type="password"
               v-model="form.password"
+              autocomplete="new-password"
               class="mt-1 block w-full bg-gray-100"
               disabled
             />
@@ -70,21 +73,22 @@
 </template>
 
 <script>
-  import { useForm } from "@inertiajs/inertia-vue3"
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+
   import BreezeButton from "@/Components/Button"
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     props: ["user"],
     components: {
       BreezeButton,
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
+      Link,
     },
     setup(props) {
       const form = useForm({
@@ -95,5 +99,5 @@
 
       return { form }
     },
-  }
+  })
 </script>

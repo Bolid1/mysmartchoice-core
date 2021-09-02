@@ -55,12 +55,12 @@
     </div>
 
     <div class="flex items-center justify-end mt-4">
-      <inertia-link
-        :href="$route('login')"
+      <Link
+        :href="this.$route('login')"
         class="underline text-sm text-gray-600 hover:text-gray-900"
       >
         Already registered?
-      </inertia-link>
+      </Link>
 
       <breeze-button
         class="ml-4"
@@ -79,8 +79,10 @@
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     layout: BreezeGuestLayout,
 
     components: {
@@ -88,6 +90,7 @@
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
+      Link,
     },
 
     data() {
@@ -108,5 +111,5 @@
         })
       },
     },
-  }
+  })
 </script>

@@ -1,9 +1,9 @@
 <template>
   <page-header>
     <template #right>
-      <inertia-link :href="$route('oauth.tokens.issue')">
+      <Link :href="this.$route('oauth.tokens.issue')">
         <el-button plain type="success">Issue</el-button>
-      </inertia-link>
+      </Link>
     </template>
   </page-header>
 
@@ -23,14 +23,14 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
   import { tokensManager } from "@/Managers/OAuth/Tokens"
   import TokenCard from "@/Components/OAuth/TokenCard"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
-    layout: AuthenticatedLayout,
-    components: { TokenCard, PageHeader },
+  export default defineComponent({
+    components: { Link, TokenCard, PageHeader },
     data() {
       return {
         tokens: [],
@@ -44,7 +44,7 @@
         tokensManager.load().then((tokens) => (this.tokens = tokens))
       },
     },
-  }
+  })
 </script>
 
 <style scoped></style>

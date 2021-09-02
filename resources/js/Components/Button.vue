@@ -32,7 +32,9 @@
 </template>
 
 <script>
-  export default {
+  import { defineComponent } from "vue"
+
+  export default defineComponent({
     props: {
       type: {
         type: String,
@@ -61,5 +63,5 @@
         return this.theme === "dark" ? 900 : "400"
       },
     },
-  }
+  })
 </script>

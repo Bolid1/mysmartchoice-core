@@ -1,8 +1,8 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="$route('oauth.tokens.index')"
-        >Tokens</inertia-link
+      <Link class="underline" :href="this.$route('oauth.tokens.index')"
+        >Tokens</Link
       >
       -> Issue
     </template>
@@ -73,7 +73,9 @@
           <el-option
             v-for="scope in available_firm_scopes"
             :key="scope.key"
-            :label="String(scope.description).replace('{firm}', firm.title)"
+            :label="
+              String(scope.description).replace('{firm}', firm?.title || '')
+            "
             :value="scope.key"
           >
           </el-option>
@@ -81,7 +83,7 @@
       </el-form-item>
 
       <el-form-item v-if="client && firm">
-        <inertia-link
+        <Link
           :href="
             $route('passport.authorizations.authorize', {
               client_id: client.id,
@@ -105,7 +107,7 @@
         >
           <el-button :disabled="form.processing" type="primary"
             >Issue</el-button
-          ></inertia-link
+          ></Link
         >
       </el-form-item>
     </el-form>
@@ -113,28 +115,25 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
   import PageBlock from "@/Components/PageBlock"
   import PageHeader from "@/Components/PageHeader"
-  import { ElOption, ElSelect } from "element-plus"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
-  import { useForm } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
   import { filter, find, map, union } from "lodash"
   import axios from "axios"
   import { scopesManager } from "@/Managers/OAuth/Scopes"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     components: {
       BreezeButton,
       BreezeLabel,
       BreezeValidationErrors,
-      ElSelect,
-      ElOption,
       PageBlock,
       PageHeader,
+      Link,
     },
     data() {
       return {
@@ -193,7 +192,7 @@
         )
       })
     },
-  }
+  })
 </script>
 
 <style scoped></style>

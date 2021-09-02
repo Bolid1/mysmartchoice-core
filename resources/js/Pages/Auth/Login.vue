@@ -39,13 +39,13 @@
     </div>
 
     <div class="flex items-center justify-end mt-4">
-      <inertia-link
+      <Link
         v-if="canResetPassword"
-        :href="$route('password.request')"
+        :href="this.$route('password.request')"
         class="underline text-sm text-gray-600 hover:text-gray-900"
       >
         Forgot your password?
-      </inertia-link>
+      </Link>
 
       <breeze-button
         class="ml-4"
@@ -65,8 +65,10 @@
   import BreezeCheckbox from "@/Components/Checkbox"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     layout: BreezeGuestLayout,
 
     components: {
@@ -75,6 +77,7 @@
       BreezeCheckbox,
       BreezeLabel,
       BreezeValidationErrors,
+      Link,
     },
 
     props: {
@@ -99,5 +102,5 @@
         })
       },
     },
-  }
+  })
 </script>

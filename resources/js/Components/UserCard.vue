@@ -54,18 +54,22 @@
       <p class="text-gray-600">Total spent: 543</p>
     </div>
     <div class="flex justify-end mt-4">
-      <inertia-link
+      <Link
         class="text-xl font-medium text-indigo-500"
-        :href="$route('users.edit', user)"
-        >{{ user.name }}</inertia-link
+        :href="this.$route('users.edit', user)"
+        >{{ user.name }}</Link
       >
     </div>
   </div>
 </template>
 
 <script>
-  export default {
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
+
+  export default defineComponent({
     props: ["user"],
+    components: { Link },
     computed: {
       initials() {
         return String(this.user.name)
@@ -75,7 +79,7 @@
           .join("")
       },
     },
-  }
+  })
 </script>
 
 <style scoped></style>

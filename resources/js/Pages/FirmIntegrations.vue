@@ -1,14 +1,14 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="$route('firms.show', firm)">{{
+      <Link class="underline" :href="this.$route('firms.show', firm)">{{
         firm.title
-      }}</inertia-link>
+      }}</Link>
       -> Integrations
     </template>
     <template #right>
-      <inertia-link :href="$route('firms.firm_integrations.create', firm)"
-        ><breeze-button>Create</breeze-button></inertia-link
+      <Link :href="this.$route('firms.firm_integrations.create', firm)"
+        ><breeze-button>Create</breeze-button></Link
       >
     </template>
   </page-header>
@@ -43,17 +43,23 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
   import PageBlock from "@/Components/PageBlock"
   import FirmIntegrationCard from "@/Components/FirmIntegrationCard"
   import BreezeButton from "@/Components/Button"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
-    layout: AuthenticatedLayout,
-    components: { BreezeButton, FirmIntegrationCard, PageBlock, PageHeader },
+  export default defineComponent({
+    components: {
+      BreezeButton,
+      Link,
+      FirmIntegrationCard,
+      PageBlock,
+      PageHeader,
+    },
     props: ["firm", "firm_integrations", "integrations"],
-  }
+  })
 </script>
 
 <style scoped></style>

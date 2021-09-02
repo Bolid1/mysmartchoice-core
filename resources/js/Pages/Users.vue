@@ -22,10 +22,11 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     props: ["firm", "users"],
-  }
+    components: { Link },
+  })
 </script>

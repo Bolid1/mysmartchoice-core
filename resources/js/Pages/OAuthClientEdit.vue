@@ -1,23 +1,24 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="$route('o_auth_clients.index')"
-        >OAuth Clients</inertia-link
+      <Link class="underline" :href="this.$route('o_auth_clients.index')"
+        >OAuth Clients</Link
       >
       -> {{ o_auth_client.name || "Create" }}
     </template>
     <template #right>
-      <inertia-link
+      <Link
         v-if="o_auth_client.id"
-        :href="$route('o_auth_clients.destroy', o_auth_client)"
+        :href="this.$route('o_auth_clients.destroy', o_auth_client)"
         method="delete"
+        as="button"
         class="pr-2"
-        ><breeze-button color="red">Delete</breeze-button></inertia-link
+        ><breeze-button color="red">Delete</breeze-button></Link
       >
-      <inertia-link
+      <Link
         v-if="o_auth_client.id"
-        :href="$route('o_auth_clients.show', o_auth_client)"
-        ><breeze-button color="gray">View</breeze-button></inertia-link
+        :href="this.$route('o_auth_clients.show', o_auth_client)"
+        ><breeze-button color="gray">View</breeze-button></Link
       >
     </template>
   </page-header>
@@ -104,7 +105,6 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
@@ -112,19 +112,18 @@
   import { ElOption, ElSelect } from "element-plus"
   import PageBlock from "@/Components/PageBlock"
   import PageHeader from "@/Components/PageHeader"
-  import { useForm } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     components: {
       BreezeButton,
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
-      ElSelect,
-      ElOption,
       PageBlock,
       PageHeader,
+      Link,
     },
     props: ["o_auth_client"],
     setup(props) {
@@ -135,7 +134,7 @@
 
       return { form }
     },
-  }
+  })
 </script>
 
 <style scoped></style>

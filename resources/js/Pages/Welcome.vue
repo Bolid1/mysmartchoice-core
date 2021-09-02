@@ -13,37 +13,37 @@
   >
     <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
       <template v-if="$page.props.auth.user">
-        <inertia-link
-          :href="$route('firms.index')"
+        <Link
+          :href="this.$route('firms.index')"
           class="text-sm text-gray-700 underline"
         >
           Firms
-        </inertia-link>
+        </Link>
 
-        <inertia-link
-          :href="$route('logout')"
+        <Link
+          :href="this.$route('logout')"
           method="post"
           as="button"
           class="ml-4 text-sm text-gray-700 underline"
         >
           Log Out
-        </inertia-link>
+        </Link>
       </template>
       <template v-else>
-        <inertia-link
-          :href="$route('login')"
+        <Link
+          :href="this.$route('login')"
           class="text-sm text-gray-700 underline"
         >
           Log in
-        </inertia-link>
+        </Link>
 
-        <inertia-link
+        <Link
           v-if="canRegister"
-          :href="$route('register')"
+          :href="this.$route('register')"
           class="ml-4 text-sm text-gray-700 underline"
         >
           Register
-        </inertia-link>
+        </Link>
       </template>
     </div>
 
@@ -186,12 +186,16 @@
 </style>
 
 <script>
-  export default {
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
+
+  export default defineComponent({
     props: {
       canLogin: Boolean,
       canRegister: Boolean,
       laravelVersion: String,
       phpVersion: String,
     },
-  }
+    components: { Link },
+  })
 </script>

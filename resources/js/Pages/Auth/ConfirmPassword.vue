@@ -38,8 +38,10 @@
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     layout: BreezeGuestLayout,
 
     components: {
@@ -47,6 +49,7 @@
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
+      Link,
     },
 
     data() {
@@ -64,5 +67,5 @@
         })
       },
     },
-  }
+  })
 </script>

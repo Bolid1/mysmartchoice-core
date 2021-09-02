@@ -3,14 +3,14 @@
   <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        <inertia-link class="underline" :href="$route('firms.show', firm)">{{
+        <Link class="underline" :href="this.$route('firms.show', firm)">{{
           firm.title
-        }}</inertia-link>
+        }}</Link>
         ->
-        <inertia-link
+        <Link
           class="underline"
-          :href="$route('firms.accounts.index', firm)"
-          >Accounts</inertia-link
+          :href="this.$route('firms.accounts.index', firm)"
+          >Accounts</Link
         >
         -> {{ account.title || "Create" }}
       </h2>
@@ -106,24 +106,22 @@
 </template>
 
 <script>
-  import { useForm } from "@inertiajs/inertia-vue3"
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+
   import BreezeButton from "@/Components/Button"
   import BreezeInput from "@/Components/Input"
   import BreezeLabel from "@/Components/Label"
   import BreezeValidationErrors from "@/Components/ValidationErrors"
-  import { ElSelect, ElOption } from "element-plus"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     props: ["firm", "account", "currencies"],
     components: {
       BreezeButton,
       BreezeInput,
       BreezeLabel,
       BreezeValidationErrors,
-      ElSelect,
-      ElOption,
+      Link,
     },
     setup(props) {
       const form = useForm({
@@ -134,5 +132,5 @@
 
       return { form }
     },
-  }
+  })
 </script>

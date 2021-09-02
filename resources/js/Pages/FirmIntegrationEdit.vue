@@ -1,13 +1,13 @@
 <template>
   <page-header>
-    <inertia-link class="underline" :href="$route('firms.show', firm)">{{
+    <Link class="underline" :href="this.$route('firms.show', firm)">{{
       firm.title
-    }}</inertia-link>
+    }}</Link>
     ->
-    <inertia-link
+    <Link
       class="underline"
-      :href="$route('firms.firm_integrations.index', firm)"
-      >Integrations</inertia-link
+      :href="this.$route('firms.firm_integrations.index', firm)"
+      >Integrations</Link
     >
     -> {{ firm_integration.id || "Connect new" }}
   </page-header>
@@ -109,19 +109,19 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import PageHeader from "@/Components/PageHeader"
-  import { useForm } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
   import { get, filter, find, join } from "lodash"
   import { tokensManager } from "@/Managers/OAuth/Tokens"
   import TokenCard from "@/Components/OAuth/TokenCard"
   import { scopesManager } from "@/Managers/OAuth/Scopes"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     components: {
       TokenCard,
       PageHeader,
+      Link,
     },
     props: ["firm", "firm_integration", "integrations"],
     data() {
@@ -202,7 +202,7 @@
           })
       }
     },
-  }
+  })
 </script>
 
 <style scoped></style>

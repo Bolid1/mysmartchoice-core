@@ -1,20 +1,21 @@
 <template>
   <page-header>
     <template #default>
-      <inertia-link class="underline" :href="$route('o_auth_clients.index')"
-        >OAuth Clients</inertia-link
+      <Link class="underline" :href="this.$route('o_auth_clients.index')"
+        >OAuth Clients</Link
       >
       -> {{ o_auth_client.name }}
     </template>
     <template #right>
-      <inertia-link
-        :href="$route('o_auth_clients.destroy', o_auth_client)"
+      <Link
+        :href="this.$route('o_auth_clients.destroy', o_auth_client)"
         class="pr-2"
         method="delete"
-        ><breeze-button color="red">Delete</breeze-button></inertia-link
+        as="button"
+        ><breeze-button color="red">Delete</breeze-button></Link
       >
-      <inertia-link :href="$route('o_auth_clients.edit', o_auth_client)"
-        ><breeze-button color="green">Edit</breeze-button></inertia-link
+      <Link :href="this.$route('o_auth_clients.edit', o_auth_client)"
+        ><breeze-button color="green">Edit</breeze-button></Link
       >
     </template>
   </page-header>
@@ -36,12 +37,13 @@
   import PageHeader from "@/Components/PageHeader"
   import BreezeButton from "@/Components/Button"
   import PageBlock from "@/Components/PageBlock"
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
-  export default {
-    layout: AuthenticatedLayout,
-    components: { PageBlock, BreezeButton, PageHeader },
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
+
+  export default defineComponent({
+    components: { PageBlock, BreezeButton, Link, PageHeader },
     props: ["o_auth_client"],
-  }
+  })
 </script>
 
 <style scoped></style>

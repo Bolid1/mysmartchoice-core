@@ -3,25 +3,26 @@
   <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-grow">
-        <inertia-link class="underline" :href="$route('firms.show', firm)">{{
+        <Link class="underline" :href="this.$route('firms.show', firm)">{{
           firm.title
-        }}</inertia-link>
+        }}</Link>
         ->
-        <inertia-link
+        <Link
           class="underline"
-          :href="$route('firms.accounts.index', firm)"
-          >Accounts</inertia-link
+          :href="this.$route('firms.accounts.index', firm)"
+          >Accounts</Link
         >
         -> {{ account.title }}
       </h2>
       <div class="flex-shrink-1">
-        <inertia-link :href="$route('firms.accounts.edit', { firm, account })"
-          ><el-button plain type="primary">Edit</el-button></inertia-link
+        <Link :href="this.$route('firms.accounts.edit', { firm, account })"
+          ><el-button plain type="primary">Edit</el-button></Link
         >
-        <inertia-link
-          :href="$route('firms.accounts.destroy', { firm, account })"
+        <Link
+          :href="this.$route('firms.accounts.destroy', { firm, account })"
           method="delete"
-          ><el-button plain type="danger">Delete</el-button></inertia-link
+          as="button"
+          ><el-button plain type="danger">Delete</el-button></Link
         >
       </div>
     </div>
@@ -39,20 +40,21 @@
 </template>
 
 <script>
-  import AuthenticatedLayout from "@/Layouts/Authenticated"
   import BreezeButton from "@/Components/Button"
   import { formatMoney } from "@/Helpers/Money"
+  import { Link } from "@inertiajs/inertia-vue3"
+  import { defineComponent } from "vue"
 
-  export default {
-    layout: AuthenticatedLayout,
+  export default defineComponent({
     props: ["firm", "account"],
     components: {
       BreezeButton,
+      Link,
     },
     methods: {
       formatMoney,
     },
-  }
+  })
 </script>
 
 <style scoped></style>

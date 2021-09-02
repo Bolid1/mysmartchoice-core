@@ -15,10 +15,13 @@
 
 <script>
   import { tokensManager } from "@/Managers/OAuth/Tokens"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     props: ["token"],
     emits: ["revoked"],
+    components: { Link },
     methods: {
       revokeToken() {
         tokensManager.revoke(this.token).then(() => {
@@ -26,7 +29,7 @@
         })
       },
     },
-  }
+  })
 </script>
 
 <style scoped></style>

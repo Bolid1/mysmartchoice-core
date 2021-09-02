@@ -49,12 +49,15 @@
 
 <script>
   import BreezeButton from "@/Components/Button"
+  import { defineComponent } from "vue"
+  import { Link } from "@inertiajs/inertia-vue3"
 
-  export default {
+  export default defineComponent({
     components: {
       BreezeButton,
+      Link,
     },
-  }
+  })
 </script>
 
 <style scoped></style>
