@@ -1,5 +1,5 @@
 <template>
-  <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+  <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="my-1.5">
     <slot />
   </el-col>
 </template>
