@@ -58,6 +58,21 @@ class FirmIntegration extends Pivot
         'status' => self::STATUS_INSTALLABLE,
     ];
 
+    protected $visible = [
+        'id',
+        self::CREATED_AT,
+        self::UPDATED_AT,
+        'firm_id',
+        'firm',
+        'integration_id',
+        'integration',
+        'status',
+    ];
+
+    protected $hidden = [
+        'settings',
+    ];
+
     protected $guarded = ['*'];
 
     public function firm(): BelongsTo

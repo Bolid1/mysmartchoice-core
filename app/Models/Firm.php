@@ -49,6 +49,13 @@ class Firm extends Model
     /** @var positive-int Max number of firms per user. */
     public const PER_USER_LIMIT = 10;
 
+    protected $visible = [
+        'id',
+        'title',
+        self::CREATED_AT,
+        self::UPDATED_AT,
+    ];
+
     protected $fillable = [
         'title',
     ];

@@ -80,6 +80,18 @@ class Integration extends Model
         'status' => self::STATUS_DRAFT,
     ];
 
+    protected $visible = [
+        'id',
+        self::CREATED_AT,
+        self::UPDATED_AT,
+        'owner_id',
+        'owner',
+        'title',
+        'description',
+        'status',
+        'settings',
+    ];
+
     protected $fillable = [
         'owner_id',
         'title',

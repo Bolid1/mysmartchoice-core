@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFirmRequest;
 use App\Http\Requests\UpdateFirmRequest;
-use App\Http\Resources\FirmResource;
 use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +25,8 @@ class FirmsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     *
      * @return Response
      */
     public function index(Request $request): Response
@@ -34,7 +35,7 @@ class FirmsController extends Controller
         $user = $request->user();
 
         return inertia('Firms', [
-            'firms' => FirmResource::collection($user->firms),
+            'firms' => $user->firms,
             'can' => [
                 'add' => $user->can('create', Firm::class),
             ],
@@ -48,12 +49,10 @@ class FirmsController extends Controller
      */
     public function create(): Response
     {
-        FirmResource::withoutWrapping();
-
         return inertia('FirmEdit', [
-            'firm' => FirmResource::make(Firm::make([
+            'firm' => Firm::make([
                 // todo: place default values here
-            ])),
+            ]),
         ]);
     }
 
@@ -83,18 +82,11 @@ class FirmsController extends Controller
      */
     public function show(Firm $firm): Response
     {
-        $firm->loadMissing(
-            'users',
-            'accounts',
-            'integrationsInstalls',
-        );
-
-        FirmResource::withoutWrapping();
-
-        $firm->integrationsInstalls->loadMissing('integration', 'firm');
-
         return inertia('Firm', [
-            'firm' => FirmResource::make($firm),
+            'firm' => $firm,
+            'users' => $firm->users,
+            'accounts' => $firm->accounts,
+            'integrations_installs' => $firm->integrationsInstalls->loadMissing('integration'),
             'balances' => $firm->getBalanceByCurrencies(),
         ]);
     }
@@ -108,10 +100,8 @@ class FirmsController extends Controller
      */
     public function edit(Firm $firm): Response
     {
-        FirmResource::withoutWrapping();
-
         return inertia('FirmEdit', [
-            'firm' => FirmResource::make($firm),
+            'firm' => $firm,
         ]);
     }
 

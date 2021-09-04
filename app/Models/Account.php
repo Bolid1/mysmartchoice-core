@@ -54,6 +54,18 @@ class Account extends Model
         'firm_id' => 'int',
     ];
 
+    protected $visible = [
+        'id',
+        'title',
+        self::CREATED_AT,
+        self::UPDATED_AT,
+        'balance',
+        'firm_id',
+        'deleted_at',
+        'firm',
+        'currency',
+    ];
+
     protected $fillable = [
         'firm_id',
         'title',

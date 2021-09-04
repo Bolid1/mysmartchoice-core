@@ -11,7 +11,7 @@
   >
     <slot />
     <div
-      class="flex-grow flex justify-end items-end"
+      class="flex-grow flex justify-end items-end mt-1.5"
       v-if="this.$slots.buttons"
     >
       <slot name="buttons" />

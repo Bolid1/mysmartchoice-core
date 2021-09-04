@@ -78,12 +78,20 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $visible = [
+        'id',
+        self::CREATED_AT,
+        self::UPDATED_AT,
+        'name',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
+        'email',
         'password',
         'remember_token',
     ];

@@ -1,140 +1,151 @@
 <template>
-  <!-- Page Heading -->
-  <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ firm.title }}
-      </h2>
-    </div>
-  </header>
+  <el-container>
+    <el-header class="flex items-center">
+      <el-page-header
+        icon="el-icon-arrow-left"
+        :content="firm.title"
+        @back="onBackClick"
+      />
+      <el-button-group class="ml-auto">
+        <delete-button :href="this.$route('firms.destroy', firm)" />
+        <edit-button :href="this.$route('firms.edit', firm)" />
+      </el-button-group>
+    </el-header>
 
-  <div class="pt-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <el-row :gutter="12" justify="space-between">
-      <el-col
-        v-for="(balance, currency) in balances"
-        :xs="12"
-        :sm="6"
-        :md="4"
-        :lg="4"
-        :xl="3"
-        class="mt-2"
-      >
-        <el-card>
-          {{ formatMoney(currency, balance) }}
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
-
-  <div class="pt-6">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
-          <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <Link
-              class="underline"
-              :href="this.$route('firms.accounts.index', firm)"
-            >
-              Accounts
-            </Link>
-          </h3>
-        </div>
-      </header>
-
-      <div class="bg-white overflow-hidden shadow-sm">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div v-for="account in firm.accounts">
-            <Link
-              class="underline"
-              :href="this.$route('firms.accounts.show', { firm, account })"
-            >
-              Account "{{ account.title }}" balance = {{ account.balance }}
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pt-6">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
-          <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <Link
-              class="underline"
-              :href="this.$route('firms.users.index', firm)"
-            >
-              Users
-            </Link>
-          </h3>
-        </div>
-      </header>
-
-      <div class="bg-white overflow-hidden shadow-sm">
-        <div
-          class="
-            max-w-7xl
-            mx-auto
-            py-6
-            px-4
-            sm:px-6
-            lg:px-8
-            flex flex-wrap
-            justify-center
-          "
+    <el-main>
+      <el-row :gutter="12" justify="space-between">
+        <el-col
+          v-for="(balance, currency) in balances"
+          :xs="12"
+          :sm="6"
+          :md="4"
+          :lg="4"
+          :xl="3"
+          class="mt-2"
         >
-          <div
-            v-for="user in firm.users"
-            class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20 mx-2"
-          >
-            <user-card :user="user" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <el-card>
+            {{ formatMoney(currency, balance) }}
+          </el-card>
+        </el-col>
+      </el-row>
 
-  <div class="pt-6">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto pt-6 px-4 sm:px-6 lg:px-8">
-          <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            <Link
-              class="underline"
-              :href="this.$route('firms.firm_integrations.index', { firm })"
-            >
-              Integrations
-            </Link>
-          </h3>
-        </div>
-      </header>
+      <Link
+        class="underline cursor-pointer mt-6 text-lg"
+        :href="this.$route('firms.accounts.index', firm)"
+        as="h3"
+      >
+        Accounts
+      </Link>
 
-      <div class="bg-white overflow-hidden shadow-sm">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-wrap">
-          <firm-integration-card
-            v-for="install in firm.integrations_installs"
-            :install="install"
-            class="w-72 p-6 py-4 px-8 bg-white shadow-lg rounded-lg my-2 mx-2"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+      <el-row :gutter="12">
+        <list-col v-for="account in accounts">
+          <list-card>
+            <h5>{{ account.title }}</h5>
+            <template #buttons>
+              <show-button
+                :href="this.$route('firms.accounts.show', { firm, account })"
+              />
+              <edit-button
+                :href="this.$route('firms.accounts.edit', { firm, account })"
+              />
+            </template>
+          </list-card>
+        </list-col>
+        <list-col-create
+          :rows="0"
+          :href="this.$route('firms.accounts.create', { firm })"
+        />
+      </el-row>
+
+      <Link
+        class="underline cursor-pointer mt-6 text-lg"
+        :href="this.$route('firms.users.index', firm)"
+        as="h3"
+      >
+        Users
+      </Link>
+
+      <el-row :gutter="12">
+        <list-col v-for="user in users">
+          <list-card>
+            <h5>{{ user.name }}</h5>
+            <template #buttons>
+              <edit-button :href="this.$route('users.edit', { firm, user })" />
+            </template>
+          </list-card>
+        </list-col>
+      </el-row>
+
+      <Link
+        class="underline cursor-pointer mt-6 text-lg"
+        :href="this.$route('firms.firm_integrations.index', firm)"
+        as="h3"
+      >
+        Installed integrations
+      </Link>
+
+      <el-row :gutter="12">
+        <list-col v-for="install in integrations_installs">
+          <list-card>
+            <h5>{{ install.integration.title }}</h5>
+            <p>{{ install.integration.description }}</p>
+            <template #buttons>
+              <el-button type="text" disabled>{{ install.status }}</el-button>
+              <edit-button
+                :href="
+                  this.$route('firms.firm_integrations.edit', {
+                    firm,
+                    firm_integration: install,
+                  })
+                "
+              />
+            </template>
+          </list-card>
+        </list-col>
+
+        <list-col-create
+          :rows="2"
+          :href="this.$route('firms.firm_integrations.create', { firm })"
+        />
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
-  import UserCard from "@/Components/UserCard"
-  import FirmIntegrationCard from "@/Components/FirmIntegrationCard"
   import { formatMoney } from "@/Helpers/Money"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
+  import DeleteButton from "@/Components/Buttons/DeleteButton"
+  import EditButton from "@/Components/Buttons/EditButton"
+  import ListCol from "@/Components/ListCol"
+  import ListCard from "@/Components/ListCard"
+  import CreateButton from "@/Components/Buttons/CreateButton"
+  import ListColCreate from "@/Components/ListColCreate"
+  import ShowButton from "@/Components/Buttons/ShowButton"
 
   export default defineComponent({
-    components: { Link, FirmIntegrationCard, UserCard },
+    components: {
+      ShowButton,
+      ListColCreate,
+      CreateButton,
+      ListCard,
+      ListCol,
+      EditButton,
+      DeleteButton,
+      Link,
+    },
     props: {
       firm: Object,
       balances: Object,
+      users: Array,
+      accounts: Array,
+      integrations_installs: Array,
+    },
+    methods: {
+      onBackClick() {
+        this.$inertia.get(this.$route("firms.index"))
+      },
     },
     setup() {
       return {
