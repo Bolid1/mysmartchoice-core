@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIntegrationRequest;
 use App\Http\Requests\UpdateIntegrationRequest;
-use App\Http\Resources\IntegrationResource;
 use App\Models\Integration;
 use App\Models\User;
 use App\Repositories\IntegrationsRepository;
@@ -30,24 +29,18 @@ class IntegrationsController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        return inertia('Integrations', [
-            'integrations' => IntegrationResource::collection(
-                $repository->getAvailableFor($user->id)->paginate()
-            ),
+        return inertia('Integrations/Integrations', [
+            'integrations' => $repository->getAvailableFor($user->id)->get(),
         ]);
     }
 
     public function create(Request $request): Response
     {
-        IntegrationResource::withoutWrapping();
-
         /** @var User $user */
         $user = $request->user();
 
-        return inertia('IntegrationEdit', [
-            'integration' => IntegrationResource::make(
-                Integration::make(['owner_id' => $user->id])
-            ),
+        return inertia('Integrations/IntegrationEdit', [
+            'integration' => Integration::make(['owner_id' => $user->id]),
         ]);
     }
 
@@ -65,19 +58,15 @@ class IntegrationsController extends Controller
 
     public function show(Integration $integration): Response
     {
-        IntegrationResource::withoutWrapping();
-
-        return inertia('Integration', [
-            'integration' => IntegrationResource::make($integration),
+        return inertia('Integrations/Integration', [
+            'integration' => $integration,
         ]);
     }
 
-    public function edit(Request $request, Integration $integration): Response
+    public function edit(Integration $integration): Response
     {
-        IntegrationResource::withoutWrapping();
-
-        return inertia('IntegrationEdit', [
-            'integration' => IntegrationResource::make($integration),
+        return inertia('Integrations/IntegrationEdit', [
+            'integration' => $integration,
         ]);
     }
 

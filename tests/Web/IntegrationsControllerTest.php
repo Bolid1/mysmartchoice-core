@@ -29,7 +29,7 @@ class IntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('Integrations')
+                    ->component('Integrations/Integrations')
             )
         ;
     }
@@ -47,7 +47,7 @@ class IntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('IntegrationEdit')
+                    ->component('Integrations/IntegrationEdit')
             )
         ;
     }
@@ -94,7 +94,7 @@ class IntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('Integration')
+                    ->component('Integrations/Integration')
             )
         ;
     }
@@ -112,7 +112,7 @@ class IntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('IntegrationEdit')
+                    ->component('Integrations/IntegrationEdit')
             )
         ;
     }
