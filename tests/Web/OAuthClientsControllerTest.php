@@ -30,7 +30,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('OAuthClients')
+                    ->component('OAuth/Clients')
             )
         ;
     }
@@ -46,7 +46,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('OAuthClientEdit')
+                    ->component('OAuth/ClientEdit')
             )
         ;
     }
@@ -84,7 +84,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('OAuthClient')
+                    ->component('OAuth/Client')
                     ->has('oauth_client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)
@@ -110,7 +110,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('OAuthClientEdit')
+                    ->component('OAuth/ClientEdit')
                     ->has('oauth_client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)

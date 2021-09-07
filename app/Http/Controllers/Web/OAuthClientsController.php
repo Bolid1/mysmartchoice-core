@@ -31,7 +31,7 @@ class OAuthClientsController extends Controller
      */
     public function index(Request $request): Response
     {
-        return inertia('OAuthClients', [
+        return inertia('OAuth/Clients', [
             'oauth_clients' => OAuthClientResource::collection(
                 $this->controller->forUser($request)
             ),
@@ -47,8 +47,8 @@ class OAuthClientsController extends Controller
     {
         OAuthClientResource::withoutWrapping();
 
-        return inertia('OAuthClientEdit', [
-            'oauth_client' => OAuthClientResource::make(OAuthClient::make([])),
+        return inertia('OAuth/ClientEdit', [
+            'client' => OAuthClientResource::make(OAuthClient::make([])),
         ]);
     }
 
@@ -77,8 +77,8 @@ class OAuthClientsController extends Controller
     {
         OAuthClientResource::withoutWrapping();
 
-        return inertia('OAuthClient', [
-            'oauth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+        return inertia('OAuth/Client', [
+            'client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
         ]);
     }
 
@@ -93,8 +93,8 @@ class OAuthClientsController extends Controller
     {
         OAuthClientResource::withoutWrapping();
 
-        return inertia('OAuthClientEdit', [
-            'oauth_client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+        return inertia('OAuth/ClientEdit', [
+            'client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
         ]);
     }
 
