@@ -1,16 +1,13 @@
 <template>
   <el-container>
     <el-header class="flex items-center">
-      <el-page-header
-        icon="el-icon-arrow-left"
-        title="List"
-        :content="firm.title"
-        @back="this.$inertia.get(this.$route('firms.index'))"
+      <card-header
+        :exists="Boolean(firm.id)"
+        :title="firm.title"
+        :list-href="this.$route('firms.index')"
+        :delete-href="() => this.$route('firms.destroy', firm)"
+        :edit-href="() => this.$route('firms.edit', firm)"
       />
-      <el-button-group class="ml-auto">
-        <delete-button :href="this.$route('firms.destroy', firm)" />
-        <edit-button :href="this.$route('firms.edit', firm)" />
-      </el-button-group>
     </el-header>
 
     <el-main>
@@ -124,9 +121,11 @@
   import CreateButton from "@/Components/Buttons/CreateButton"
   import ListColCreate from "@/Components/ListColCreate"
   import ShowButton from "@/Components/Buttons/ShowButton"
+  import CardHeader from "@/Components/CardHeader"
 
   export default defineComponent({
     components: {
+      CardHeader,
       ShowButton,
       ListColCreate,
       CreateButton,

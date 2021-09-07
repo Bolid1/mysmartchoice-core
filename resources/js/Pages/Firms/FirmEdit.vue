@@ -1,16 +1,13 @@
 <template>
   <el-container>
     <el-header class="flex items-center">
-      <el-page-header
-        icon="el-icon-arrow-left"
-        title="List"
-        :content="firm.title"
-        @back="this.$inertia.get(this.$route('firms.index'))"
+      <card-header
+        :exists="Boolean(firm.id)"
+        :title="firm.title"
+        :list-href="this.$route('firms.index')"
+        :delete-href="() => this.$route('firms.destroy', firm)"
+        :show-href="() => this.$route('firms.show', firm)"
       />
-      <el-button-group class="ml-auto">
-        <delete-button :href="this.$route('firms.destroy', firm)" />
-        <show-button :href="this.$route('firms.show', firm)" />
-      </el-button-group>
     </el-header>
 
     <el-main>
@@ -21,12 +18,12 @@
           </el-form-item>
 
           <el-form-item>
-            <FormButtonsGroup
+            <form-buttons-group
               :exists="Boolean(firm.id)"
               :form="form"
-              :storeHref="this.$route('firms.store')"
-              :updateHref="this.$route('firms.update', { firm })"
-              :destroyHref="this.$route('firms.destroy', { firm })"
+              :store-href="this.$route('firms.store')"
+              :update-href="() => this.$route('firms.update', { firm })"
+              :destroy-href="() => this.$route('firms.destroy', { firm })"
             />
           </el-form-item>
         </el-form>
@@ -45,9 +42,11 @@
   import FormUpdateButton from "@/Components/Buttons/FormUpdateButton"
   import FormDeleteButton from "@/Components/Buttons/FormDeleteButton"
   import FormButtonsGroup from "@/Components/Buttons/FormButtonsGroup"
+  import CardHeader from "@/Components/CardHeader"
 
   export default defineComponent({
     components: {
+      CardHeader,
       FormButtonsGroup,
       FormDeleteButton,
       FormUpdateButton,

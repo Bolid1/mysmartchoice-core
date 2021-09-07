@@ -1,18 +1,13 @@
 <template>
   <el-container>
     <el-header class="flex items-center">
-      <el-page-header
-        icon="el-icon-arrow-left"
-        title="List"
-        content="Integrations"
-        @back="this.$inertia.get(this.$route('integrations.index'))"
+      <card-header
+        :exists="Boolean(integration.id)"
+        :title="integration.title"
+        :list-href="this.$route('integrations.index')"
+        :delete-href="() => this.$route('integrations.destroy', integration)"
+        :edit-href="() => this.$route('integrations.edit', integration)"
       />
-      <el-button-group class="ml-auto">
-        <delete-button
-          :href="this.$route('integrations.destroy', integration)"
-        />
-        <edit-button :href="this.$route('integrations.edit', integration)" />
-      </el-button-group>
     </el-header>
 
     <el-main>
@@ -30,10 +25,12 @@
   import { Link } from "@inertiajs/inertia-vue3"
   import DeleteButton from "@/Components/Buttons/DeleteButton"
   import EditButton from "@/Components/Buttons/EditButton"
+  import CardHeader from "@/Components/CardHeader"
 
   export default defineComponent({
     props: ["integration"],
     components: {
+      CardHeader,
       EditButton,
       DeleteButton,
       BreezeButton,

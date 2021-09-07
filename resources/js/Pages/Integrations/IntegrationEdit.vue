@@ -1,18 +1,13 @@
 <template>
   <el-container>
     <el-header class="flex items-center">
-      <el-page-header
-        icon="el-icon-arrow-left"
-        title="List"
-        content="Integrations"
-        @back="this.$inertia.get(this.$route('integrations.index'))"
+      <card-header
+        :exists="Boolean(integration.id)"
+        :title="integration.title"
+        :list-href="this.$route('integrations.index')"
+        :delete-href="() => this.$route('integrations.destroy', integration)"
+        :show-href="() => this.$route('integrations.show', integration)"
       />
-      <el-button-group class="ml-auto">
-        <delete-button
-          :href="this.$route('integrations.destroy', integration)"
-        />
-        <show-button :href="this.$route('integrations.show', integration)" />
-      </el-button-group>
     </el-header>
 
     <el-main>
@@ -90,9 +85,13 @@
           <form-buttons-group
             :exists="Boolean(integration.id)"
             :form="form"
-            :storeHref="this.$route('integrations.store')"
-            :updateHref="this.$route('integrations.update', { integration })"
-            :destroyHref="this.$route('integrations.destroy', { integration })"
+            :store-href="this.$route('integrations.store')"
+            :update-href="
+              () => this.$route('integrations.update', { integration })
+            "
+            :destroy-href="
+              () => this.$route('integrations.destroy', { integration })
+            "
           />
 
           <el-tabs v-if="integration.id">
@@ -130,10 +129,17 @@
   import DeleteButton from "@/Components/Buttons/DeleteButton"
   import ShowButton from "@/Components/Buttons/ShowButton"
   import FormButtonsGroup from "@/Components/Buttons/FormButtonsGroup"
+  import CardHeader from "@/Components/CardHeader"
 
   export default defineComponent({
     props: ["integration"],
-    components: { FormButtonsGroup, ShowButton, DeleteButton, Link },
+    components: {
+      CardHeader,
+      FormButtonsGroup,
+      ShowButton,
+      DeleteButton,
+      Link,
+    },
     data() {
       return {
         oauth_clients: {},
