@@ -96,6 +96,7 @@ class AccountsController extends Controller
      * @param Firm $firm
      * @param Account $account
      * @param Currencies $currencies
+     *
      * @return Response
      */
     public function edit(Firm $firm, Account $account, Currencies $currencies): Response
