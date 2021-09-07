@@ -3,30 +3,19 @@
     <list-col v-for="token in tokens">
       <token-card class="h-full" :token="token" @revoked="loadTokens()" />
     </list-col>
-    <list-col>
-      <list-card>
-        <el-skeleton :rows="4" />
-        <template #buttons>
-          <Link :href="this.$route('oauth.tokens.issue')" class="ml-2">
-            <el-button plain type="success">Create</el-button>
-          </Link>
-        </template>
-      </list-card>
-    </list-col>
+    <list-col-create :rows="4" :href="this.$route('oauth.tokens.issue')" />
   </el-row>
 </template>
 
 <script>
-  import PageHeader from "@/Components/PageHeader"
   import { tokensManager } from "@/Managers/OAuth/Tokens"
-  import TokenCard from "@/Components/OAuth/TokenCard"
   import { defineComponent } from "vue"
-  import { Link } from "@inertiajs/inertia-vue3"
+  import ListColCreate from "@/Components/ListColCreate"
   import ListCol from "@/Components/ListCol"
-  import ListCard from "@/Components/ListCard"
+  import TokenCard from "@/Components/OAuth/TokenCard"
 
   export default defineComponent({
-    components: { ListCard, ListCol, Link, TokenCard, PageHeader },
+    components: { TokenCard, ListCol, ListColCreate },
     data() {
       return {
         tokens: [],

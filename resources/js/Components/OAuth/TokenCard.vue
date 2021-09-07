@@ -10,7 +10,9 @@
       </ol>
     </div>
     <template #buttons>
-      <el-button @click="revokeToken(token)" type="danger"> Revoke </el-button>
+      <el-button plain type="danger" @click="revokeToken(token)"
+        >Revoke</el-button
+      >
     </template>
   </list-card>
 </template>
@@ -20,11 +22,12 @@
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
   import ListCard from "@/Components/ListCard"
+  import DeleteButton from "@/Components/Buttons/DeleteButton"
 
   export default defineComponent({
     props: ["token"],
     emits: ["revoked"],
-    components: { ListCard, Link },
+    components: { DeleteButton, ListCard, Link },
     methods: {
       revokeToken() {
         tokensManager.revoke(this.token).then(() => {

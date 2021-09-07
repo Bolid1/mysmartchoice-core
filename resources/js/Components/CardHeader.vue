@@ -6,7 +6,7 @@
     @back="this.$inertia.get(listHref)"
   />
   <el-button-group v-if="exists" class="ml-auto">
-    <delete-button :href="deleteHref()" />
+    <delete-button v-if="deleteHref" :href="deleteHref()" />
     <show-button v-if="showHref" :href="showHref()" />
     <edit-button v-if="editHref" :href="editHref()" />
   </el-button-group>
@@ -34,7 +34,7 @@
       },
       deleteHref: {
         type: Function,
-        required: true,
+        required: false,
       },
       showHref: {
         type: Function,
