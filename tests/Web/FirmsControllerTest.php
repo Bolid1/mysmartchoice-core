@@ -28,7 +28,7 @@ class FirmsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('Firms')
+                    ->component('Firms/Firms')
             )
         ;
     }
@@ -44,7 +44,7 @@ class FirmsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('FirmEdit')
+                    ->component('Firms/FirmEdit')
             )
         ;
     }
@@ -82,7 +82,7 @@ class FirmsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('Firm')
+                    ->component('Firms/Firm')
             )
         ;
     }
@@ -101,7 +101,7 @@ class FirmsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('FirmEdit')
+                    ->component('Firms/FirmEdit')
             )
         ;
     }

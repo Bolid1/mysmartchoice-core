@@ -69,6 +69,14 @@ class Firm extends Model
     }
 
     /**
+     * @return HasMany in firm can be many users
+     */
+    public function usersLinks(): HasMany
+    {
+        return $this->hasMany(UserFirm::class);
+    }
+
+    /**
      * @return HasMany There are many accounts in firm
      */
     public function accounts(): HasMany

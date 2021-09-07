@@ -3,8 +3,9 @@
     <el-header class="flex items-center">
       <el-page-header
         icon="el-icon-arrow-left"
+        title="List"
         :content="firm.title"
-        @back="onBackClick"
+        @back="this.$inertia.get(this.$route('firms.index'))"
       />
       <el-button-group class="ml-auto">
         <delete-button :href="this.$route('firms.destroy', firm)" />
@@ -141,11 +142,6 @@
       users: Array,
       accounts: Array,
       integrations_installs: Array,
-    },
-    methods: {
-      onBackClick() {
-        this.$inertia.get(this.$route("firms.index"))
-      },
     },
     setup() {
       return {

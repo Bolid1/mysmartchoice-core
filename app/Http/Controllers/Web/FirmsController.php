@@ -34,7 +34,7 @@ class FirmsController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        return inertia('Firms', [
+        return inertia('Firms/Firms', [
             'firms' => $user->firms,
             'can' => [
                 'add' => $user->can('create', Firm::class),
@@ -49,7 +49,7 @@ class FirmsController extends Controller
      */
     public function create(): Response
     {
-        return inertia('FirmEdit', [
+        return inertia('Firms/FirmEdit', [
             'firm' => Firm::make([
                 // todo: place default values here
             ]),
@@ -82,7 +82,7 @@ class FirmsController extends Controller
      */
     public function show(Firm $firm): Response
     {
-        return inertia('Firm', [
+        return inertia('Firms/Firm', [
             'firm' => $firm,
             'users' => $firm->users,
             'accounts' => $firm->accounts,
@@ -100,7 +100,7 @@ class FirmsController extends Controller
      */
     public function edit(Firm $firm): Response
     {
-        return inertia('FirmEdit', [
+        return inertia('Firms/FirmEdit', [
             'firm' => $firm,
         ]);
     }
