@@ -7,8 +7,6 @@ namespace App\Http\Controllers\Web;
 use App\Enums\Currencies;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountRequest;
-use App\Http\Resources\AccountResource;
-use App\Http\Resources\FirmResource;
 use App\Models\Account;
 use App\Models\Firm;
 use Illuminate\Http\RedirectResponse;
@@ -34,11 +32,9 @@ class AccountsController extends Controller
      */
     public function index(Firm $firm): Response
     {
-        FirmResource::withoutWrapping();
-
-        return inertia('Accounts', [
-            'firm' => FirmResource::make($firm),
-            'accounts' => AccountResource::collection($firm->accounts()->paginate()),
+        return inertia('Firms/Accounts', [
+            'firm' => $firm,
+            'accounts' => $firm->accounts()->get(),
         ]);
     }
 
@@ -46,19 +42,17 @@ class AccountsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Firm $firm
+     * @param Currencies $currencies
      *
      * @return Response
      */
     public function create(Firm $firm, Currencies $currencies): Response
     {
-        FirmResource::withoutWrapping();
-        AccountResource::withoutWrapping();
-
-        return inertia('AccountEdit', [
-            'firm' => FirmResource::make($firm),
-            'account' => AccountResource::make(Account::make([
+        return inertia('Firms/AccountEdit', [
+            'firm' => $firm,
+            'account' => Account::make([
                 'firm_id' => $firm->id,
-            ])),
+            ]),
             'currencies' => $currencies->all(),
         ]);
     }
@@ -66,7 +60,7 @@ class AccountsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreAccountRequest $request
      * @param Firm $firm
      *
      * @return RedirectResponse
@@ -90,12 +84,9 @@ class AccountsController extends Controller
      */
     public function show(Firm $firm, Account $account): Response
     {
-        FirmResource::withoutWrapping();
-        AccountResource::withoutWrapping();
-
-        return inertia('Account', [
-            'firm' => FirmResource::make($firm),
-            'account' => AccountResource::make($account),
+        return inertia('Firms/Account', [
+            'firm' => $firm,
+            'account' => $account,
         ]);
     }
 
@@ -104,17 +95,14 @@ class AccountsController extends Controller
      *
      * @param Firm $firm
      * @param Account $account
-     *
+     * @param Currencies $currencies
      * @return Response
      */
     public function edit(Firm $firm, Account $account, Currencies $currencies): Response
     {
-        FirmResource::withoutWrapping();
-        AccountResource::withoutWrapping();
-
-        return inertia('AccountEdit', [
-            'firm' => FirmResource::make($firm),
-            'account' => AccountResource::make($account),
+        return inertia('Firms/AccountEdit', [
+            'firm' => $firm,
+            'account' => $account,
             'currencies' => $currencies->all(),
         ]);
     }

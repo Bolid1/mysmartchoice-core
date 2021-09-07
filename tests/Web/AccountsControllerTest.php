@@ -33,7 +33,7 @@ class AccountsControllerTest extends TestCase
             ->getJson(route('firms.accounts.index', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Accounts')
+                ->component('Firms/Accounts')
             )
         ;
     }
@@ -52,7 +52,7 @@ class AccountsControllerTest extends TestCase
             ->getJson(route('firms.accounts.create', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('AccountEdit')
+                ->component('Firms/AccountEdit')
             )
         ;
     }
@@ -98,7 +98,7 @@ class AccountsControllerTest extends TestCase
             ->getJson(route('firms.accounts.show', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Account')
+                ->component('Firms/Account')
             )
         ;
     }
@@ -117,7 +117,7 @@ class AccountsControllerTest extends TestCase
             ->getJson(route('firms.accounts.edit', compact('firm', 'account')))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page) => $page
-                ->component('AccountEdit')
+                ->component('Firms/AccountEdit')
             )
         ;
     }

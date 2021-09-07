@@ -1,7 +1,7 @@
 <template>
   <el-page-header
     icon="el-icon-arrow-left"
-    title="List"
+    :title="backTitle"
     :content="title"
     @back="this.$inertia.get(listHref)"
   />
@@ -27,6 +27,10 @@
       title: {
         type: String,
         default: "New",
+      },
+      backTitle: {
+        type: String,
+        default: "List",
       },
       listHref: {
         type: String,

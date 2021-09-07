@@ -20,26 +20,20 @@
 </template>
 
 <script>
-  import PageHeader from "@/Components/PageHeader"
-  import { Link } from "@inertiajs/inertia-vue3"
   import { defineComponent } from "vue"
   import ListCol from "@/Components/ListCol"
   import ListCard from "@/Components/ListCard"
-  import CreateButton from "@/Components/Buttons/CreateButton"
-  import EditButton from "@/Components/Buttons/EditButton"
-  import ShowButton from "@/Components/Buttons/ShowButton"
   import ListColCreate from "@/Components/ListColCreate"
+  import ShowButton from "@/Components/Buttons/ShowButton"
+  import EditButton from "@/Components/Buttons/EditButton"
 
   export default defineComponent({
     components: {
-      ListColCreate,
-      ShowButton,
       EditButton,
-      CreateButton,
+      ShowButton,
+      ListColCreate,
       ListCard,
       ListCol,
-      Link,
-      PageHeader,
     },
     props: ["can", "firms"],
   })
