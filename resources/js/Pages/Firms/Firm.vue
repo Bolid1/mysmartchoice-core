@@ -68,7 +68,9 @@
           <list-card>
             <h5>{{ user.name }}</h5>
             <template #buttons>
-              <edit-button :href="this.$route('users.edit', { firm, user })" />
+              <edit-button
+                :href="this.$route('firms.users.edit', { firm, user })"
+              />
             </template>
           </list-card>
         </list-col>

@@ -16,6 +16,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\PersonalAccessTokenResult;
@@ -201,5 +202,12 @@ class User extends Authenticatable
     public function createToken($name, array $scopes = []): PersonalAccessTokenResult
     {
         return $this->createPersonalToken($name, ['view-me']);
+    }
+
+    public function beforeSerializationToResponse(): self
+    {
+        $this->makeVisibleIf(Gate::check('view-email', $this), 'email');
+
+        return $this;
     }
 }

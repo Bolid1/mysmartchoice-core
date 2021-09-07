@@ -34,15 +34,11 @@ Route::middleware(['auth', 'verified'])->group(static function () {
     Route::resource('firms.accounts', Web\AccountsController::class);
     Route::resource('integrations', Web\IntegrationsController::class);
     Route::resource('oauth_clients', Web\OAuthClientsController::class);
-    Route::resource('users', Web\UsersController::class)
-         ->only([
-             'edit',
-             'update',
-         ])
-    ;
     Route::resource('firms.users', Web\UsersController::class)
          ->only([
              'index',
+             'edit',
+             'update',
          ])
     ;
 

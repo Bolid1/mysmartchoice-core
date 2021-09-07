@@ -20,13 +20,7 @@
             ></i>
             <span>{{ $page.props.auth.user.name }}</span>
           </template>
-          <el-menu-item index="profile">
-            <Link
-              class="block w-full"
-              :href="this.$route('users.edit', this.$page.props.auth.user)"
-              >Profile</Link
-            >
-          </el-menu-item>
+
           <el-menu-item>
             <Link
               class="block w-full text-left"
@@ -102,16 +96,7 @@
         })
       },
       activeIndex() {
-        return (
-          this.menuItems.find(({ active }) => active)?.route ||
-          (this.isProfileActive && "profile")
-        )
-      },
-      isProfileActive() {
-        return (
-          this.$page.url ===
-          this.$route("users.edit", this.$page.props.auth.user, false)
-        )
+        return this.menuItems.find(({ active }) => active)?.route
       },
     },
 

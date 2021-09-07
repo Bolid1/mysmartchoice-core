@@ -1,17 +1,17 @@
 <template>
   <el-button-group>
     <form-create-button
-      v-if="!exists"
+      v-if="!exists && storeHref"
       :disabled="form.processing"
       @click="form.post(storeHref)"
     />
     <form-update-button
-      v-if="exists"
+      v-if="exists && updateHref"
       :disabled="form.processing"
       @click="form.patch(updateHref())"
     />
     <form-delete-button
-      v-if="exists"
+      v-if="exists && destroyHref"
       :disabled="form.processing"
       @click="form.delete(destroyHref())"
     />
@@ -37,15 +37,15 @@
       },
       storeHref: {
         type: String,
-        required: true,
+        required: false,
       },
       updateHref: {
         type: Function,
-        required: true,
+        required: false,
       },
       destroyHref: {
         type: Function,
-        required: true,
+        required: false,
       },
     },
   }

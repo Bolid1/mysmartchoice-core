@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FirmResource;
-use App\Http\Resources\UserResource;
 use App\Models\Firm;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Response;
@@ -24,40 +23,45 @@ class UsersController extends Controller
     /**
      * Display a listing of the users.
      *
+     * @param Firm $firm
+     *
      * @return Response
      */
     public function index(Firm $firm): Response
     {
-        FirmResource::withoutWrapping();
-
-        return inertia('Users', [
-            'firm' => FirmResource::make($firm),
-            'users' => UserResource::collection(
-                $firm->users()->select([$firm->users()->qualifyColumn('*')])->paginate(null, [])
-            ),
+        return inertia('Firms/Users', [
+            'firm' => $firm,
+            /* @uses \App\Models\User::beforeSerializationToResponse */
+            'users' => $firm->users->map->beforeSerializationToResponse(),
         ]);
     }
 
     /**
      * Display the form for edit specified user.
      *
+     * @param Firm $firm
      * @param User $user
+     *
+     * @return Response
      */
-    public function edit(User $user): Response
+    public function edit(Firm $firm, User $user): Response
     {
-        UserResource::withoutWrapping();
-
-        return inertia('UserEdit', [
-            'user' => UserResource::make($user),
+        return inertia('Firms/UserEdit', [
+            'firm' => $firm,
+            'user' => $user->beforeSerializationToResponse(),
         ]);
     }
 
     /**
      * Display the form for edit specified user.
      *
+     * @param Request $request
+     * @param Firm $firm
      * @param User $user
+     *
+     * @return RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Firm $firm, User $user): RedirectResponse
     {
         $user->update(
             $request->validate([
@@ -65,6 +69,13 @@ class UsersController extends Controller
             ])
         );
 
-        return Redirect::route('users.edit', $user, 303);
+        return Redirect::route(
+            'firms.users.edit',
+            [
+                'firm' => $firm,
+                'user' => $user->beforeSerializationToResponse(),
+            ],
+            303
+        );
     }
 }

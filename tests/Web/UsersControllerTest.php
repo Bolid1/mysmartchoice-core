@@ -30,55 +30,19 @@ class UsersControllerTest extends TestCase
             ->get("/firms/{$firm->id}/users")
             ->assertInertia(
             fn (Assert $page) => $page
-                ->component('Users')
+                ->component('Firms/Users')
                 ->has('firm', fn (Assert $pageFirm) => $pageFirm
                     ->where('id', $firm->id)
                     ->where('title', $firm->title)
                     ->has('created_at')
                     ->has('updated_at')
                 )
-                ->has('users', fn (Assert $page) => $page
-                    ->has('data', $usersCount, fn (Assert $page) => $page
-                        ->where('id', $user->id)
-                        ->where('name', $user->name)
-                        ->where('email', $user->email)
-                        ->has('created_at')
-                        ->has('updated_at')
-                    )
-                    ->has('links', fn (Assert $page) => $page
-                        ->whereAll([
-                            'first' => URL::to("/firms/{$firm->id}/users?page=1"),
-                            'last' => URL::to("/firms/{$firm->id}/users?page=1"),
-                            'next' => null,
-                            'prev' => null,
-                        ])
-                    )
-                    ->where('meta', [
-                        'current_page' => 1,
-                        'from' => 1,
-                        'last_page' => 1,
-                        'links' => [
-                            [
-                                'active' => false,
-                                'label' => '&laquo; Previous',
-                                'url' => null,
-                            ],
-                            [
-                                'active' => true,
-                                'label' => '1',
-                                'url' => URL::to("/firms/{$firm->id}/users?page=1"),
-                            ],
-                            [
-                                'active' => false,
-                                'label' => 'Next &raquo;',
-                                'url' => null,
-                            ],
-                        ],
-                        'path' => URL::to("/firms/{$firm->id}/users"),
-                        'per_page' => 15,
-                        'to' => $usersCount,
-                        'total' => $usersCount,
-                    ])
+                ->has('users', $usersCount, fn (Assert $page) => $page
+                    ->where('id', $user->id)
+                    ->where('name', $user->name)
+                    ->where('email', $user->email)
+                    ->has('created_at')
+                    ->has('updated_at')
                 )
         )
         ;
@@ -94,10 +58,10 @@ class UsersControllerTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->get("/users/{$user->id}/edit")
+            ->get("/firms/{$firm->id}/users/{$user->id}/edit")
             ->assertInertia(
             fn (Assert $page) => $page
-                ->component('UserEdit')
+                ->component('Firms/UserEdit')
                 ->has('user', fn (Assert $page) => $page
                     ->where('id', $user->id)
                     ->where('name', $user->name)
@@ -116,8 +80,11 @@ class UsersControllerTest extends TestCase
      */
     public function testUpdateUser(): void
     {
+        /** @var Firm $firm */
+        $firm = Firm::factory()->hasUsers($usersCount = 4)->createOne();
+
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = $firm->users->first();
 
         do {
             $newName = $this->faker->name;
@@ -127,13 +94,13 @@ class UsersControllerTest extends TestCase
         $this
             ->actingAs($user)
             ->patch(
-            "/users/{$user->id}",
+            "/firms/{$firm->id}/users/{$user->id}",
             [
                 'name' => $newName,
             ]
         )
             ->assertStatus(303)
-            ->assertRedirect("/users/{$user->id}/edit");
+            ->assertRedirect("/firms/{$firm->id}/users/{$user->id}/edit");
     }
 
     /**
@@ -143,13 +110,16 @@ class UsersControllerTest extends TestCase
      */
     public function testUpdateUserFailed(): void
     {
+        /** @var Firm $firm */
+        $firm = Firm::factory()->hasUsers($usersCount = 4)->createOne();
+
         /** @var User $user */
-        $user = User::factory()->createOne();
+        $user = $firm->users->first();
 
         $this
             ->actingAs($user)
             ->patch(
-            "/users/{$user->id}",
+            "/firms/{$firm->id}/users/{$user->id}",
             [
                 // More than 255 symbols
                 'name' => $this->faker->words(255),
