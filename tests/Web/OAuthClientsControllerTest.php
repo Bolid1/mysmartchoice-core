@@ -85,7 +85,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('OAuth/Client')
-                    ->has('oauth_client', fn (Assert $page) => $page
+                    ->has('client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)
                         ->etc()
@@ -111,7 +111,7 @@ class OAuthClientsControllerTest extends TestCase
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('OAuth/ClientEdit')
-                    ->has('oauth_client', fn (Assert $page) => $page
+                    ->has('client', fn (Assert $page) => $page
                         ->where('name', $oAuthClient->name)
                         ->where('secret', $oAuthClient->secret)
                         ->etc()
