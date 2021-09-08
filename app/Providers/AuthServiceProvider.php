@@ -9,6 +9,7 @@ use App\Models\Firm;
 use App\Models\FirmIntegration;
 use App\Models\Integration;
 use App\Models\OAuthClient;
+use App\Models\Token;
 use App\Models\User;
 use App\Policies\AccountPolicy;
 use App\Policies\FirmIntegrationPolicy;
@@ -53,6 +54,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::useClientModel(OAuthClient::class);
+        Passport::useTokenModel(Token::class);
 
         Passport::tokensCan(config('oauth.scopes.plain'));
         /*
