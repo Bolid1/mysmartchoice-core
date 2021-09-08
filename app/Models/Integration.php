@@ -38,7 +38,10 @@ use function is_iterable;
  * @property string|null $oauth2_client_id
  * @property array $oauth2_scopes
  * @property array $javascript_file
- * @property string auth
+ * @property string $auth
+ * @property OAuthClient|null $client
+ * @property string|null $o_auth2_client_id
+ * @property array $o_auth2_scopes
  *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()

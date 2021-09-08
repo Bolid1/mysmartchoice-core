@@ -31,6 +31,8 @@ use Illuminate\Support\Collection as BaseCollection;
  * @property int|null $accounts_count
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
+ * @property Collection|UserFirm[] $usersLinks
+ * @property int|null $users_links_count
  *
  * @method static FirmFactory factory(...$parameters)
  * @method static Builder|Firm newModelQuery()
