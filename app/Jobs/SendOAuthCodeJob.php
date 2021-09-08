@@ -19,6 +19,7 @@ use Laravel\Passport\Bridge\User;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Nyholm\Psr7\Response as Psr7Response;
+use function collect;
 use function json_encode;
 use const JSON_THROW_ON_ERROR;
 
@@ -96,7 +97,7 @@ class SendOAuthCodeJob implements ShouldQueue
         // $authorizationRequest->setCodeChallenge();
         // $authorizationRequest->setCodeChallengeMethod();
         $authorizationRequest->setGrantTypeId('authorization_code');
-        // $authorizationRequest->setRedirectUri();
+        $authorizationRequest->setRedirectUri(collect($client->getRedirectUri())->first());
         $authorizationRequest->setScopes($scopeRepository->getScopesEntitiesByIdentifiers($this->scopes));
         $authorizationRequest->setState(
             json_encode([
