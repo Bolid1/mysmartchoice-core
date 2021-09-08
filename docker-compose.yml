@@ -15,6 +15,7 @@ services:
       LARAVEL_SAIL: 1
     volumes:
       - '.:/var/www/html'
+      - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
     depends_on:
       - mysql
       - redis
