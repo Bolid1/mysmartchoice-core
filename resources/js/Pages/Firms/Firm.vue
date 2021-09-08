@@ -84,7 +84,7 @@
         Installed integrations
       </Link>
 
-      <el-row :gutter="12">
+      <el-row :gutter="12" v-if="integrations_installs?.length">
         <list-col v-for="install in integrations_installs">
           <list-card>
             <h5>{{ install.integration.title }}</h5>
@@ -102,11 +102,6 @@
             </template>
           </list-card>
         </list-col>
-
-        <list-col-create
-          :rows="2"
-          :href="this.$route('firms.firm_integrations.create', { firm })"
-        />
       </el-row>
     </el-main>
   </el-container>

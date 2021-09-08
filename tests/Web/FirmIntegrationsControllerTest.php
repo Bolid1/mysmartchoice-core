@@ -40,25 +40,7 @@ class FirmIntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('FirmIntegrations')
-            )
-        ;
-    }
-
-    public function testCreate(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->hasFirms(1)->createOne();
-        /** @var Firm $firm */
-        $firm = $user->firms->first();
-
-        $this
-            ->actingAs($user)
-            ->get(route('firms.firm_integrations.create', compact('firm')))
-            ->assertStatus(200)
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->component('FirmIntegrationEdit')
+                    ->component('Firms/FirmIntegrations')
             )
         ;
     }
@@ -107,7 +89,7 @@ class FirmIntegrationsControllerTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (Assert $page) => $page
-                    ->component('FirmIntegrationEdit')
+                    ->component('Firms/FirmIntegrationEdit')
             )
         ;
     }

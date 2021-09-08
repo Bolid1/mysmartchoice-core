@@ -17,8 +17,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 use Laravel\Passport\Passport;
+use function array_map;
 use function data_get;
 use function is_iterable;
+use function str_replace;
 
 /**
  * External application, that can interact with current app.
@@ -36,7 +38,6 @@ use function is_iterable;
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
  * @property string|null $oauth2_client_id
- * @property array $oauth2_scopes
  * @property array $javascript_file
  * @property string $auth
  * @property OAuthClient|null $client
@@ -165,5 +166,13 @@ class Integration extends Model
     public function setJavascriptFileAttribute(string $file): self
     {
         return $this->fillJsonAttribute('settings->javascript_file', $file);
+    }
+
+    public function oauth2ScopesFor(int $firmId): array
+    {
+        return array_map(
+            static fn (string $scope) => str_replace('{firm}', (string)$firmId, $scope),
+            (array)$this->o_auth2_scopes
+        );
     }
 }

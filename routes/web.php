@@ -29,6 +29,13 @@ Route::get('/', static fn () => Inertia::render('Welcome', [
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(static function () {
+    Route::prefix('/firms/{firm}')->group(static function () {
+        Route::get(
+            '/firm_integrations/{firm_integration}/authorize',
+            [Web\FirmIntegrationsController::class, 'auth']
+        )->name('firms.firm_integrations.authorize');
+    });
+
     Route::resource('firms', Web\FirmsController::class);
     Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class);
     Route::resource('firms.accounts', Web\AccountsController::class);

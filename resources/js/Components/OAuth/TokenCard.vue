@@ -1,6 +1,6 @@
 <template>
   <list-card>
-    <h5>{{ token.client.name }}</h5>
+    <h5 v-if="token.client">{{ token.client.name }}</h5>
     <div>Created at {{ token.created_at }}</div>
     <div>Expire at {{ token.expires_at }}</div>
     <div>

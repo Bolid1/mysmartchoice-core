@@ -1,7 +1,7 @@
 <template>
-  <Link :href="href" as="button" class="el-button el-button--success is-plain"
-    >Create</Link
-  >
+  <Link as="button" class="el-button el-button--success is-plain">{{
+    text
+  }}</Link>
 </template>
 
 <script>
@@ -12,8 +12,10 @@
     name: "CreateButton",
     components: { Link },
     props: {
-      href: {
+      text: {
         type: String,
+        required: false,
+        default: "Create",
       },
     },
   })

@@ -1,7 +1,5 @@
 <template>
-  <Link :href="href" as="button" class="el-button el-button--info is-plain"
-    >View</Link
-  >
+  <Link as="button" class="el-button el-button--info is-plain">{{ text }}</Link>
 </template>
 
 <script>
@@ -12,8 +10,10 @@
     name: "ShowButton",
     components: { Link },
     props: {
-      href: {
+      text: {
         type: String,
+        required: false,
+        default: "View",
       },
     },
   })

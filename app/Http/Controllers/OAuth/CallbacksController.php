@@ -61,7 +61,7 @@ class CallbacksController extends Controller
 
         abort_if(!$client, 422, 'Client not found');
 
-        Gate::check('test-exchange', $client);
+        Gate::authorize('test-exchange', $client);
 
         $tokenRequest = Request::create(
             route('passport.token'),

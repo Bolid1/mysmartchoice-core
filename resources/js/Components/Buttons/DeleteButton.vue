@@ -1,10 +1,9 @@
 <template>
   <Link
-    :href="href"
     method="delete"
     as="button"
     class="el-button el-button--danger is-plain"
-    >Delete</Link
+    >{{ text }}</Link
   >
 </template>
 
@@ -16,9 +15,10 @@
     name: "DeleteButton",
     components: { Link },
     props: {
-      href: {
+      text: {
         type: String,
         required: false,
+        default: "Delete",
       },
     },
   })

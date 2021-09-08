@@ -54,32 +54,6 @@ class FirmIntegrationsControllerTest extends TestCase
         ;
     }
 
-    public function testStore(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        /** @var Firm $firm */
-        $firm = $user->firms->first();
-        /** @var Integration $integration */
-        $integration = $user->integrations->first();
-
-        Passport::actingAs($user, [
-            "create-firm-{$firm->id}-firm_integrations",
-        ]);
-
-        $this
-            ->postJson(route('api.firms.firm_integrations.store', compact('firm')), [
-                'integration_id' => $integration->id,
-            ])
-            ->assertStatus(201)
-            ->assertJson([
-                'data' => [
-                    // fixme: need more data checks
-                ],
-            ])
-        ;
-    }
-
     public function testShow(): void
     {
         /** @var User $user */
@@ -112,79 +86,5 @@ class FirmIntegrationsControllerTest extends TestCase
                 ],
             ])
         ;
-    }
-
-    public function testUpdate(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        /** @var Firm $firm */
-        $firm = $user->firms->first();
-        /** @var Integration $integration */
-        $integration = $user->integrations->first();
-
-        /** @var FirmIntegration $firmIntegration */
-        $firmIntegration = FirmIntegration::factory()->createOne([
-            'firm_id' => $firm->id,
-            'integration_id' => $integration->id,
-        ]);
-
-        Passport::actingAs($user, [
-            "update-firm-{$firm->id}-firm_integrations",
-        ]);
-
-        $this
-            ->patchJson(route('api.firms.firm_integrations.update', [
-                'firm' => $firm,
-                'firm_integration' => $firmIntegration,
-            ]), [
-                // fixme: need more data for patch
-            ])
-            ->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'id' => $firmIntegration->id,
-                    // fixme: need more data for checks
-                ],
-            ])
-        ;
-    }
-
-    public function testDestroy(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->hasFirms(1)->hasIntegrations(1)->createOne();
-        /** @var Firm $firm */
-        $firm = $user->firms->first();
-        /** @var Integration $integration */
-        $integration = $user->integrations->first();
-
-        /** @var FirmIntegration $firmIntegration */
-        $firmIntegration = FirmIntegration::factory()->createOne([
-            'firm_id' => $firm->id,
-            'integration_id' => $integration->id,
-        ]);
-
-        Passport::actingAs($user, [
-            "delete-firm-{$firm->id}-firm_integrations",
-        ]);
-
-        $this
-            ->deleteJson(route('api.firms.firm_integrations.destroy', [
-                'firm' => $firm,
-                'firm_integration' => $firmIntegration,
-            ]))
-            ->assertStatus(200)
-            ->assertJson(
-                [
-                    'data' => [
-                        'id' => $firmIntegration->id,
-                        // fixme: need more data for checks
-                    ],
-                ]
-            )
-        ;
-
-        self::assertNull($firmIntegration->fresh());
     }
 }
