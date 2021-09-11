@@ -23,7 +23,7 @@ Route::get('/', static fn () => Inertia::render('Welcome'));
 
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth', 'verified'])->group(static function () {
+Route::middleware(['auth'])->group(static function () {
     Route::prefix('/firms/{firm}')->group(static function () {
         Route::get(
             '/firm_integrations/{firm_integration}/authorize',
