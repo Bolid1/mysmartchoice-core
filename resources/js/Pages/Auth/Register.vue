@@ -1,115 +1,82 @@
 <template>
-  <breeze-validation-errors class="mb-4" />
-
-  <form @submit.prevent="submit">
-    <div>
-      <breeze-label for="name" value="Name" />
-      <breeze-input
-        id="name"
-        type="text"
-        class="mt-1 block w-full"
-        v-model="form.name"
-        required
-        autofocus
-        autocomplete="name"
-      />
-    </div>
-
-    <div class="mt-4">
-      <breeze-label for="email" value="Email" />
-      <breeze-input
-        id="email"
-        type="email"
-        class="mt-1 block w-full"
-        v-model="form.email"
-        required
-        autocomplete="username"
-      />
-    </div>
-
-    <div class="mt-4">
-      <breeze-label for="password" value="Password" />
-      <breeze-input
-        id="password"
-        type="password"
-        class="mt-1 block w-full"
-        v-model="form.password"
-        required
-        autocomplete="new-password"
-      />
-    </div>
-
-    <div class="mt-4">
-      <breeze-label
-        for="terms"
-        value="Do you accept service terms?"
-        class="inline"
-      />
-      <breeze-input
-        id="terms"
-        type="checkbox"
-        class="ml-1"
-        v-model="form.terms"
-        required
-      />
-    </div>
-
-    <div class="flex items-center justify-end mt-4">
-      <Link
-        :href="this.$route('login')"
-        class="underline text-sm text-gray-600 hover:text-gray-900"
+  <el-card class="w-full sm:max-w-md">
+    <el-form
+      class="m-auto"
+      label-position="left"
+      label-width="100px"
+      :model="form"
+      @submit.prevent="form.submit('post', this.$route('register'))"
+    >
+      <el-form-item required label="Name" :error="form.errors.name">
+        <el-input
+          v-model="form.name"
+          required
+          autofocus
+          autocomplete="name"
+        ></el-input>
+      </el-form-item>
+      <el-form-item required label="Email" :error="form.errors.email">
+        <el-input
+          v-model="form.email"
+          required
+          autofocus
+          autocomplete="email"
+        ></el-input>
+      </el-form-item>
+      <el-form-item required label="Password" :error="form.errors.password">
+        <el-input
+          type="password"
+          v-model="form.password"
+          required
+          autocomplete="password"
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        label="Do you accept service terms?"
+        label-width="200px"
+        :error="form.errors.terms"
       >
-        Already registered?
-      </Link>
-
-      <breeze-button
-        class="ml-4"
-        :class="{ 'opacity-25': form.processing }"
-        :disabled="form.processing"
-      >
-        Register
-      </breeze-button>
-    </div>
-  </form>
+        <el-switch v-model="form.terms"> </el-switch>
+      </el-form-item>
+      <el-form-item>
+        <div class="flex justify-end">
+          <el-link class="mr-2"
+            ><Link :href="this.$route('login')"
+              >already registered?</Link
+            ></el-link
+          >
+          <el-button
+            :disabled="form.processing"
+            type="success"
+            native-type="submit"
+            >Register</el-button
+          >
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
-  import BreezeButton from "@/Components/Button"
-  import BreezeGuestLayout from "@/Layouts/Guest"
-  import BreezeInput from "@/Components/Input"
-  import BreezeLabel from "@/Components/Label"
-  import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { defineComponent } from "vue"
-  import { Link } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+  import GuestLayout from "@/Layouts/Guest"
 
   export default defineComponent({
-    layout: BreezeGuestLayout,
-
+    name: "RegisterPage",
+    layout: GuestLayout,
     components: {
-      BreezeButton,
-      BreezeInput,
-      BreezeLabel,
-      BreezeValidationErrors,
       Link,
     },
+    setup() {
+      const form = useForm({
+        name: null,
+        email: null,
+        password: null,
+        terms: true,
+      })
 
-    data() {
-      return {
-        form: this.$inertia.form({
-          name: "",
-          email: "",
-          password: "",
-          terms: true,
-        }),
-      }
-    },
-
-    methods: {
-      submit() {
-        this.form.post(this.$route("register"), {
-          onFinish: () => this.form.reset("password"),
-        })
-      },
+      return { form }
     },
   })
 </script>

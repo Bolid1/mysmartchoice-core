@@ -1,6 +1,9 @@
 # Project roadmap
 
 ## Prepare core
+- [ ] Auth
+  - [ ] Confirm password form
+  - [ ] Verify email form
 - [ ] Integrations
   - [x] Firm should become part of access token scope
   - [x] Send token just after integration installed

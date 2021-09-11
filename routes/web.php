@@ -19,12 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', static fn () => Inertia::render('Welcome', [
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-    'laravelVersion' => Application::VERSION,
-    'phpVersion' => \PHP_VERSION,
-]));
+Route::get('/', static fn () => Inertia::render('Welcome'));
 
 require __DIR__.'/auth.php';
 

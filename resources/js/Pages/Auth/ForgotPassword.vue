@@ -1,77 +1,74 @@
 <template>
-  <div class="mb-4 text-sm text-gray-600">
-    Forgot your password? No problem. Just let us know your email address and we
-    will email you a password reset link that will allow you to choose a new
-    one.
-  </div>
+  <el-card v-if="status" class="w-full sm:max-w-md">
+    <h3 class="text-xl text-center">{{ status }}</h3>
+    <el-link class="text-lg text-center w-full"
+      ><Link href="/">to main page</Link></el-link
+    >
+  </el-card>
+  <el-card v-else class="w-full sm:max-w-md">
+    <p class="mb-4 text-sm text-gray-600">
+      Forgot your password? No problem. Just let us know your email address and
+      we will email you a password reset link that will allow you to choose a
+      new one.
+    </p>
 
-  <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-    {{ status }}
-  </div>
+    <el-form
+      class="m-auto"
+      label-position="left"
+      label-width="100px"
+      :model="form"
+      @submit.prevent="form.submit('post', this.$route('password.email'))"
+    >
+      <el-form-item required label="Email" :error="form.errors.email">
+        <el-input
+          v-model="form.email"
+          required
+          autofocus
+          autocomplete="email"
+        ></el-input>
+      </el-form-item>
 
-  <breeze-validation-errors class="mb-4" />
-
-  <form @submit.prevent="submit">
-    <div>
-      <breeze-label for="email" value="Email" />
-      <breeze-input
-        id="email"
-        type="email"
-        class="mt-1 block w-full"
-        v-model="form.email"
-        required
-        autofocus
-        autocomplete="username"
-      />
-    </div>
-
-    <div class="flex items-center justify-end mt-4">
-      <breeze-button
-        :class="{ 'opacity-25': form.processing }"
-        :disabled="form.processing"
-      >
-        Email Password Reset Link
-      </breeze-button>
-    </div>
-  </form>
+      <el-form-item>
+        <div class="flex justify-end">
+          <el-link class="mr-2"
+            ><Link :href="this.$route('register')">register</Link></el-link
+          >
+          <el-link class="mr-2"
+            ><Link :href="this.$route('login')">login</Link></el-link
+          >
+          <el-button
+            :disabled="form.processing"
+            type="success"
+            native-type="submit"
+            >Reset</el-button
+          >
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
-  import BreezeButton from "@/Components/Button"
-  import BreezeGuestLayout from "@/Layouts/Guest"
-  import BreezeInput from "@/Components/Input"
-  import BreezeLabel from "@/Components/Label"
-  import BreezeValidationErrors from "@/Components/ValidationErrors"
+  import GuestLayout from "@/Layouts/Guest"
   import { defineComponent } from "vue"
-  import { Link } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
 
   export default defineComponent({
-    layout: BreezeGuestLayout,
-
+    layout: GuestLayout,
     components: {
-      BreezeButton,
-      BreezeInput,
-      BreezeLabel,
-      BreezeValidationErrors,
       Link,
     },
-
     props: {
-      status: String,
-    },
-
-    data() {
-      return {
-        form: this.$inertia.form({
-          email: "",
-        }),
-      }
-    },
-
-    methods: {
-      submit() {
-        this.form.post(this.$route("password.email"))
+      status: {
+        type: String,
       },
+    },
+    setup() {
+      const form = useForm({
+        email: null,
+      })
+
+      return { form }
     },
   })
 </script>

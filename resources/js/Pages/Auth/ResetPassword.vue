@@ -1,97 +1,77 @@
 <template>
-  <breeze-validation-errors class="mb-4" />
+  <el-card class="w-full sm:max-w-md">
+    <el-form
+      class="m-auto"
+      label-position="left"
+      label-width="100px"
+      :model="form"
+      @submit.prevent="form.submit('post', this.$route('password.update'))"
+    >
+      <el-form-item required label="Email" :error="form.errors.email">
+        <el-input
+          v-model="form.email"
+          required
+          autofocus
+          autocomplete="email"
+        ></el-input>
+      </el-form-item>
+      <el-form-item required label="Password" :error="form.errors.password">
+        <el-input
+          type="password"
+          v-model="form.password"
+          required
+          autocomplete="password"
+        ></el-input>
+      </el-form-item>
 
-  <form @submit.prevent="submit">
-    <div>
-      <breeze-label for="email" value="Email" />
-      <breeze-input
-        id="email"
-        type="email"
-        class="mt-1 block w-full"
-        v-model="form.email"
-        required
-        autofocus
-        autocomplete="username"
-      />
-    </div>
-
-    <div class="mt-4">
-      <breeze-label for="password" value="Password" />
-      <breeze-input
-        id="password"
-        type="password"
-        class="mt-1 block w-full"
-        v-model="form.password"
-        required
-        autocomplete="new-password"
-      />
-    </div>
-
-    <div class="mt-4">
-      <breeze-label for="password_confirmation" value="Confirm Password" />
-      <breeze-input
-        id="password_confirmation"
-        type="password"
-        class="mt-1 block w-full"
-        v-model="form.password_confirmation"
-        required
-        autocomplete="new-password"
-      />
-    </div>
-
-    <div class="flex items-center justify-end mt-4">
-      <breeze-button
-        :class="{ 'opacity-25': form.processing }"
-        :disabled="form.processing"
-      >
-        Reset Password
-      </breeze-button>
-    </div>
-  </form>
+      <el-form-item>
+        <div class="flex justify-end">
+          <el-link class="mr-2"
+            ><Link :href="this.$route('login')">login</Link></el-link
+          >
+          <el-button
+            :disabled="form.processing"
+            type="success"
+            native-type="submit"
+            >Reset</el-button
+          >
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
-  import BreezeButton from "@/Components/Button"
-  import BreezeGuestLayout from "@/Layouts/Guest"
-  import BreezeInput from "@/Components/Input"
-  import BreezeLabel from "@/Components/Label"
-  import BreezeValidationErrors from "@/Components/ValidationErrors"
   import { defineComponent } from "vue"
-  import { Link } from "@inertiajs/inertia-vue3"
+  import { Link, useForm } from "@inertiajs/inertia-vue3"
+  import GuestLayout from "@/Layouts/Guest"
 
   export default defineComponent({
-    layout: BreezeGuestLayout,
-
+    name: "ResetPasswordPage",
+    layout: GuestLayout,
     components: {
-      BreezeButton,
-      BreezeInput,
-      BreezeLabel,
-      BreezeValidationErrors,
       Link,
     },
-
     props: {
-      email: String,
-      token: String,
-    },
-
-    data() {
-      return {
-        form: this.$inertia.form({
-          token: this.token,
-          email: this.email,
-          password: "",
-          password_confirmation: "",
-        }),
-      }
-    },
-
-    methods: {
-      submit() {
-        this.form.post(this.$route("password.update"), {
-          onFinish: () => this.form.reset("password", "password_confirmation"),
-        })
+      email: {
+        type: String,
+        required: true,
       },
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+    setup(props) {
+      const form = useForm({
+        token: props.token,
+        email: props.email,
+        password: "",
+      })
+
+      return {
+        form,
+      }
     },
   })
 </script>
