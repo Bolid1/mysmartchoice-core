@@ -25,8 +25,6 @@
 </template>
 
 <script>
-  import PageHeader from "@/Components/PageHeader"
-  import BreezeButton from "@/Components/Button"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
   import DeleteButton from "@/Components/Buttons/DeleteButton"
@@ -38,12 +36,8 @@
       CardHeader,
       EditButton,
       DeleteButton,
-      BreezeButton,
       Link,
-      PageHeader,
     },
     props: ["client"],
   })
 </script>
-
-<style scoped></style>

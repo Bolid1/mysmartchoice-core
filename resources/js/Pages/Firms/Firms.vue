@@ -38,5 +38,3 @@
     props: ["can", "firms"],
   })
 </script>
-
-<style scoped></style>

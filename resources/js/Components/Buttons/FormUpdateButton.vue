@@ -7,5 +7,3 @@
     name: "FormUpdateButton",
   }
 </script>
-
-<style scoped></style>

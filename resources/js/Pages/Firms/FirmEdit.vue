@@ -33,7 +33,6 @@
 </template>
 
 <script>
-  import PageHeader from "@/Components/PageHeader"
   import { Link, useForm } from "@inertiajs/inertia-vue3"
   import { defineComponent } from "vue"
   import DeleteButton from "@/Components/Buttons/DeleteButton"
@@ -54,7 +53,6 @@
       ShowButton,
       DeleteButton,
       Link,
-      PageHeader,
     },
     props: ["firm"],
     setup(props) {
@@ -66,5 +64,3 @@
     },
   })
 </script>
-
-<style scoped></style>

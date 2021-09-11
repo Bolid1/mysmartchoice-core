@@ -44,5 +44,3 @@
     props: ["oauth_clients"],
   })
 </script>
-
-<style scoped></style>

@@ -21,8 +21,6 @@
 </template>
 
 <script>
-  import BreezeButton from "@/Components/Button"
-  import PageHeader from "@/Components/PageHeader"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
   import ListCol from "@/Components/ListCol"
@@ -39,11 +37,7 @@
       ListColCreate,
       ListCard,
       ListCol,
-      PageHeader,
-      BreezeButton,
       Link,
     },
   })
 </script>
-
-<style scoped></style>

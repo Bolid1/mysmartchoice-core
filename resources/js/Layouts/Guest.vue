@@ -15,13 +15,11 @@
 </template>
 
 <script>
-  import BreezeApplicationLogo from "@/Components/ApplicationLogo"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
 
   export default defineComponent({
     components: {
-      BreezeApplicationLogo,
       Link,
     },
   })

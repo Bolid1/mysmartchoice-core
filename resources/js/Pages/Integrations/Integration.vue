@@ -20,7 +20,6 @@
 </template>
 
 <script>
-  import BreezeButton from "@/Components/Button"
   import { defineComponent } from "vue"
   import { Link } from "@inertiajs/inertia-vue3"
   import DeleteButton from "@/Components/Buttons/DeleteButton"
@@ -33,10 +32,7 @@
       CardHeader,
       EditButton,
       DeleteButton,
-      BreezeButton,
       Link,
     },
   })
 </script>
-
-<style scoped></style>

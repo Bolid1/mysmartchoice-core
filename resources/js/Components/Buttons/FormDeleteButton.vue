@@ -7,5 +7,3 @@
     name: "FormDeleteButton",
   }
 </script>
-
-<style scoped></style>
