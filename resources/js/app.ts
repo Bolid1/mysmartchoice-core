@@ -2,6 +2,7 @@ require("./bootstrap")
 
 // Import modules...
 import { createApp, h } from "vue"
+//@ts-ignore
 import Layout from "./Layouts/Authenticated"
 
 // InertiaJS good for quickstart with vue in laravel ecosystem
@@ -17,6 +18,7 @@ import "element-plus/dist/index.css"
 
 // A Vue plugin for injecting remote scripts.
 // @link https://github.com/tserkov/vue-plugin-load-script/tree/vue3
+//@ts-ignore
 import LoadScript from "vue-plugin-load-script"
 
 createInertiaApp({
@@ -30,6 +32,7 @@ createInertiaApp({
   },
   setup({ el, app, props, plugin }) {
     createApp({ render: () => h(app, props) })
+      //@ts-ignore
       .mixin({ methods: { $route: route } })
       .use(plugin)
       .use(ElementPlus)
