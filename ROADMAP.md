@@ -16,6 +16,8 @@
   - [ ] From app to ZenMoney 
     - [ ] Accounts
     - [ ] Transactions
+- [ ] i18n integration
+- [ ] Replace native docker integration with more flexible solution
 - [ ] Transactions management
     - [ ] Users can manage their transactions
 - [ ] Analise
