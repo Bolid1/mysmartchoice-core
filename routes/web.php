@@ -55,6 +55,9 @@ Route::middleware(['auth'])->group(static function () {
             static fn () => Inertia::render('OAuth/TokenIssue')
         )->name('oauth.tokens.issue');
 
+        Route::get('/oauth/authorize', [App\Http\Controllers\OAuth\AuthorizationController::class, 'authorize'])
+            ->name('authorizations.authorize');
+
         Route::prefix('/callbacks')->group(static function () {
             Route::get('test_code', [CallbacksController::class, 'testCode'])
                  ->name('oauth.callbacks.test_code');

@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateFirmIntegrationRequest;
 use App\Managers\FirmIntegrationsManager;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
-use App\Models\Integration;
 use App\Models\Token;
 use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\RedirectResponse;
@@ -155,7 +154,7 @@ class FirmIntegrationsController extends Controller
         //}
 
         return Redirect::route(
-            'passport.authorizations.authorize',
+            'authorizations.authorize',
             [
                 'client_id' => $client->id,
                 'redirect_uri' => $client->redirect,

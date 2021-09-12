@@ -8,7 +8,7 @@
   - [ ] Callback url when token revoked
   - [x] One time token
   - [ ] [Purge old tokens](https://laravel.com/docs/8.x/passport#events)
-  - [ ] [Edit authorization view](https://laravel.com/docs/8.x/passport#approving-the-request)
+  - [x] [Edit authorization view](https://laravel.com/docs/8.x/passport#approving-the-request)
 - [ ] ZenMoney integration
   - [ ] From ZenMoney to app
     - [ ] Accounts
@@ -20,6 +20,7 @@
     - [ ] Users can manage their transactions
 - [ ] Analise
 - [ ] Budget planning
+- [ ] Emails templates
 
 ## Plans in big future
 - [ ] Bonds
