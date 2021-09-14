@@ -119,6 +119,62 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 В отличие от обычной проверки прав, для ролей используются
 специальные [interceptors][laravel-policies-intercepting].
 
+## OAuth токены и клиенты
+
+> Данный раздел документации рассчитан на то, что вы уже
+> ознакомились с документацией к [Laravel Passport][laravel-passport].
+
+Стандартный функционал Laravel Passport был дополнен для поддержки
+прав в проекте. Также у разработчика уже есть готовый frontend
+для взаимодействия с клиентами и токенами.
+
+В рамках работы над проектом, стандартный функционал был дополнен,
+были добавлены следующие классы и файлы:
+
+* В файле [config/oauth/scopes.php](./config/oauth/scopes.php) содержится список
+  как динамических, так и статических scopes приложения.
+* С помощью [DynamicScopesBuilder](./app/Services/DynamicScopesBuilder.php) и
+  переопределения [ScopeRepository](./app/Repositories/ScopeRepository.php)
+  реализован механизм динамических scopes, который будет описан далее.
+* [ScopesController.php](./app/Http/Controllers/Api/OAuth/ScopesController.php) позволяет
+  получить список возможных scopes, включая динамические.
+* Для клиентов подготовлены собственные [API](./app/Http/Controllers/Api/OAuthClientsController.php)
+  & [Web](./app/Http/Controllers/Web/OAuthClientsController.php) контроллеры,
+  с помощью которых ограничен доступ к управлению клиентами.
+
+### Динамические scope-ы
+
+К сожалению, в стандартном функционале нет возможности указывать,
+что токен может принадлежать множеству сущностей одновременно, всё завязано
+на конкретного пользователя.
+
+Для решения этой проблемы, был добавлен механизм динамических scope-ов,
+позволяющий использовать шаблоны при формировании списка scope-ов.
+
+> Важно помнить, что при проверке прав, учитываются не только scope-ы
+> токена, но также и права пользователя, которому принадлежит токен.
+
+#### Как это работает
+
+Когда необходимо добавить новый scope для контента,
+принадлежащего фирме, в массив под
+ключом `patterns` файла [config/oauth/scopes.php](./config/oauth/scopes.php) необходимо
+добавить новый элемент.
+
+В качестве ключа необходимо использовать шаблон, в котором будет производиться
+замена `{firm}` на идентификатор фирмы, а в качестве значения - массив, содержащий:
+
+| Ключ        | Значение
+| ----------- | --------
+| pattern     | regexp для поиска идентификатора фирмы в будущем
+| description | краткий текст, описывающий к какому функционалу получит доступ приложение, владеющее token-ом с указанным scope
+
+### Policies
+
+У OAuth клиентов есть [своя реализация](./app/Policies/OAuthClientPolicy.php) Policy,
+ограничивающая доступ тем или иным пользователям, а также сторонним приложениям,
+действующим от имени пользователя.
+
 ## План документации
 
 - [x] Accesses & rights
@@ -126,8 +182,9 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
   - [x] How policies are used?
   - [x] RBAC (in progress)
 - [ ] OAuth tokens & clients
-  - [ ] Overrides for base functionality of passport package
-  - [ ] Custom scopes list
+  - [x] Overrides for base functionality of passport package
+  - [x] Custom scopes list
+  - [x] Access & rights for clients (in progress)
 - [ ] Integrations
 - [ ] `make:enhanced:*` functionality
 - [ ] API & Web controllers difference
@@ -151,3 +208,4 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 [laravel-gates]: https://laravel.com/docs/8.x/authorization#gates
 [laravel-policies]: https://laravel.com/docs/8.x/authorization#creating-policies
 [laravel-policies-intercepting]: https://laravel.com/docs/8.x/authorization#intercepting-gate-checks
+[laravel-passport]: https://laravel.com/docs/8.x/passport
