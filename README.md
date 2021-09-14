@@ -121,7 +121,7 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 
 ## План документации
 
-- [ ] Accesses & rights
+- [x] Accesses & rights
   - [x] Base organisation for relations (in progress)
   - [x] How policies are used?
   - [x] RBAC (in progress)
