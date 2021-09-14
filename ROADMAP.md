@@ -18,6 +18,9 @@
     - [ ] Transactions
 - [ ] i18n integration
 - [ ] Replace native docker integration with more flexible solution
+- [ ] Rights
+  - [ ] Departments
+  - [ ] RBAC
 - [ ] Transactions management
     - [ ] Users can manage their transactions
 - [ ] Analise
