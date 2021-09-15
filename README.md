@@ -175,27 +175,103 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 ограничивающая доступ тем или иным пользователям, а также сторонним приложениям,
 действующим от имени пользователя.
 
+## Интеграции
+
+Приложения, которые расширяют базовый функционал приложения за
+счёт сторонних сервисов называются интеграциями.
+
+Проект даёт возможность каждому пользователю создавать собственные интеграции,
+которые, после прохождения модерации, сможет установить любой пользователь системы.
+
+На данный момент с помощью интеграций возможно:
+
+* Получить токен другого пользователя
+* Отобразить информацию об интеграции в разделе
+  её настроек, после того, как интеграция будет установлена
+
+## Доработки команд создания классов
+
+В рамках работы над приложением были переосмыслены команды создания
+классов. Все они располагаются в `namespace` App\Console\Commands\Make.
+
+Кратко, об отличиях можно посмотреть в таблице, в то же время,
+каждая команда имеет подробное описание в опциях.
+
+| Команда                        | Почему создана?
+| ------------------------------ | ---------------
+| make:enhanced:controller       | API & Web контроллеры сразу после создания поддерживают работу с [ресурсами][eloquent-resources] и [inertiaJs][inertiajs]
+| make:enhanced:resource         | Добавлен PhpDoc для удобного взаимодействия со свойствами ресурса
+| make:enhanced:test-controller  | Готовые тесты для API & Web контроллеров
+| make:enhanced:view             | Генерация index, show & edit представлений для сущности в рамках vue
+| make:enhanced:model            | Добавлен PhpDoc для удобного взаимодействия с моделью, а также возможность создать полностью готовый к работе компонент системы одной командой.
+
+## API и Web контроллеры
+
+Практика делить контроллеры на API и Web является довольно разумной,
+т.к. рано или поздно различие между собираемыми ими
+данными становится очевидным и уродует код.
+
+[Ресурсы][eloquent-resources] используются только в API контроллерах,
+позволяя более гибко настраивать сущности перед выдачей.
+
+Например, зачастую в Web не требуется информация о дате создания сущности,
+за счёт этого можно сэкономить трафик при передаче данных.
+
+В то же время, в Web редко отображается информация только по ресурсу,
+требуется какая-то дополнительная информация, которую можно подмешать в контроллере.
+
+И главное отличие в том, что API контроллеры в ответ возвращают JSON,
+в то время как Web контроллеры отвечают через inertiaJs Response (`\Inertia\Response`).
+
+### Специальные запросы и менеджеры
+
+За деление на API & Web приходится платить тем, что логика валидации, проверки прав и
+обработки сущностей может быть задублирована.
+
+Чтобы этого избежать, в laravel предусмотрены [form requests][form-request],
+[policies](#Policies), а в ООП - менеджеры сущностей.
+
+[comment]: <> (найти и вставить ссылку на менеджеры сущностей)
+
+Т.е. обработка запроса на сохранение/изменение сущности всегда работает одинаково для
+Web & API контроллеров:
+
+* Сначала при помощи Policy или Gate действие авторизуется
+* Затем запрос проверяется на соответствие правилам при помощи [form requests][form-request]
+* И, наконец, обрабатывается менеджером сущности
+
+## InertiaJs и vue 3
+
+[InertiaJs][inertiajs] & [vue 3][vue-3] помогают создавать SPA приложения
+в рамках единого с backend проекта, что несомненно несёт положительный опыт разработки.
+
+В проекте используется [TypeScript][typescript], для этого были
+предприняты [дополнительные доработки][typescript-vue-3-overflow].
+
+Благодаря [Element-plus][element-plus] и [tailwindcss][tailwindcss] разработка интерфейсов достаточно проста,
+поэтому на этом внимание не акцентируем.
+
 ## План документации
 
 - [x] Accesses & rights
   - [x] Base organisation for relations (in progress)
   - [x] How policies are used?
   - [x] RBAC (in progress)
-- [ ] OAuth tokens & clients
+- [x] OAuth tokens & clients
   - [x] Overrides for base functionality of passport package
   - [x] Custom scopes list
   - [x] Access & rights for clients (in progress)
-- [ ] Integrations
-- [ ] `make:enhanced:*` functionality
-- [ ] API & Web controllers difference
-- [ ] When I should use resources?
-- [ ] When I should use requests?
-- [ ] What is "Managers" and when to use them?
-- [ ] When I should use validators?
-- [ ] Frontend
-  - [ ] Vue 3
-  - [ ] InertiaJS
-  - [ ] TypeScript installation
+- [x] Integrations
+- [x] `make:enhanced:*` functionality
+- [x] API & Web controllers difference
+- [x] When I should use resources?
+- [x] When I should use requests?
+- [x] What is "Managers" and when to use them?
+- [x] When I should use validators?
+- [x] Frontend
+  - [x] Vue 3
+  - [x] InertiaJS
+  - [x] TypeScript installation
 - [ ] Debugging
   - [ ] Xdebug (in progress)
   - [ ] Log collector (in progress)
@@ -209,3 +285,10 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 [laravel-policies]: https://laravel.com/docs/8.x/authorization#creating-policies
 [laravel-policies-intercepting]: https://laravel.com/docs/8.x/authorization#intercepting-gate-checks
 [laravel-passport]: https://laravel.com/docs/8.x/passport
+[eloquent-resources]: https://laravel.com/docs/8.x/eloquent-resources
+[inertiajs]: https://inertiajs.com/
+[form-request]: https://laravel.com/docs/8.x/validation#form-request-validation
+[typescript]: https://www.typescriptlang.org/
+[typescript-vue-3-overflow]: https://stackoverflow.com/a/64213710
+[element-plus]: https://element-plus.org
+[tailwindcss]: https://tailwindcss.com/

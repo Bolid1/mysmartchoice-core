@@ -13,6 +13,7 @@
   - [ ] Rewrite dynamic scopes functionality with classes
   - [ ] Check if access policy applied for passport oauth clients routes
   - [ ] Close all unused passport functionality
+- [ ] Review make:enhanced:* commands
 - [ ] ZenMoney integration
   - [ ] From ZenMoney to app
     - [ ] Accounts
@@ -36,6 +37,7 @@
 - [ ] ETF
 - [ ] Stocks
 - [ ] Keep all exchange instruments in one place
+- [ ] Integration JavaScript in application
 
 ## Final mission
 
