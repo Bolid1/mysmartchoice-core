@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Collections\TokensCollection;
+use App\Models\OAuth\Client;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -21,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property Carbon|null $expires_at
- * @property OAuthClient $client
+ * @property Client $client
  * @property User|null $user
  *
  * @method static TokensCollection|static[] all($columns = ['*'])

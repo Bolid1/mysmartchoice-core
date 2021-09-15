@@ -11,7 +11,7 @@
   - [ ] [Purge old tokens](https://laravel.com/docs/8.x/passport#events)
   - [x] [Edit authorization view](https://laravel.com/docs/8.x/passport#approving-the-request)
   - [ ] Rewrite dynamic scopes functionality with classes
-  - [ ] Check if access policy applied for passport oauth clients routes
+  - [x] Check if access policy applied for passport oauth clients routes
   - [ ] Close all unused passport functionality
 - [ ] Review make:enhanced:* commands
 - [ ] ZenMoney integration

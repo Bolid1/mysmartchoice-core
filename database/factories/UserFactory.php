@@ -12,6 +12,7 @@ use function now;
 use function resolve;
 
 /**
+ * @method User createOne($attributes = [])
  * @method self hasIntegrations($countOrStateOrCallback = 1, $stateOrCallback = [])
  * @method self hasClients($countOrStateOrCallback = 1, $stateOrCallback = [])
  */

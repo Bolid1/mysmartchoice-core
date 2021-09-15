@@ -35,7 +35,6 @@ Route::middleware(['auth'])->group(static function () {
     Route::resource('firms.firm_integrations', Web\FirmIntegrationsController::class);
     Route::resource('firms.accounts', Web\AccountsController::class);
     Route::resource('integrations', Web\IntegrationsController::class);
-    Route::resource('oauth_clients', Web\OAuthClientsController::class);
     Route::resource('firms.users', Web\UsersController::class)
          ->only([
              'index',
@@ -45,6 +44,17 @@ Route::middleware(['auth'])->group(static function () {
     ;
 
     Route::prefix('/oauth')->group(static function () {
+        Route::resource('clients', Web\OAuth\ClientsController::class)
+            ->names([
+                'index' => 'oauth.clients.index',
+                'show' => 'oauth.clients.show',
+                'create' => 'oauth.clients.create',
+                'store' => 'oauth.clients.store',
+                'edit' => 'oauth.clients.edit',
+                'update' => 'oauth.clients.update',
+                'destroy' => 'oauth.clients.destroy',
+            ]);
+
         Route::get(
             '/tokens',
             static fn () => Inertia::render('OAuth/Tokens')
@@ -55,7 +65,7 @@ Route::middleware(['auth'])->group(static function () {
             static fn () => Inertia::render('OAuth/TokenIssue')
         )->name('oauth.tokens.issue');
 
-        Route::get('/oauth/authorize', [App\Http\Controllers\OAuth\AuthorizationController::class, 'authorize'])
+        Route::get('/authorize', [App\Http\Controllers\OAuth\AuthorizationController::class, 'authorize'])
             ->name('authorizations.authorize');
 
         Route::prefix('/callbacks')->group(static function () {

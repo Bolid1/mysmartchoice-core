@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\OAuth;
 
 use App\Http\Controllers\Controller;
-use App\Models\OAuthClient;
+use App\Models\OAuth\Client;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,7 +56,7 @@ class CallbacksController extends Controller
             'state.interface' => 'string',
         ]);
 
-        /** @var OAuthClient $client */
+        /** @var Client $client */
         $client = $repository->findActive($data['state']['client_id']);
 
         abort_if(!$client, 422, 'Client not found');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\OAuth\Client;
 use Database\Factories\UserFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,7 +38,7 @@ use Laravel\Passport\Token;
  * @property int|null $firms_count
  * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property int|null $notifications_count
- * @property Collection|OAuthClient[] $clients
+ * @property Collection|Client[] $clients
  * @property int|null $clients_count
  * @property Collection|Token[] $tokens
  * @property int|null $tokens_count

@@ -4,9 +4,9 @@
       <card-header
         :exists="Boolean(client.id)"
         :title="client.name"
-        :list-href="this.$route('oauth_clients.index')"
-        :delete-href="() => this.$route('oauth_clients.destroy', client)"
-        :edit-href="() => this.$route('oauth_clients.edit', client)"
+        :list-href="this.$route('oauth.clients.index')"
+        :delete-href="() => this.$route('oauth.clients.destroy', client)"
+        :edit-href="() => this.$route('oauth.clients.edit', client)"
       />
     </el-header>
 

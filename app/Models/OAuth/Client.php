@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\OAuth;
 
-use Database\Factories\OAuthClientFactory;
+use App\Models\User;
+use Database\Factories\OAuth\ClientFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\AuthCode;
-use Laravel\Passport\Client;
+use Laravel\Passport\Client as PassportClient;
 use Laravel\Passport\Token;
 
 /**
@@ -38,25 +39,34 @@ use Laravel\Passport\Token;
  * @property int|null $tokens_count
  * @property User|null $user
  *
- * @method static OAuthClientFactory factory(...$parameters)
- * @method static Builder|OAuthClient newModelQuery()
- * @method static Builder|OAuthClient newQuery()
- * @method static Builder|OAuthClient query()
- * @method static Builder|OAuthClient whereId($value)
- * @method static Builder|OAuthClient whereCreatedAt($value)
- * @method static Builder|OAuthClient whereUpdatedAt($value)
- * @method static Builder|OAuthClient whereName($value)
- * @method static Builder|OAuthClient wherePasswordClient($value)
- * @method static Builder|OAuthClient wherePersonalAccessClient($value)
- * @method static Builder|OAuthClient whereProvider($value)
- * @method static Builder|OAuthClient whereRedirect($value)
- * @method static Builder|OAuthClient whereRevoked($value)
- * @method static Builder|OAuthClient whereSecret($value)
- * @method static Builder|OAuthClient whereUserId($value)
+ * @method static ClientFactory factory(...$parameters)
+ * @method static Builder|Client newModelQuery()
+ * @method static Builder|Client newQuery()
+ * @method static Builder|Client query()
+ * @method static Builder|Client whereId($value)
+ * @method static Builder|Client whereCreatedAt($value)
+ * @method static Builder|Client whereUpdatedAt($value)
+ * @method static Builder|Client whereName($value)
+ * @method static Builder|Client wherePasswordClient($value)
+ * @method static Builder|Client wherePersonalAccessClient($value)
+ * @method static Builder|Client whereProvider($value)
+ * @method static Builder|Client whereRedirect($value)
+ * @method static Builder|Client whereRevoked($value)
+ * @method static Builder|Client whereSecret($value)
+ * @method static Builder|Client whereUserId($value)
  * @mixin Eloquent
  */
-class OAuthClient extends Client
+class Client extends PassportClient
 {
+    protected $visible = [
+        'id',
+        'created_at',
+        'updated_at',
+        'user_id',
+        'name',
+        'redirect',
+    ];
+
     protected $casts = [
         'grant_types' => 'array',
         'personal_access_client' => 'bool',

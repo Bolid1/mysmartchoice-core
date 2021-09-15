@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Policies;
+namespace App\Policies\OAuth;
 
-use App\Models\OAuthClient;
+use App\Models\OAuth\Client;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use JetBrains\PhpStorm\Pure;
 use function route;
 
-class OAuthClientPolicy
+class ClientPolicy
 {
     use HandlesAuthorization;
 
@@ -32,12 +32,12 @@ class OAuthClientPolicy
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param OAuthClient $oAuthClient
+     * @param Client $oAuthClient
      *
      * @return bool
      */
     #[Pure]
-    public function view(User $user, OAuthClient $oAuthClient): bool
+    public function view(User $user, Client $oAuthClient): bool
     {
         return $user->noTokenOrTokenCan('view-oauth_clients')
                && $oAuthClient->isOwner($user);
@@ -60,12 +60,12 @@ class OAuthClientPolicy
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param OAuthClient $oAuthClient
+     * @param Client $oAuthClient
      *
      * @return bool
      */
     #[Pure]
-    public function update(User $user, OAuthClient $oAuthClient): bool
+    public function update(User $user, Client $oAuthClient): bool
     {
         return $user->noTokenOrTokenCan('update-oauth_clients')
                && $oAuthClient->isOwner($user);
@@ -75,12 +75,12 @@ class OAuthClientPolicy
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param OAuthClient $oAuthClient
+     * @param Client $oAuthClient
      *
      * @return bool
      */
     #[Pure]
-    public function delete(User $user, OAuthClient $oAuthClient): bool
+    public function delete(User $user, Client $oAuthClient): bool
     {
         return $user->noTokenOrTokenCan('delete-oauth_clients')
                && $oAuthClient->isOwner($user);
@@ -88,12 +88,12 @@ class OAuthClientPolicy
 
     /**
      * @param User $user
-     * @param OAuthClient $oAuthClient
+     * @param Client $oAuthClient
      *
      * @return bool Может ли пользователь пропустить окошко "вы даёте доступ, бла-бла-бла"?
      */
     #[Pure]
-    public function skipsAuthorization(User $user, OAuthClient $oAuthClient): bool
+    public function skipsAuthorization(User $user, Client $oAuthClient): bool
     {
         return $user->noToken()
                && Request::input('skips_authorization')
@@ -104,12 +104,12 @@ class OAuthClientPolicy
 
     /**
      * @param User $user
-     * @param OAuthClient $oAuthClient
+     * @param Client $oAuthClient
      *
      * @return bool Может ли пользователь создавать тестовые токены на этом клиенте?
      */
     #[Pure]
-    public function testExchange(User $user, OAuthClient $oAuthClient): bool
+    public function testExchange(User $user, Client $oAuthClient): bool
     {
         return $user->noToken()
                && $oAuthClient->isOwner($user)

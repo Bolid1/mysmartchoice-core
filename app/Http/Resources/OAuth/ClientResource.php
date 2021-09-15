@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\OAuth;
 
-use App\Models\OAuthClient;
+use App\Models\OAuth\Client;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property OAuthClient $resource
- * @mixin OAuthClient
+ * @property Client $resource
+ * @mixin Client
  */
-class OAuthClientResource extends JsonResource
+class ClientResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      *
      * @return array
      */

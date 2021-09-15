@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\OAuth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OAuthClientResource;
-use App\Models\OAuthClient;
+use App\Models\OAuth\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -14,27 +13,31 @@ use Inertia\Response;
 use Laravel\Passport\Http\Controllers\ClientController;
 use function inertia;
 
-class OAuthClientsController extends Controller
+class ClientsController extends Controller
 {
     private ClientController $controller;
 
     public function __construct(ClientController $controller)
     {
-        $this->authorizeResource(OAuthClient::class, 'oauth_client');
+        $this->authorizeResource(Client::class);
         $this->controller = $controller;
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     *
      * @return Response
      */
     public function index(Request $request): Response
     {
         return inertia('OAuth/Clients', [
-            'oauth_clients' => OAuthClientResource::collection(
-                $this->controller->forUser($request)
-            ),
+            'clients' => $this->controller->forUser($request)->map->setVisible([
+                'id',
+                'name',
+                'redirect',
+            ]),
         ]);
     }
 
@@ -45,10 +48,8 @@ class OAuthClientsController extends Controller
      */
     public function create(): Response
     {
-        OAuthClientResource::withoutWrapping();
-
         return inertia('OAuth/ClientEdit', [
-            'client' => OAuthClientResource::make(OAuthClient::make([])),
+            'client' => Client::make([]),
         ]);
     }
 
@@ -63,38 +64,34 @@ class OAuthClientsController extends Controller
     {
         $client = $this->controller->store($request);
 
-        return Redirect::route('oauth_clients.edit', ['oauth_client' => $client], 303);
+        return Redirect::route('oauth.clients.edit', ['client' => $client], 303);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  OAuthClient  $oAuthClient
+     * @param  Client  $client
      *
      * @return Response
      */
-    public function show(OAuthClient $oAuthClient): Response
+    public function show(Client $client): Response
     {
-        OAuthClientResource::withoutWrapping();
-
         return inertia('OAuth/Client', [
-            'client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+            'client' => $client->makeVisible('secret'),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  OAuthClient  $oAuthClient
+     * @param  Client  $client
      *
      * @return Response
      */
-    public function edit(OAuthClient $oAuthClient): Response
+    public function edit(Client $client): Response
     {
-        OAuthClientResource::withoutWrapping();
-
         return inertia('OAuth/ClientEdit', [
-            'client' => OAuthClientResource::make($oAuthClient->makeVisible('secret')),
+            'client' => $client->makeVisible('secret'),
         ]);
     }
 
@@ -102,28 +99,29 @@ class OAuthClientsController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param OAuthClient  $oAuthClient
+     * @param Client  $client
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, OAuthClient $oAuthClient): RedirectResponse
+    public function update(Request $request, Client $client): RedirectResponse
     {
-        $this->controller->update($request, $oAuthClient->getKey());
+        $this->controller->update($request, $client->getKey());
 
-        return Redirect::route('oauth_clients.edit', ['oauth_client' => $oAuthClient], 303);
+        return Redirect::route('oauth.clients.edit', ['client' => $client], 303);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  OAuthClient  $oAuthClient
+     * @param Request $request
+     * @param Client $client
      *
      * @return RedirectResponse
      */
-    public function destroy(Request $request, OAuthClient $oAuthClient): RedirectResponse
+    public function destroy(Request $request, Client $client): RedirectResponse
     {
-        $this->controller->destroy($request, $oAuthClient->getKey());
+        $this->controller->destroy($request, $client->getKey());
 
-        return Redirect::route('oauth_clients.index', [], 303);
+        return Redirect::route('oauth.clients.index', [], 303);
     }
 }

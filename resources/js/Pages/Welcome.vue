@@ -23,7 +23,7 @@
       <el-carousel-item>
         <Link
           class="h-full flex items-center justify-center text-xl"
-          :href="this.$route('oauth_clients.index')"
+          :href="this.$route('oauth.clients.index')"
           >Auth Clients</Link
         >
       </el-carousel-item>

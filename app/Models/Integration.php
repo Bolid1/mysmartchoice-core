@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\OAuth\Client;
 use Database\Factories\IntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ use function str_replace;
  * @property string|null $oauth2_client_id
  * @property array $javascript_file
  * @property string $auth
- * @property OAuthClient|null $client
+ * @property Client|null $client
  * @property string|null $o_auth2_client_id
  * @property array $o_auth2_scopes
  *

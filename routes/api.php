@@ -45,13 +45,13 @@ Route::middleware('auth:api')->group(static function () {
          ])
     ;
 
-    Route::apiResource('oauth_clients', App\Http\Controllers\Api\OAuthClientsController::class)
+    Route::apiResource('oauth/clients', Api\OAuth\ClientsController::class)
          ->names([
-             'index' => 'api.oauth_clients.index',
-             'show' => 'api.oauth_clients.show',
-             'store' => 'api.oauth_clients.store',
-             'update' => 'api.oauth_clients.update',
-             'destroy' => 'api.oauth_clients.destroy',
+             'index' => 'api.oauth.clients.index',
+             'show' => 'api.oauth.clients.show',
+             'store' => 'api.oauth.clients.store',
+             'update' => 'api.oauth.clients.update',
+             'destroy' => 'api.oauth.clients.destroy',
          ])
     ;
 

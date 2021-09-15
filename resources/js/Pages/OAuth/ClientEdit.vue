@@ -4,9 +4,9 @@
       <card-header
         :exists="Boolean(client.id)"
         :title="client.name"
-        :list-href="this.$route('oauth_clients.index')"
-        :delete-href="() => this.$route('oauth_clients.destroy', client)"
-        :show-href="() => this.$route('oauth_clients.show', client)"
+        :list-href="this.$route('oauth.clients.index')"
+        :delete-href="() => this.$route('oauth.clients.destroy', client)"
+        :show-href="() => this.$route('oauth.clients.show', client)"
       />
     </el-header>
 
@@ -23,9 +23,9 @@
           <form-buttons-group
             :exists="Boolean(client.id)"
             :form="form"
-            :store-href="this.$route('oauth_clients.store')"
-            :update-href="() => this.$route('oauth_clients.update', client)"
-            :destroy-href="() => this.$route('oauth_clients.destroy', client)"
+            :store-href="this.$route('oauth.clients.store')"
+            :update-href="() => this.$route('oauth.clients.update', client)"
+            :destroy-href="() => this.$route('oauth.clients.destroy', client)"
           />
         </el-form-item>
       </el-form>

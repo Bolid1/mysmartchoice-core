@@ -69,7 +69,7 @@
           },
           {
             title: "Auth Clients",
-            route: "oauth_clients.index",
+            route: "oauth.clients.index",
             icon: "el-icon-connection",
           },
           {
