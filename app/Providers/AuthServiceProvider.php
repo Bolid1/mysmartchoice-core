@@ -69,7 +69,6 @@ class AuthServiceProvider extends ServiceProvider
                     $router->forAuthorization();
                     $router->forAccessTokens();
                     $router->forTransientTokens();
-                    $router->forPersonalAccessTokens();
                 },
                 [
                     'prefix' => 'api/oauth',

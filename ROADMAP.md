@@ -12,7 +12,7 @@
   - [x] [Edit authorization view](https://laravel.com/docs/8.x/passport#approving-the-request)
   - [ ] Rewrite dynamic scopes functionality with classes
   - [x] Check if access policy applied for passport oauth clients routes
-  - [ ] Close all unused passport functionality
+  - [x] Close all unused passport functionality (except 'AuthorizationController@authorize')
 - [ ] Review make:enhanced:* commands
 - [ ] ZenMoney integration
   - [ ] From ZenMoney to app
