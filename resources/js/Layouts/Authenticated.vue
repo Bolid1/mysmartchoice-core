@@ -33,7 +33,14 @@
         </el-sub-menu>
         <el-menu-item v-for="menuItem in menuItems" :index="menuItem.route">
           <Link :href="menuItem.href" class="block w-full">
-            <i :class="menuItem.icon"></i>
+            <el-tooltip
+              effect="dark"
+              :content="menuItem.title"
+              placement="right"
+              :disabled="!isMenuCollapsed"
+            >
+              <i :class="menuItem.icon"></i>
+            </el-tooltip>
             <span>{{ menuItem.title }}</span>
           </Link>
         </el-menu-item>
