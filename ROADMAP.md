@@ -5,6 +5,11 @@
   - [x] Firm should become part of access token scope
   - [x] Send token just after integration installed
   - [x] Integration can upload own javascript to interact with interface
+  - [ ] Signed token
+- [ ] Event log
+  - [ ] WebHooks
+  - [ ] Signed WebHooks
+  - [ ] Setup WebHooks escalation & rules
 - [ ] OAuth
   - [ ] Callback url when token revoked
   - [x] One time token
