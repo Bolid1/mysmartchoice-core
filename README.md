@@ -138,8 +138,8 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
   реализован механизм динамических scopes, который будет описан далее.
 * [ScopesController.php](./app/Http/Controllers/Api/OAuth/ScopesController.php) позволяет
   получить список возможных scopes, включая динамические.
-* Для клиентов подготовлены собственные [API](./app/Http/Controllers/Api/OAuthClientsController.php)
-  & [Web](./app/Http/Controllers/Web/OAuthClientsController.php) контроллеры,
+* Для клиентов подготовлены собственные [API](./app/Http/Controllers/Api/OAuth/ClientsController.php)
+  & [Web](./app/Http/Controllers/Web/OAuth/ClientsController.php) контроллеры,
   с помощью которых ограничен доступ к управлению клиентами.
 
 ### Динамические scope-ы
@@ -171,7 +171,7 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 
 ### Policies
 
-У OAuth клиентов есть [своя реализация](./app/Policies/OAuthClientPolicy.php) Policy,
+У OAuth клиентов есть [своя реализация](./app/Policies/OAuth/ClientPolicy.php) Policy,
 ограничивающая доступ тем или иным пользователям, а также сторонним приложениям,
 действующим от имени пользователя.
 
@@ -188,6 +188,44 @@ $this->authorizeResource(Account::class.',firm', 'account,firm');
 * Получить токен другого пользователя
 * Отобразить информацию об интеграции в разделе
   её настроек, после того, как интеграция будет установлена
+
+### Авторизация через OAuth 2.0
+
+Если для работы интеграции требуется токен доступа от приложения,
+создателю интеграции необходимо создать OAuth Client (`/oauth/clients`),
+после чего необходимо создать 2 endpoint-а:
+
+1. Authorize URI отвечает за перенаправление пользователя в приложение
+   для получения разрешение на выдачу прав доступа.
+2. Callback URI используется для обмена кода на токен доступа.
+
+Схема взаимодействия выглядит следующим образом:
+
+```plantuml
+@startuml
+
+actor User
+card Button
+card auth_uri as "Authorize URI"
+card auth_app as "App authorize URI"
+card code_uri as "Callback URI"
+card token_uri as "Token URI"
+
+User --> Button : кликает на кнопку "авторизоваться"\nв настройках установки
+Button --> auth_uri : в новой вкладке браузера\nоткрывается Authorize URI с\nGET параметрами: user_id,\nfirm_id и redirect_to
+auth_uri --> auth_app : перенаправляет обратно в\nприложение с параметрами для\nавторизации
+auth_app --> code_uri : перенаправляет на Callback URI\nc GET параметрами code и state
+code_uri --> token_uri : Обменивает code на\nавторизационные данные 
+
+@enduml
+```
+
+> Если вы используете PHP, рекомендуем рассмотреть
+> библиотеку [league/oauth2-client](https://oauth2-client.thephpleague.com/),
+> с которой полностью совместимо текущее приложение.
+
+Разрабатывая авторизацию такого типа следует помнить о том,
+что отключение интеграции не аннулирует выданные ей доступы автоматически.
 
 ## Доработки команд создания классов
 

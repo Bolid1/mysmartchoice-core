@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Web;
 
 use App\Models\Integration;
-use App\Models\OAuth\Client as Client;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -54,10 +53,7 @@ class IntegrationsControllerTest extends TestCase
 
     public function testStore(): void
     {
-        /** @var User $user */
-        $user = User::factory()->hasClients(1)->createOne();
-        /** @var Client $client */
-        $client = $user->clients->first();
+        $user = User::factory()->createOne();
 
         $this
             ->actingAs($user)
@@ -66,8 +62,7 @@ class IntegrationsControllerTest extends TestCase
                 'description' => $description = $this->faker->sentence,
                 'settings' => $settings = [
                     'auth' => 'oauth2',
-                    'oauth2_client_id' => $client->getKey(),
-                    'oauth2_scopes' => ['*'],
+                    'authorize_uri' => 'https://example.com',
                 ],
             ])
             ->assertStatus(303)

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Tests\Api;
 
 use App\Models\Integration;
-use App\Models\OAuth\Client as Client;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
-use function route;
 
 class IntegrationsControllerTest extends TestCase
 {
@@ -20,14 +18,13 @@ class IntegrationsControllerTest extends TestCase
 
     public function testIndex(): void
     {
-        /** @var User $user */
         $user = User::factory()->hasIntegrations(3)->createOne();
         Passport::actingAs($user, [
             'view-integrations',
         ]);
 
         $this
-            ->getJson(route('api.integrations.index'))
+            ->getJson('/api/integrations')
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
@@ -47,23 +44,19 @@ class IntegrationsControllerTest extends TestCase
 
     public function testStore(): void
     {
-        /** @var User $user */
-        $user = User::factory()->hasClients(1)->createOne();
-        /** @var Client $client */
-        $client = $user->clients->first();
+        $user = User::factory()->createOne();
 
         Passport::actingAs($user, [
             'create-integrations',
         ]);
 
         $this
-            ->postJson(route('api.integrations.store'), [
+            ->postJson('/api/integrations', [
                 'title' => $title = $this->faker->jobTitle.' title', // some title less 5 characters length
                 'description' => $description = $this->faker->sentence,
                 'settings' => $settings = [
                     'auth' => 'oauth2',
-                    'oauth2_client_id' => $client->getKey(),
-                    'oauth2_scopes' => ['*'],
+                    'authorize_uri' => 'https://example.com',
                 ],
             ])
             ->assertStatus(201)
@@ -81,7 +74,6 @@ class IntegrationsControllerTest extends TestCase
 
     public function testShow(): void
     {
-        /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
         /** @var Integration $integration */
         $integration = $user->integrations->first();
@@ -91,7 +83,7 @@ class IntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->getJson(route('api.integrations.show', $integration))
+            ->getJson("/api/integrations/{$integration->id}")
             ->assertStatus(200)
             ->assertJson([
                 'data' => [
@@ -107,24 +99,20 @@ class IntegrationsControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        /** @var User $user */
-        $user = User::factory()->hasIntegrations(1)->hasClients(1)->createOne();
+        $user = User::factory()->hasIntegrations(1)->createOne();
         /** @var Integration $integration */
         $integration = $user->integrations->first();
-        /** @var Client $client */
-        $client = $user->clients->first();
 
         Passport::actingAs($user, [
             'update-integrations',
         ]);
 
         $this
-            ->patchJson(route('api.integrations.update', $integration), [
+            ->patchJson("/api/integrations/{$integration->id}", [
                 'title' => $newTitle = $this->faker->jobTitle.' title', // some title less 5 characters length
                 'settings' => $settings = [
                     'auth' => 'oauth2',
-                    'oauth2_client_id' => $client->getKey(),
-                    'oauth2_scopes' => ['*'],
+                    'authorize_uri' => 'https://example.com',
                 ],
             ])
             ->assertStatus(200)
@@ -143,7 +131,6 @@ class IntegrationsControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        /** @var User $user */
         $user = User::factory()->hasIntegrations(1)->createOne();
         /** @var Integration $integration */
         $integration = $user->integrations->first();
@@ -157,7 +144,7 @@ class IntegrationsControllerTest extends TestCase
         ]);
 
         $this
-            ->deleteJson(route('api.integrations.destroy', $integration))
+            ->deleteJson("/api/integrations/{$integration->id}")
             ->assertStatus(200)
             ->assertJson(
                 [

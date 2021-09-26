@@ -10,9 +10,9 @@ use App\Http\Requests\UpdateFirmIntegrationRequest;
 use App\Managers\FirmIntegrationsManager;
 use App\Models\Firm;
 use App\Models\FirmIntegration;
-use App\Models\Token;
 use App\Repositories\IntegrationsRepository;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
@@ -20,9 +20,10 @@ use Inertia\Response;
 use function abort_if;
 use function compact;
 use function data_get;
+use function http_build_query;
 use function inertia;
-use function json_encode;
-use const JSON_THROW_ON_ERROR;
+use function route;
+use function rtrim;
 
 class FirmIntegrationsController extends Controller
 {
@@ -93,15 +94,6 @@ class FirmIntegrationsController extends Controller
             'firm' => $firm,
             'install' => $firmIntegration,
             'integration' => $integration,
-            'tokens' => $integration->o_auth2_client_id
-                ? Token::whereUserId(Auth::id())
-                ->where('revoked', false)
-                ->where('client_id', $integration->o_auth2_client_id)
-                ->get()
-                ->whereFirm($firm->id)
-                ->loadMissing('client')
-                ->values()
-                : [],
         ]);
     }
 
@@ -144,30 +136,20 @@ class FirmIntegrationsController extends Controller
         return Redirect::route('firms.firm_integrations.index', compact('firm'), 303);
     }
 
-    public function auth(Firm $firm, FirmIntegration $firmIntegration): RedirectResponse
+    public function auth(Firm $firm, FirmIntegration $firmIntegration, Request $request): RedirectResponse
     {
         $integration = $firmIntegration->integration;
-        $client = $integration->client;
 
         //if ($integration->auth === Integration::AUTH_OAUTH2) {
         // @TODO: Another auth methods
         //}
 
-        return Redirect::route(
-            'authorizations.authorize',
-            [
-                'client_id' => $client->id,
-                'redirect_uri' => $client->redirect,
-                'response_type' => 'code',
-                'scope' => $integration->oauth2ScopesFor($firm->id),
-                'state' => json_encode([
-                    'client_id' => $client->id,
-                    'interface' => null,
-                    'user_id' => Auth::id(),
-                    'firm_id' => $firm->id,
-                ], JSON_THROW_ON_ERROR),
-            ],
-            303
+        return Redirect::away(
+            rtrim((string)$integration->authorize_uri, '?').'?'.http_build_query([
+                'user_id' => Auth::id(),
+                'firm_id' => $firm->id,
+                'redirect_to' => $request->server('HTTP_REFERER') ?: route('firms.show', $firm),
+            ])
         );
     }
 }

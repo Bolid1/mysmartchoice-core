@@ -32,9 +32,6 @@
         <a
           v-if="integration.settings.auth === 'oauth2'"
           class="el-button el-button--warning"
-          :class="{
-            'is-plain': issuedTokens?.length,
-          }"
           :href="
             this.$route('firms.firm_integrations.authorize', {
               firm,
@@ -49,13 +46,8 @@
 
     <el-main>
       <el-tabs type="border-card">
-        <el-tab-pane label="iSettings" id="integration-settings"> </el-tab-pane>
-        <el-tab-pane label="Tokens">
-          <el-row :gutter="12">
-            <list-col v-for="token in issuedTokens" :key="token.id">
-              <token-card :token="token" @revoked="removeToken(token)" />
-            </list-col>
-          </el-row>
+        <el-tab-pane label="Settings" id="integration-settings">
+          This integration has no settings
         </el-tab-pane>
       </el-tabs>
     </el-main>
@@ -63,9 +55,7 @@
 </template>
 
 <script>
-  import { defineComponent, ref, toRef } from "vue"
-  import { without } from "lodash"
-  import TokenCard from "@/Components/OAuth/TokenCard"
+  import { defineComponent } from "vue"
   import DeleteButton from "@/Components/Buttons/DeleteButton"
   import ShowButton from "@/Components/Buttons/ShowButton"
   import ListCol from "@/Components/ListCol"
@@ -75,7 +65,6 @@
       ListCol,
       ShowButton,
       DeleteButton,
-      TokenCard,
     },
     props: {
       firm: {
@@ -90,19 +79,6 @@
         required: true,
         type: Object,
       },
-      tokens: {
-        required: true,
-        type: Array,
-      },
-    },
-    setup(props) {
-      const issuedTokens = ref(toRef(props, "tokens").value)
-
-      function removeToken(token) {
-        issuedTokens.value = without(issuedTokens.value, token)
-      }
-
-      return { issuedTokens, removeToken }
     },
     created() {
       if (this.integration.settings.javascript_file) {

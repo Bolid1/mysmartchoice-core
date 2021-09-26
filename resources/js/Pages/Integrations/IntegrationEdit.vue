@@ -31,51 +31,22 @@
               v-model="form.description"
               class="mt-1 block w-full"
               required
-              autofocus
             />
           </el-form-item>
 
           <el-tabs>
             <el-tab-pane label="OAuth2">
               <el-form-item
-                label="Client"
-                :error="form.errors['settings.oauth2_client_id']"
+                label="Authorize URI"
+                :error="form.errors['settings.authorize_uri']"
               >
-                <el-select
-                  v-model="form.settings.oauth2_client_id"
-                  placeholder="Please, select..."
+                <el-input
+                  id="settings-authorize_uri"
+                  type="url"
+                  v-model="form.settings.authorize_uri"
                   class="mt-1 block w-full"
-                  filterable
-                >
-                  <el-option
-                    v-for="client in oauth_clients.data"
-                    :key="client.id"
-                    :label="`${client.name} [${client.redirect}]`"
-                    :value="client.id"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-
-              <el-form-item
-                label="Scopes"
-                :error="form.errors['settings.oauth2_scopes']"
-              >
-                <el-select
-                  v-model="form.settings.oauth2_scopes"
-                  placeholder="Please, select..."
-                  class="mt-1 block w-full"
-                  filterable
-                  multiple
-                >
-                  <el-option
-                    v-for="scope in oauth_scopes"
-                    :key="scope.key"
-                    :label="scope.description"
-                    :value="scope.key"
-                  >
-                  </el-option>
-                </el-select>
+                  required
+                />
               </el-form-item>
             </el-tab-pane>
             <el-tab-pane disabled label="Key"></el-tab-pane>
@@ -154,8 +125,7 @@
         settings: extend(
           {
             auth: "oauth2",
-            oauth2_client_id: "",
-            oauth2_scopes: [],
+            authorize_uri: null,
           },
           props.integration.settings
         ),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\OAuth\Client;
 use Database\Factories\IntegrationFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,16 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
-use Laravel\Passport\Passport;
-use function array_map;
 use function data_get;
 use function is_iterable;
-use function str_replace;
 
 /**
  * External application, that can interact with current app.
@@ -38,12 +32,9 @@ use function str_replace;
  * @property array|null $settings
  * @property Collection|FirmIntegration[] $integrationsInstalls
  * @property int|null $integrations_installs_count
- * @property string|null $oauth2_client_id
- * @property array $javascript_file
+ * @property string|null $javascript_file
+ * @property string|null $authorize_uri
  * @property string $auth
- * @property Client|null $client
- * @property string|null $o_auth2_client_id
- * @property array $o_auth2_scopes
  *
  * @method static IntegrationFactory factory(...$parameters)
  * @method static Builder|Integration newModelQuery()
@@ -114,19 +105,6 @@ class Integration extends Model
         return $this->owner_id === ($user instanceof User ? $user->id : $user);
     }
 
-    /**
-     * @return HasMany There are many installs in different firms can be in integration
-     */
-    public function integrationsInstalls(): HasMany
-    {
-        return $this->hasMany(FirmIntegration::class);
-    }
-
-    public function client(): HasOne
-    {
-        return $this->hasOne(Passport::clientModel(), 'id', 'oAuth2ClientId');
-    }
-
     public function setSettingsAttribute($settings): self
     {
         if (!is_iterable($settings)) {
@@ -149,16 +127,6 @@ class Integration extends Model
         return data_get($this->settings, 'auth', self::AUTH_NONE);
     }
 
-    public function getOAuth2ClientIdAttribute(): ?string
-    {
-        return data_get($this->settings, 'oauth2_client_id');
-    }
-
-    public function getOAuth2ScopesAttribute(): array
-    {
-        return (array)data_get($this->settings, 'oauth2_scopes', []);
-    }
-
     public function getJavascriptFileAttribute(): ?string
     {
         return data_get($this->settings, 'javascript_file');
@@ -169,11 +137,13 @@ class Integration extends Model
         return $this->fillJsonAttribute('settings->javascript_file', $file);
     }
 
-    public function oauth2ScopesFor(int $firmId): array
+    public function getAuthorizeUriAttribute(): ?string
     {
-        return array_map(
-            static fn (string $scope) => str_replace('{firm}', (string)$firmId, $scope),
-            (array)$this->o_auth2_scopes
-        );
+        return data_get($this->settings, 'authorize_uri');
+    }
+
+    public function setAuthorizeUriAttribute(string $file): self
+    {
+        return $this->fillJsonAttribute('settings->authorize_uri', $file);
     }
 }
