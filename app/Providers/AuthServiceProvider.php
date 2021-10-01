@@ -58,6 +58,11 @@ class AuthServiceProvider extends ServiceProvider
         Passport::useTokenModel(Token::class);
 
         Passport::tokensCan(config('oauth.scopes.plain'));
+
+        if ($this->app->environment('production')) {
+            Passport::hashClientSecrets();
+        }
+
         /*
          * Dynamic scopes in config('oauth.scopes.patterns')
          * @see \App\Services\DynamicScopesBuilder::$scopesPatterns

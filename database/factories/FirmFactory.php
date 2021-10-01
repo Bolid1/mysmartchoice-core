@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @method self hasUsers($countOrStateOrCallback = 1, $stateOrCallback = [])
+ * @method Firm makeOne(callable|array $attributes = [])
  */
 class FirmFactory extends Factory
 {
